@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario con eventos</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body { 
+            font-family: Arial, sans-serif; 
+            min-height: 100vh;
+            min-width: 100vw;
+            background: url('https://cdna.artstation.com/p/assets/images/images/011/702/022/large/gabe-dimperio-asset.jpg?1530948233') no-repeat center center fixed;
+            background-size: cover;
+        }
+        #resumen {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            max-width: 300px;
+            word-break: break-word;
+        }
+        .error { color: #c00; font-size: 0.9em; }
+        label { display: block; margin-top: 10px; }
+        input, select, textarea { margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1 id="titulo">Formulario de Registro</h1>
+    <form id="registroForm" autocomplete="off">
+        <label>Nombre:
+            <input type="text" id="nombre" name="nombre">
+            <span class="error" id="error-nombre"></span>
+        </label>
+        <label>Contraseña:
+            <input type="password" id="password" name="password">
+            <span class="error" id="error-password"></span>
+        </label>
+        <label>País:
+            <select id="pais" name="pais">
+                <option value="">Selecciona tu país</option>
+                <option value="mx">México</option>
+                <option value="ar">Argentina</option>
+                <option value="es">España</option>
+            </select>
+            <span class="error" id="error-pais"></span>
+        </label>
+        <label>Intereses:
+            <input type="checkbox" name="intereses" value="Música"> Música
+            <input type="checkbox" name="intereses" value="Tecnología"> Tecnología
+            <input type="checkbox" name="intereses" value="Deporte"> Deporte
+            <span class="error" id="error-intereses"></span>
+        </label>
+        <label>Género:
+            <input type="radio" name="genero" value="hombre"> Hombre
+            <input type="radio" name="genero" value="mujer"> Mujer
+            <input type="radio" name="genero" value="otro"> Otro
+            <span class="error" id="error-genero"></span>
+        </label>
+        <label>Comentario:
+            <textarea id="comentario" name="comentario" rows="3" cols="30"></textarea>
+        </label>
+        <br>
+        <button type="submit" id="enviar">Enviar</button>
+        <button type="button" id="limpiar">Limpiar</button>
+    </form>
+    <div id="resumen"></div>
+
+<script>
+    // Elementos
+    const form = document.getElementById('registroForm');
+    const nombre = document.getElementById('nombre');
+    const password = document.getElementById('password');
+    const pais = document.getElementById('pais');
+    const intereses = document.getElementsByName('intereses');
+    const genero = document.getElementsByName('genero');
+    const comentario = document.getElementById('comentario');
+    const resumen = document.getElementById('resumen');
+    const titulo = document.getElementById('titulo');
+
+    // Errores
+    const errorNombre = document.getElementById('error-nombre');
+    const errorPassword = document.getElementById('error-password');
+    const errorPais = document.getElementById('error-pais');
+    const errorIntereses = document.getElementById('error-intereses');
+    const errorGenero = document.getElementById('error-genero');
+
+    // Focus y blur
+    nombre.addEventListener('focus', () => errorNombre.textContent = "Ingresa tu nombre.");
+    nombre.addEventListener('blur', () => {
+        if (nombre.value.trim() === "") {
+            errorNombre.textContent = "El nombre no puede estar vacío.";
+        } else {
+            errorNombre.textContent = "";
+        }
+    });
+
+    password.addEventListener('focus', () => errorPassword.textContent = "Mínimo 6 caracteres.");
+    password.addEventListener('blur', () => {
+        if (password.value.length < 6) {
+            errorPassword.textContent = "La contraseña debe tener al menos 6 caracteres.";
+        } else {
+            errorPassword.textContent = "";
+        }
+    });
+
+    // Input en nombre
+    nombre.addEventListener('input', () => {
+        if (nombre.value.length < 3) {
+            errorNombre.textContent = "El nombre es muy corto.";
+        } else {
+            errorNombre.textContent = "";
+        }
+    });
+
+    // Change en select
+    pais.addEventListener('change', () => {
+        if (pais.value === "") {
+            errorPais.textContent = "Selecciona un país.";
+        } else {
+            errorPais.textContent = "";
+        }
+    });
+
+    // Change en intereses
+    intereses.forEach(chk => {
+        chk.addEventListener('change', () => {
+            if ([...intereses].some(i => i.checked)) {
+                errorIntereses.textContent = "";
+            }
+        });
+    });
+
+    // Change en género
+    genero.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if ([...genero].some(g => g.checked)) {
+                errorGenero.textContent = "";
+            }
+        });
+    });
+
+    // Limpiar formulario
+    document.getElementById('limpiar').addEventListener('click', () => {
+        form.reset();
+        errorNombre.textContent = "";
+        errorPassword.textContent = "";
+        errorPais.textContent = "";
+        errorIntereses.textContent = "";
+        errorGenero.textContent = "";
+        resumen.textContent = "";
+        titulo.textContent = "Formulario de Registro";
+    });
+
+    // Validación y submit
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let valido = true;
+
+        // Validar nombre
+        if (nombre.value.trim() === "") {
+            errorNombre.textContent = "El nombre no puede estar vacío.";
+            valido = false;
+        } else {
+            errorNombre.textContent = "";
+        }
+
+        // Validar contraseña
+        if (password.value.length < 6) {
+            errorPassword.textContent = "La contraseña debe tener al menos 6 caracteres.";
+            valido = false;
+        } else {
+            errorPassword.textContent = "";
+        }
+
+        // Validar país
+        if (pais.value === "") {
+            errorPais.textContent = "Selecciona un país.";
+            valido = false;
+        } else {
+            errorPais.textContent = "";
+        }
+
+        // Validar intereses
+        const interesesMarcados = [...intereses].filter(i => i.checked).map(i => i.value);
+        if (interesesMarcados.length === 0) {
+            errorIntereses.textContent = "Selecciona al menos un interés.";
+            valido = false;
+        } else {
+            errorIntereses.textContent = "";
+        }
+
+        // Validar género
+        const generoSeleccionado = [...genero].find(g => g.checked);
+        if (!generoSeleccionado) {
+            errorGenero.textContent = "Selecciona un género.";
+            valido = false;
+        } else {
+            errorGenero.textContent = "";
+        }
+
+        if (!valido) return;
+
+        // Mostrar resumen personalizado
+        let paisTexto = pais.options[pais.selectedIndex].text;
+        let interesesTexto = interesesMarcados.join(" y ");
+        let generoTexto = generoSeleccionado.value === "hombre" ? "hombre" :
+                          generoSeleccionado.value === "mujer" ? "mujer" : "persona";
+        let saludo = `¡Gracias, ${nombre.value}! Te registraste como ${generoTexto} interesad${generoTexto === "mujer" ? "a" : "o"} en ${interesesTexto} desde ${paisTexto}.`;
+        let comentarioTexto = comentario.value.trim() ? `<br>Comentario: "${comentario.value.trim()}".` : "";
+
+        resumen.innerHTML = saludo + comentarioTexto;
+        titulo.textContent = `¡Bienvenido, ${nombre.value}!`;
+    });
+</script>
+</body>
+</html>

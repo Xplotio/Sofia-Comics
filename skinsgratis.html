@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skins Gratis Marvel Rivals</title>
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #181c24;
+            background-image: url('https://esportsinsider.com/wp-content/uploads/2025/06/Marvel-Rivals-skins-update-Everything-to-know-about-the-Future-Foundation-cosmetics.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        h1 {
+            color: #fff;
+            font-size: 3rem;
+            text-align: center;
+            letter-spacing: 2px;
+            font-family: 'Arial Black', Arial, sans-serif;
+            text-shadow: 0 4px 24px #000, 0 1px 0 #c00;
+            margin-bottom: 40px;
+        }
+        #reclamar {
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: #c00;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            position: absolute;
+            transition: top 0.2s, left 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <h1>SKINS DE MARVEL RIVALS GRATIS</h1>
+    <button id="reclamar">RECLAMAR</button>
+    <script>
+        const btn = document.getElementById('reclamar');
+        const body = document.body;
+
+        function moverBoton() {
+            const anchoVentana = window.innerWidth - btn.offsetWidth;
+            const altoVentana = window.innerHeight - btn.offsetHeight;
+            const nuevaIzquierda = Math.random() * anchoVentana;
+            const nuevaArriba = Math.random() * altoVentana;
+            btn.style.left = `${nuevaIzquierda}px`;
+            btn.style.top = `${nuevaArriba}px`;
+        }
+
+        btn.addEventListener('mouseenter', moverBoton);
+
+        // Inicializa el botón en el centro
+        btn.style.left = "50%";
+        btn.style.top = "60%";
+        btn.style.transform = "translate(-50%, -50%)";
+    </script>
+</body>
+</html>
