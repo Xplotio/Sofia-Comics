@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - Marvel</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 80vh;
+        background: #f5f5f5;
+        padding-top: 40px;
+      }
+      form {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+        padding: 32px 36px 24px 36px;
+        min-width: 320px;
+        max-width: 400px;
+        width: 100%;
+        margin-top: 32px;
+      }
+      h2 {
+        text-align: center;
+        color: #c00;
+        margin-bottom: 24px;
+        font-size: 2rem;
+        font-family: 'Inter', Arial, sans-serif;
+        letter-spacing: 1px;
+      }
+      .form-group {
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #222;
+        font-size: 1.05rem;
+        font-family: 'Inter', Arial, sans-serif;
+      }
+      input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+        padding: 9px 12px;
+        border-radius: 6px;
+        border: 1px solid #bbb;
+        font-size: 1rem;
+        transition: border 0.2s;
+        font-family: 'Inter', Arial, sans-serif;
+      }
+      input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
+        border: 1.5px solid #c00;
+        outline: none;
+      }
+      button[type="submit"] {
+        background: #c00;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 0;
+        width: 100%;
+        font-size: 1.15rem;
+        font-weight: bold;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-family: 'Inter', Arial, sans-serif;
+        letter-spacing: 1px;
+      }
+      button[type="submit"]:hover {
+        background: #a00;
+      }
+      fieldset {
+        border: 1px solid #bbb;
+        border-radius: 8px;
+        margin-bottom: 18px;
+        padding: 14px 12px 10px 12px;
+        background: #fafafa;
+      }
+      legend {
+        font-weight: bold;
+        color: #c00;
+        font-size: 1.05rem;
+        font-family: 'Inter', Arial, sans-serif;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+      .checkbox-group, .fav-characters-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .checkbox-group label,
+      .fav-characters-group label {
+        background: #eee;
+        border-radius: 6px;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: background 0.2s;
+        margin-bottom: 6px;
+      }
+      .checkbox-group input[type="checkbox"],
+      .fav-characters-group input[type="checkbox"] {
+        margin-right: 8px;
+        accent-color: #c00;
+      }
+      .checkbox-group label:hover,
+      .fav-characters-group label:hover {
+        background: #ffeaea;
+      }
+      @media (max-width: 600px) {
+        form {
+          min-width: unset;
+          max-width: 98vw;
+          padding: 18px 5vw 14px 5vw;
+        }
+        main {
+          padding-top: 10px;
+        }
+        .checkbox-group, .fav-characters-group {
+          gap: 8px;
+        }
+      }
+    </style>
+</head>
+<body>
+  <header>
+    <nav class="frame1920wlight-nav">
+      <div class="frame1920wlight-section">
+        <div class="frame1920wlight-horizontal-border">
+          <div class="frame1920wlight-container11">
+            <div class="frame1920wlight-link10">
+              <img
+                src="public/external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png"
+                alt="GeminiGeneratedImage"
+                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
+              />
+            </div>
+            <div class="frame1920wlight-vertical-border1">
+              <div class="frame1920wlight-vertical-border2">
+                <div class="frame1920wlight-container12">
+                  <img
+                    src="public/external/svg487-p0cx.svg"
+                    alt="Marvel Logo"
+                    class="frame1920wlight-svg10"
+                  />
+                </div>
+                <div class="frame1920wlight-link11">
+                  <span class="frame1920wlight-text100">Log In</span>
+                </div>
+                <span class="frame1920wlight-text101">|</span>
+                <div class="frame1920wlight-link12">
+                  <span class="frame1920wlight-text102">Sign Up</span>
+                </div>
+              </div>
+            </div>
+            <div class="frame1920wlight-link13">
+              <span class="frame1920wlight-text103">Sofia comics</span>
+              <span class="frame1920wlight-text104">Subscribe</span>
+              <img
+                src="public/external/unnamed14821-q9e-200h.png"
+                alt="unnamed"
+                class="frame1920wlight-unnamed1"
+              />
+            </div>
+            <div class="frame1920wlight-linksearch">
+              <img
+                src="public/external/svg499-gkzh.svg"
+                alt="Buscar"
+                class="frame1920wlight-svg11"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="frame1920wlight-list10">
+          <div class="frame1920wlight-item-link10">
+            <span class="frame1920wlight-text105">News</span>
+          </div>
+          <div class="frame1920wlight-item-link11">
+            <span class="frame1920wlight-text106">Comics</span>
+          </div>
+          <div class="frame1920wlight-item-link12">
+            <span class="frame1920wlight-text107">Characters</span>
+          </div>
+          <div class="frame1920wlight-item-link13"></div>
+          <div class="frame1920wlight-item-link14"></div>
+          <div class="frame1920wlight-item-link15"></div>
+          <div class="frame1920wlight-item-link16">
+            <span class="frame1920wlight-text108">More</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <form id="crearCuentaForm" autocomplete="off">
+        <h2>Crear Cuenta</h2>
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" name="apellido" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirmar">Confirmar contraseña</label>
+          <input type="password" id="confirmar" name="confirmar" required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección de casa</label>
+          <input type="text" id="direccion" name="direccion" required>
+        </div>
+        <div class="form-group">
+          <label for="cp">Código Postal</label>
+          <input type="text" id="cp" name="cp" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Número de teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <fieldset>
+          <legend>Marcas favoritas</legend>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="marca" value="marvel">Marvel</label>
+            <label><input type="checkbox" name="marca" value="dc">DC</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Personajes favoritos</legend>
+          <div class="fav-characters-group">
+            <label><input type="checkbox" name="personaje" value="superman">Superman</label>
+            <label><input type="checkbox" name="personaje" value="spiderman">Spiderman</label>
+            <label><input type="checkbox" name="personaje" value="batman">Batman</label>
+            <label><input type="checkbox" name="personaje" value="wonderwoman">Wonder Woman</label>
+            <label><input type="checkbox" name="personaje" value="venom">Venom</label>
+            <label><input type="checkbox" name="personaje" value="ironman">Iron Man</label>
+          </div>
+        </fieldset>
+        <button type="submit">Crear cuenta</button>
+      </form>
+    </section>
+  </main>
+  <script>
+    // Limitar selección de personajes favoritos a 3
+    const personajesCheckboxes = document.querySelectorAll('input[name="personaje"]');
+    let seleccionados = [];
+
+    personajesCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        seleccionados = Array.from(personajesCheckboxes)
+          .filter(cb => cb.checked);
+
+        if (seleccionados.length > 3) {
+          // Desmarcar el primero seleccionado
+          seleccionados[0].checked = false;
+          seleccionados = Array.from(personajesCheckboxes)
+            .filter(cb => cb.checked);
+        }
+      });
+    });
+
+    // Validación de formulario
+    document.getElementById('crearCuentaForm').addEventListener('submit', function(e) {
+      let valid = true;
+      let mensaje = "";
+
+      // Validar campos vacíos
+      const campos = ['nombre', 'apellido', 'correo', 'password', 'confirmar', 'direccion', 'cp', 'telefono'];
+      campos.forEach(id => {
+        const input = document.getElementById(id);
+        if (!input.value.trim()) {
+          valid = false;
+          mensaje += `El campo ${id} es obligatorio.\n`;
+        }
+      });
+
+      // Validar email
+      const correo = document.getElementById('correo').value.trim();
+      if (correo && !/^[\w\.-]+@[\w\.-]+\.\w{2,}$/.test(correo)) {
+        valid = false;
+        mensaje += "El correo electrónico no es válido.\n";
+      }
+
+      // Validar contraseñas
+      const pass = document.getElementById('password').value;
+      const conf = document.getElementById('confirmar').value;
+      if (pass !== conf) {
+        valid = false;
+        mensaje += "Las contraseñas no coinciden.\n";
+      }
+      if (pass.length < 6) {
+        valid = false;
+        mensaje += "La contraseña debe tener al menos 6 caracteres.\n";
+      }
+
+      // Validar código postal (solo números, 4-8 dígitos)
+      const cp = document.getElementById('cp').value.trim();
+      if (cp && !/^\d{4,8}$/.test(cp)) {
+        valid = false;
+        mensaje += "El código postal debe ser numérico (4 a 8 dígitos).\n";
+      }
+
+      // Validar teléfono (solo números, 7-15 dígitos)
+      const tel = document.getElementById('telefono').value.trim();
+      if (tel && !/^\d{7,15}$/.test(tel)) {
+        valid = false;
+        mensaje += "El número de teléfono debe ser numérico (7 a 15 dígitos).\n";
+      }
+
+      // Validar que haya al menos una marca seleccionada
+      const marcas = document.querySelectorAll('input[name="marca"]:checked');
+      if (marcas.length === 0) {
+        valid = false;
+        mensaje += "Selecciona al menos una marca favorita.\n";
+      }
+
+      // Validar que haya al menos un personaje favorito y máximo 3
+      const personajes = document.querySelectorAll('input[name="personaje"]:checked');
+      if (personajes.length === 0) {
+        valid = false;
+        mensaje += "Selecciona al menos un personaje favorito.\n";
+      }
+      if (personajes.length > 3) {
+        valid = false;
+        mensaje += "Solo puedes seleccionar hasta 3 personajes favoritos.\n";
+      }
+
+      if (!valid) {
+        e.preventDefault();
+        alert(mensaje);
+      }
+    });
+  </script>
+</body>
+</html>
