@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Tarjeta - Marvel</title>
+  <link rel="stylesheet" href="index.css">
+  <style>
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 80vh;
+        background: none;
+        padding-top: 40px;
+      }
+      form {
+        background: transparent; /* Quita el fondo blanco */
+        border-radius: 16px;
+        box-shadow: none;        /* Quita la sombra */
+        padding: 32px 36px 24px 36px;
+        min-width: 320px;
+        max-width: 400px;
+        width: 100%;
+        margin-top: 32px;
+      }
+      h2 {
+        text-align: center;
+        color: #c00;
+        margin-bottom: 24px;
+        font-size: 2rem;
+        font-family: 'Inter', Arial, sans-serif;
+        letter-spacing: 1px;
+      }
+      .form-group {
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #222;
+        font-size: 1.05rem;
+        font-family: 'Inter', Arial, sans-serif;
+      }
+      input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+        padding: 9px 12px;
+        border-radius: 6px;
+        border: 1px solid #bbb;
+        font-size: 1rem;
+        transition: border 0.2s;
+        font-family: 'Inter', Arial, sans-serif;
+      }
+      input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
+        border: 1.5px solid #c00;
+        outline: none;
+      }
+      button[type="submit"] {
+        background: #c00;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 0;
+        width: 100%;
+        font-size: 1.15rem;
+        font-weight: bold;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-family: 'Inter', Arial, sans-serif;
+        letter-spacing: 1px;
+      }
+      button[type="submit"]:hover {
+        background: #a00;
+      }
+      fieldset {
+        border: 1px solid #bbb;
+        border-radius: 8px;
+        margin-bottom: 18px;
+        padding: 14px 12px 10px 12px;
+        background: #fafafa;
+      }
+      legend {
+        font-weight: bold;
+        color: #c00;
+        font-size: 1.05rem;
+        font-family: 'Inter', Arial, sans-serif;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+      .checkbox-group, .fav-characters-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .checkbox-group label,
+      .fav-characters-group label {
+        background: #eee;
+        border-radius: 6px;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: background 0.2s;
+        margin-bottom: 6px;
+      }
+      .checkbox-group input[type="checkbox"],
+      .fav-characters-group input[type="checkbox"] {
+        margin-right: 8px;
+        accent-color: #c00;
+      }
+      .checkbox-group label:hover,
+      .fav-characters-group label:hover {
+        background: #ffeaea;
+      }
+      @media (max-width: 600px) {
+        form {
+          min-width: unset;
+          max-width: 98vw;
+          padding: 18px 5vw 14px 5vw;
+        }
+        main {
+          padding-top: 10px;
+        }
+        .checkbox-group, .fav-characters-group {
+          gap: 8px;
+        }
+      }
+    </style>
+</head>
+<body style="background: url('https://images2.alphacoders.com/446/446666.jpg') no-repeat center center fixed; background-size: cover;">
+  <header>
+    <nav class="frame1920wlight-nav">
+      <div class="frame1920wlight-section">
+        <div class="frame1920wlight-horizontal-border">
+          <div class="frame1920wlight-container11">
+            <div class="frame1920wlight-link10">
+              <img
+                src="public/external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png"
+                alt="GeminiGeneratedImage"
+                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
+              />
+            </div>
+            <div class="frame1920wlight-vertical-border1">
+              <div class="frame1920wlight-vertical-border2">
+                <div class="frame1920wlight-container12">
+                  <img
+                    src="public/external/svg487-p0cx.svg"
+                    alt="Marvel Logo"
+                    class="frame1920wlight-svg10"
+                  />
+                </div>
+                <div class="frame1920wlight-link11">
+                  <span class="frame1920wlight-text100">Log In</span>
+                </div>
+                <span class="frame1920wlight-text101">|</span>
+                <div class="frame1920wlight-link12">
+                  <span class="frame1920wlight-text102">Sign Up</span>
+                </div>
+              </div>
+            </div>
+            <div class="frame1920wlight-link13">
+              <span class="frame1920wlight-text103">Sofia comics</span>
+              <span class="frame1920wlight-text104">Subscribe</span>
+              <img
+                src="public/external/unnamed14821-q9e-200h.png"
+                alt="unnamed"
+                class="frame1920wlight-unnamed1"
+              />
+            </div>
+            <div class="frame1920wlight-linksearch">
+              <img
+                src="public/external/svg499-gkzh.svg"
+                alt="Buscar"
+                class="frame1920wlight-svg11"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="frame1920wlight-list10">
+          <div class="frame1920wlight-item-link10">
+            <span class="frame1920wlight-text105">News</span>
+          </div>
+          <div class="frame1920wlight-item-link11">
+            <span class="frame1920wlight-text106">Comics</span>
+          </div>
+          <div class="frame1920wlight-item-link12">
+            <span class="frame1920wlight-text107">Characters</span>
+          </div>
+          <div class="frame1920wlight-item-link13"></div>
+          <div class="frame1920wlight-item-link14"></div>
+          <div class="frame1920wlight-item-link15"></div>
+          <div class="frame1920wlight-item-link16">
+            <span class="frame1920wlight-text108">More</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <form id="formTarjeta" autocomplete="off" style="background: transparent; box-shadow: none;">
+        <h2>Registrar Tarjeta</h2>
+
+        <div class="form-group">
+          <label for="nombreTitular">Nombre del Titular</label>
+          <input type="text" id="nombreTitular" name="nombreTitular" required>
+        </div>
+
+        <div class="form-group">
+          <label for="numeroTarjeta">Número de Tarjeta</label>
+          <input type="text" id="numeroTarjeta" name="numeroTarjeta" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required>
+        </div>
+
+        <div class="form-group">
+          <label for="fechaExpiracion">Fecha de Expiración</label>
+          <input type="text" id="fechaExpiracion" name="fechaExpiracion" placeholder="MM/AA" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" name="cvv" maxlength="4" required>
+        </div>
+
+        <div class="form-group">
+          <label>Tipo de Pago</label>
+          <div style="display: flex; gap: 18px; justify-content: center; margin-top: 8px;">
+            <button type="button" class="tipo-pago-btn" data-tipo="paypal" style="background: none; border: none; cursor: pointer;">
+              <img src="https://cdn-icons-png.flaticon.com/512/174/174861.png" alt="PayPal" style="width: 60px; height: 40px; object-fit: contain;">
+            </button>
+            <button type="button" class="tipo-pago-btn" data-tipo="mastercard" style="background: none; border: none; cursor: pointer;">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/2560px-Mastercard-logo.svg.png" alt="MasterCard" style="width: 60px; height: 40px; object-fit: contain;">
+            </button>
+            <button type="button" class="tipo-pago-btn" data-tipo="visa" style="background: none; border: none; cursor: pointer;">
+              <img src="https://img.icons8.com/color/512/visa.png" alt="Visa" style="width: 60px; height: 40px; object-fit: contain;">
+            </button>
+          </div>
+          <input type="hidden" id="tipoTarjeta" name="tipoTarjeta" required>
+        </div>
+
+        <button type="submit">Proceder Pago</button>
+      </form>
+    </section>
+  </main>
+  <script>
+    // Selección visual de tipo de pago
+    document.querySelectorAll('.tipo-pago-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.getElementById('tipoTarjeta').value = btn.getAttribute('data-tipo');
+        document.querySelectorAll('.tipo-pago-btn').forEach(b => b.style.boxShadow = 'none');
+        btn.style.boxShadow = '0 0 0 3px #c00, 0 2px 8px #0002';
+      });
+    });
+
+    document.getElementById('formTarjeta').addEventListener('submit', function (e) {
+      let mensaje = "";
+      let valid = true;
+
+      const numero = document.getElementById('numeroTarjeta').value.replace(/\s+/g, '');
+      const fecha = document.getElementById('fechaExpiracion').value.trim();
+      const cvv = document.getElementById('cvv').value.trim();
+      const tipo = document.getElementById('tipoTarjeta').value;
+
+      // Validar número de tarjeta (solo números, 13 a 19 dígitos)
+      if (!/^\d{13,19}$/.test(numero)) {
+        valid = false;
+        mensaje += "El número de tarjeta debe tener entre 13 y 19 dígitos numéricos.\n";
+      }
+
+      // Validar fecha de expiración (MM/AA)
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(fecha)) {
+        valid = false;
+        mensaje += "La fecha de expiración debe tener formato MM/AA.\n";
+      }
+
+      // Validar CVV (3 o 4 dígitos)
+      if (!/^\d{3,4}$/.test(cvv)) {
+        valid = false;
+        mensaje += "El CVV debe ser un número de 3 o 4 dígitos.\n";
+      }
+
+      // Validar tipo de tarjeta/pago
+      if (!tipo) {
+        valid = false;
+        mensaje += "Selecciona un tipo de pago.\n";
+      }
+
+      if (!valid) {
+        e.preventDefault();
+        alert(mensaje);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -11,13 +11,13 @@
         justify-content: center;
         align-items: flex-start;
         min-height: 80vh;
-        background: #f5f5f5;
+        background: none;
         padding-top: 40px;
       }
       form {
-        background: #fff;
+        background: transparent;
+        box-shadow: none;
         border-radius: 16px;
-        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
         padding: 32px 36px 24px 36px;
         min-width: 320px;
         max-width: 400px;
@@ -115,6 +115,39 @@
       .fav-characters-group label:hover {
         background: #ffeaea;
       }
+      .personaje-img-label {
+        background: none !important;
+        padding: 0 !important;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 6px;
+        transition: background 0.2s;
+        user-select: none;
+      }
+      .personaje-img {
+        width: 60px;
+        height: auto;
+        margin-bottom: 4px;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        transition: border 0.2s, box-shadow 0.2s;
+        box-shadow: 0 2px 8px #0002;
+      }
+      .personaje-img-label.selected .personaje-img {
+        border: 2.5px solid #c00;
+        box-shadow: 0 0 0 4px #ffeaea, 0 2px 8px #0002;
+        background: #fff;
+      }
+      .personaje-img-label span {
+        color: #222;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+        text-align: center;
+        font-weight: 500;
+      }
       @media (max-width: 600px) {
         form {
           min-width: unset;
@@ -130,7 +163,7 @@
       }
     </style>
 </head>
-<body>
+<body style="background: url('https://chordiem.com/wp-content/uploads/2021/03/Dark-city-backdrop-scaled.jpg') no-repeat left center fixed; background-size: cover;">
   <header>
     <nav class="frame1920wlight-nav">
       <div class="frame1920wlight-section">
@@ -200,8 +233,26 @@
     </nav>
   </header>
   <main>
-    <section>
-      <form id="crearCuentaForm" autocomplete="off">
+    <section style="display: flex; justify-content: center; align-items: flex-start; min-height: 80vh; position: relative;">
+      <!-- Imagen Robin (izquierda, sticky y grande) -->
+      <div 
+        style="
+          position: sticky;
+          top: 80px;
+          align-self: center;
+          z-index: 1;
+          height: 80vh;
+          display: flex;
+          align-items: center;
+        ">
+        <img 
+          src="https://static.wikia.nocookie.net/characters-in-fiction/images/1/18/Robin%28Render%29TT.png/revision/latest/thumbnail/width/360/height/450?cb=20211217022858" 
+          alt="Robin" 
+          style="max-width: 350px; height: 70vh; min-height: 350px; display: block; transform: scaleX(-1); object-fit: contain;"
+        >
+      </div>
+      <!-- Formulario con recuadro blanco -->
+      <form id="crearCuentaForm" autocomplete="off" style="z-index:2; background: rgba(255,255,255,0.97); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18); border-radius: 16px; padding: 32px 36px 24px 36px; min-width: 320px; max-width: 400px; width: 100%; margin-top: 32px;">
         <h2>Crear Cuenta</h2>
         <div class="form-group">
           <label for="nombre">Nombre</label>
@@ -241,112 +292,198 @@
             <label><input type="checkbox" name="marca" value="marvel">Marvel</label>
             <label><input type="checkbox" name="marca" value="dc">DC</label>
           </div>
-        </fieldset>
+        </fieldset>5
         <fieldset>
           <legend>Personajes favoritos</legend>
           <div class="fav-characters-group">
-            <label><input type="checkbox" name="personaje" value="superman">Superman</label>
-            <label><input type="checkbox" name="personaje" value="spiderman">Spiderman</label>
-            <label><input type="checkbox" name="personaje" value="batman">Batman</label>
-            <label><input type="checkbox" name="personaje" value="wonderwoman">Wonder Woman</label>
-            <label><input type="checkbox" name="personaje" value="venom">Venom</label>
-            <label><input type="checkbox" name="personaje" value="ironman">Iron Man</label>
+            <!-- Superman -->
+            <label class="personaje-img-label">
+              <input type="checkbox" name="personaje" value="superman" style="display:none;">
+              <img 
+                src="locales/NicePng_superman-flying-png_661696.png" 
+                alt="Superman"
+                class="personaje-img"
+              >
+              <span>Superman</span>
+            </label>
+            <!-- Spiderman -->
+            <label class="personaje-img-label">
+              <input type="checkbox" name="personaje" value="spiderman" style="display:none;">
+              <img 
+                src="https://rivalskins.com/wp-content/uploads/marvel-assets/items/spray/23/img_icon_spider-man.webp" 
+                alt="Spiderman"
+                class="personaje-img"
+              >
+              <span>Spiderman</span>
+            </label>
+            <!-- Venom -->
+            <label class="personaje-img-label">
+              <input type="checkbox" name="personaje" value="venom" style="display:none;">
+              <img 
+                src="https://rivalskins.com/wp-content/uploads/marvel-assets/items/spray/27/img_icon_venom.png" 
+                alt="Venom"
+                class="personaje-img"
+              >
+              <span>Venom</span>
+            </label>
+            <!-- Human Torch -->
+            <label class="personaje-img-label">
+              <input type="checkbox" name="personaje" value="human-torch" style="display:none;">
+              <img 
+                src="https://rivalskins.com/wp-content/uploads/marvel-assets/items/spray/37/img_icon_human-torch.webp" 
+                alt="Human Torch"
+                class="personaje-img"
+              >
+              <span>Human Torch</span>
+            </label>
+            <!-- Star Lord -->
+            <label class="personaje-img-label">
+              <input type="checkbox" name="personaje" value="star-lord" style="display:none;">
+              <img 
+                src="https://rivalskins.com/wp-content/uploads/marvel-assets/items/spray/24/img_icon_star-lord.webp" 
+                alt="Star Lord"
+                class="personaje-img"
+              >
+              <span>Star Lord</span>
+            </label>
+            <!-- Thor -->
+            <label class="personaje-img-label">
+              <input type="checkbox" name="personaje" value="thor" style="display:none;">
+              <img 
+                src="https://rivalskins.com/wp-content/uploads/marvel-assets/items/spray/26/img_icon_thor.webp" 
+                alt="Thor"
+                class="personaje-img"
+              >
+              <span>Thor</span>
+            </label>
           </div>
         </fieldset>
         <button type="submit">Crear cuenta</button>
       </form>
+      <!-- Imagen Batman (derecha, sticky y grande) -->
+      <div 
+        style="
+          position: sticky;
+          top: 80px;
+          align-self: center;
+          z-index: 1;
+          height: 80vh;
+          display: flex;
+          align-items: center;
+        ">
+        <img 
+          src="https://clipart.info/images/ccovers/1495749356hd-batman-png-transparent-background-dc-comics.png" 
+          alt="Batman" 
+          style="max-width: 350px; height: 70vh; min-height: 350px; display: block; object-fit: contain;"
+        >
+      </div>
     </section>
   </main>
   <script>
-    // Limitar selección de personajes favoritos a 3
-    const personajesCheckboxes = document.querySelectorAll('input[name="personaje"]');
-    let seleccionados = [];
+  document.getElementById('crearCuentaForm').addEventListener('submit', function(e) {
+    let valid = true;
+    let mensaje = "";
 
-    personajesCheckboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', function() {
-        seleccionados = Array.from(personajesCheckboxes)
-          .filter(cb => cb.checked);
-
-        if (seleccionados.length > 3) {
-          // Desmarcar el primero seleccionado
-          seleccionados[0].checked = false;
-          seleccionados = Array.from(personajesCheckboxes)
-            .filter(cb => cb.checked);
-        }
-      });
+    // Validar campos vacíos
+    const campos = ['nombre', 'apellido', 'correo', 'password', 'confirmar', 'direccion', 'cp', 'telefono'];
+    campos.forEach(id => {
+      const input = document.getElementById(id);
+      if (!input.value.trim()) {
+        valid = false;
+        mensaje += `El campo ${id} es obligatorio.\n`;
+      }
     });
 
-    // Validación de formulario
-    document.getElementById('crearCuentaForm').addEventListener('submit', function(e) {
-      let valid = true;
-      let mensaje = "";
+    // Validar email
+    const correo = document.getElementById('correo').value.trim();
+    if (correo && !/^[\w\.-]+@[\w\.-]+\.\w{2,}$/.test(correo)) {
+      valid = false;
+      mensaje += "El correo electrónico no es válido.\n";
+    }
 
-      // Validar campos vacíos
-      const campos = ['nombre', 'apellido', 'correo', 'password', 'confirmar', 'direccion', 'cp', 'telefono'];
-      campos.forEach(id => {
-        const input = document.getElementById(id);
-        if (!input.value.trim()) {
-          valid = false;
-          mensaje += `El campo ${id} es obligatorio.\n`;
-        }
-      });
+    // Validar contraseñas
+    const pass = document.getElementById('password').value;
+    const conf = document.getElementById('confirmar').value;
+    if (pass !== conf) {
+      valid = false;
+      mensaje += "Las contraseñas no coinciden.\n";
+    }
+    if (pass.length < 6) {
+      valid = false;
+      mensaje += "La contraseña debe tener al menos 6 caracteres.\n";
+    }
 
-      // Validar email
-      const correo = document.getElementById('correo').value.trim();
-      if (correo && !/^[\w\.-]+@[\w\.-]+\.\w{2,}$/.test(correo)) {
-        valid = false;
-        mensaje += "El correo electrónico no es válido.\n";
-      }
+    // Validar código postal (solo números, 4-8 dígitos)
+    const cp = document.getElementById('cp').value.trim();
+    if (cp && !/^\d{4,8}$/.test(cp)) {
+      valid = false;
+      mensaje += "El código postal debe ser numérico (4 a 8 dígitos).\n";
+    }
 
-      // Validar contraseñas
-      const pass = document.getElementById('password').value;
-      const conf = document.getElementById('confirmar').value;
-      if (pass !== conf) {
-        valid = false;
-        mensaje += "Las contraseñas no coinciden.\n";
-      }
-      if (pass.length < 6) {
-        valid = false;
-        mensaje += "La contraseña debe tener al menos 6 caracteres.\n";
-      }
+    // Validar teléfono (solo números, 7-15 dígitos)
+    const tel = document.getElementById('telefono').value.trim();
+    if (tel && !/^\d{7,15}$/.test(tel)) {
+      valid = false;
+      mensaje += "El número de teléfono debe ser numérico (7 a 15 dígitos).\n";
+    }
 
-      // Validar código postal (solo números, 4-8 dígitos)
-      const cp = document.getElementById('cp').value.trim();
-      if (cp && !/^\d{4,8}$/.test(cp)) {
-        valid = false;
-        mensaje += "El código postal debe ser numérico (4 a 8 dígitos).\n";
-      }
+    // Validar que haya al menos una marca seleccionada
+    const marcas = document.querySelectorAll('input[name="marca"]:checked');
+    if (marcas.length === 0) {
+      valid = false;
+      mensaje += "Selecciona al menos una marca favorita.\n";
+    }
 
-      // Validar teléfono (solo números, 7-15 dígitos)
-      const tel = document.getElementById('telefono').value.trim();
-      if (tel && !/^\d{7,15}$/.test(tel)) {
-        valid = false;
-        mensaje += "El número de teléfono debe ser numérico (7 a 15 dígitos).\n";
-      }
+    // Validar que haya al menos un personaje favorito y máximo 3
+    const personajes = document.querySelectorAll('input[name="personaje"]:checked');
+    if (personajes.length === 0) {
+      valid = false;
+      mensaje += "Selecciona al menos un personaje favorito.\n";
+    }
+    if (personajes.length > 3) {
+      valid = false;
+      mensaje += "Solo puedes seleccionar hasta 3 personajes favoritos.\n";
+    }
 
-      // Validar que haya al menos una marca seleccionada
-      const marcas = document.querySelectorAll('input[name="marca"]:checked');
-      if (marcas.length === 0) {
-        valid = false;
-        mensaje += "Selecciona al menos una marca favorita.\n";
-      }
+    if (!valid) {
+      e.preventDefault();
+      alert(mensaje);
+    } else {
+      e.preventDefault();
+      alert("Tu cuenta ha sido creada");
+      window.location.href = "vistapago.html";
+    }
+  });
 
-      // Validar que haya al menos un personaje favorito y máximo 3
-      const personajes = document.querySelectorAll('input[name="personaje"]:checked');
-      if (personajes.length === 0) {
-        valid = false;
-        mensaje += "Selecciona al menos un personaje favorito.\n";
-      }
-      if (personajes.length > 3) {
-        valid = false;
-        mensaje += "Solo puedes seleccionar hasta 3 personajes favoritos.\n";
-      }
+  // Selección visual y límite de 3 personajes favoritos
+  document.querySelectorAll('.personaje-img-label').forEach(label => {
+    const checkbox = label.querySelector('input[type="checkbox"]');
+    const img = label.querySelector('.personaje-img');
+    const span = label.querySelector('span');
 
-      if (!valid) {
+    // Click en imagen o texto: alterna selección manualmente
+    [img, span].forEach(el => {
+      el.addEventListener('click', function(e) {
         e.preventDefault();
-        alert(mensaje);
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change', {bubbles: false}));
+      });
+    });
+
+    // Animación y límite de 3 seleccionados
+    checkbox.addEventListener('change', function() {
+      const seleccionados = document.querySelectorAll('.personaje-img-label input[type="checkbox"]:checked');
+      if (seleccionados.length > 3) {
+        checkbox.checked = false;
+        return;
+      }
+      if (checkbox.checked) {
+        label.classList.add('selected');
+      } else {
+        label.classList.remove('selected');
       }
     });
+  });
   </script>
 </body>
 </html>
