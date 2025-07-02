@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC Comics Tickets</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            background: url('https://i.pinimg.com/736x/de/f4/73/def473f3b4380d977d23ac2502cb1d77.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        main {
+            margin-top: 80px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(255,255,255,0.97);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
+            padding: 36px 28px 32px 28px;
+        }
+        .dc-logo {
+            display: block;
+            margin: 0 auto 24px auto;
+            max-width: 320px;
+            width: 100%;
+            height: auto;
+        }
+        h2 {
+            color: #222;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            border-left: 5px solid #00C;
+            padding-left: 10px;
+        }
+        .comics-list {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .comic-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0002;
+            width: 160px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 8px 10px 8px;
+            text-align: center;
+            border: 2px solid #00C;
+        }
+        .comic-img {
+            width: 100px;
+            height: 140px;
+            background: #eee;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            object-fit: cover;
+            display: block;
+        }
+        .comic-title {
+            font-weight: bold;
+            color: #00C;
+            font-size: 1.05rem;
+            margin-bottom: 2px;
+        }
+        .comic-desc {
+            font-size: 0.95rem;
+            color: #222;
+        }
+        .sugerencias-box {
+            margin-top: 36px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #0002;
+            padding: 24px 18px 18px 18px;
+            border: 2.5px solid #00C;
+        }
+        .sugerencias-box label {
+            font-weight: 600;
+            color: #00C;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .sugerencias-box textarea {
+            width: 100%;
+            min-height: 90px;
+            border-radius: 8px;
+            border: 1.5px solid #bbb;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            resize: vertical;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        .sugerencias-box input[type="file"] {
+            margin-bottom: 12px;
+        }
+        .sugerencias-box button {
+            background: #00C;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sugerencias-box button:hover {
+            background: #00C;
+        }
+        @media (max-width: 900px) {
+            main { max-width: 99vw; }
+            .comics-list { flex-direction: column; gap: 12px; }
+            .comic-card { width: 100%; min-height: unset; flex-direction: row; align-items: center; }
+            .comic-img { width: 70px; height: 100px; margin-right: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="frame1920wlight-nav">
+            <div class="frame1920wlight-section">
+                <div class="frame1920wlight-horizontal-border">
+                    <div class="frame1920wlight-container11">
+                        <div class="frame1920wlight-link10">
+                            <img
+                                src="public/external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png"
+                                alt="GeminiGeneratedImage"
+                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
+                            />
+                        </div>
+                        <div class="frame1920wlight-vertical-border1">
+                            <div class="frame1920wlight-vertical-border2">
+                                <div class="frame1920wlight-container12">
+                                    <img
+                                        src="public/external/dclogo.jpg"
+                                        alt="DC Logo"
+                                        class="frame1920wlight-svg10"
+                                    />
+                                </div>
+                                <div class="frame1920wlight-link11">
+                                    <span class="frame1920wlight-text100">Log In</span>
+                                </div>
+                                <span class="frame1920wlight-text101">|</span>
+                                <div class="frame1920wlight-link12">
+                                    <span class="frame1920wlight-text102">Sign Up</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="frame1920wlight-link13">
+                            <span class="frame1920wlight-text103">Sofia comics</span>
+                            <span class="frame1920wlight-text104">Subscribe</span>
+                            <img
+                                src="public/external/unnamed14821-q9e-200h.png"
+                                alt="unnamed"
+                                class="frame1920wlight-unnamed1"
+                            />
+                        </div>
+                        <div class="frame1920wlight-linksearch">
+                            <img
+                                src="public/external/svg499-gkzh.svg"
+                                alt="Buscar"
+                                class="frame1920wlight-svg11"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="frame1920wlight-list10">
+                    <div class="frame1920wlight-item-link10">
+                        <span class="frame1920wlight-text105">News</span>
+                    </div>
+                    <div class="frame1920wlight-item-link11">
+                        <span class="frame1920wlight-text106">Comics</span>
+                    </div>
+                    <div class="frame1920wlight-item-link12">
+                        <span class="frame1920wlight-text107">Characters</span>
+                    </div>
+                    <div class="frame1920wlight-item-link13"></div>
+                    <div class="frame1920wlight-item-link14"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main style="margin-top: 80px; max-width: 900px; margin-left: auto; margin-right: auto; background: rgba(255,255,255,0.97); border-radius: 18px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18); padding: 36px 28px 32px 28px;">
+        <img class="dc-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/DC_Comics_2024.svg/512px-DC_Comics_2024.svg.png" alt="DC Logo">
+        <h2>Comics más vistos este mes:</h2>
+        <div class="comics-list">
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_3gf-6ooiko-k22-1500h.png" alt="Comic más visto 1">
+                <div class="comic-title">Comic 1</div>
+                <div class="comic-desc">Descripción del comic 1</div>
+            </div>
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_aorkvmiwx4-n80jh-1500h.png" alt="Comic más visto 2">
+                <div class="comic-title">Comic 2</div>
+                <div class="comic-desc">Descripción del comic 2</div>
+            </div>
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_btvpdl9a_o-1xoi-1500h.png" alt="Comic más visto 3">
+                <div class="comic-title">Comic 3</div>
+                <div class="comic-desc">Descripción del comic 3</div>
+            </div>
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_c7hdlmq0tp-aw6-1500h.png" alt="Comic más visto 4">
+                <div class="comic-title">Comic 4</div>
+                <div class="comic-desc">Descripción del comic 4</div>
+            </div>
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_deuyailjfj-h94a-1500h.png" alt="Comic más visto 5">
+                <div class="comic-title">Comic 5</div>
+                <div class="comic-desc">Descripción del comic 5</div>
+            </div>
+        </div>
+        <h2>Comics menos vistos este mes:</h2>
+        <div class="comics-list">
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_gfxunwyuwd-pqti-1500h.png" alt="Comic menos visto 1">
+                <div class="comic-title">Comic 6</div>
+                <div class="comic-desc">Descripción del comic 6</div>
+            </div>
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_jha1dnco32-1siy-1500h.png" alt="Comic menos visto 2">
+                <div class="comic-title">Comic 7</div>
+                <div class="comic-desc">Descripción del comic 7</div>
+            </div>
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_jynlxstz7y-4g7d-1500h.png" alt="Comic menos visto 3">
+                <div class="comic-title">Comic 8</div>
+                <div class="comic-desc">Descripción del comic 8</div>
+            </div>
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_mhazg-wjmt-fy4-1500h.png" alt="Comic menos visto 4">
+                <div class="comic-title">Comic 9</div>
+                <div class="comic-desc">Descripción del comic 9</div>
+            </div>
+            <div class="comic-card">
+                <img class="comic-img" src="public/external/tq_mzacris05h-qzi-1500h.png" alt="Comic menos visto 5">
+                <div class="comic-title">Comic 10</div>
+                <div class="comic-desc">Descripción del comic 10</div>
+            </div>
+        </div>
+        <form class="sugerencias-box" enctype="multipart/form-data">
+            <label for="sugerencias">Sugerencias, dudas y actualizaciones</label>
+            <textarea id="sugerencias" name="sugerencias" placeholder="Escribe aquí tus comentarios..."></textarea>
+            <input type="file" id="archivo" name="archivo" multiple>
+            <button type="submit">Enviar</button>
+        </form>
+    </main>
+</body>
+</html>
