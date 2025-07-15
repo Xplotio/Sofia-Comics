@@ -1,96 +1,113 @@
-create database SofiaComics;
+-- Elimina la base de datos si ya existe para empezar desde cero
+DROP DATABASE IF EXISTS SofiaComics;
 
-use SofiaComics;
+-- Crea la nueva base de datos
+CREATE DATABASE SofiaComics;
 
-create table Usuario (
-id_usuario int primary key,
-nombre varchar(100),
-correo text,
-contraseña text,
-fecha_creacion date
+-- Selecciona la base de datos para usarla
+USE SofiaComics;
+
+-- TABLAS PRINCIPALES
+
+CREATE TABLE Usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(255) NOT NULL UNIQUE,
+    contraseña TEXT NOT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-create table Personaje (
-id_personaje int primary key,
-nombre varchar(100),
-descripcion text
+CREATE TABLE Personajes (
+    id_personaje INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT
 );
 
-create table editorial (
-id_editorial int primary key,
-nombre varchar(100),
-pais varchar(50),
-acuerdo_licencia text,
-fecha_inicio_licencia date,
-fecha_fecha_licencia date,
-precio int
+CREATE TABLE Editoriales (
+    id_editorial INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    pais VARCHAR(50),
+    acuerdo_licencia TEXT,
+    fecha_inicio_licencia DATE,
+    fecha_fin_licencia DATE -- Corregido el nombre del campo
 );
 
-create table Planes_suscripcion (
-id_plan int primary key,
-nombre varchar(100),
-precio int,
-duracion_meses int
+CREATE TABLE PlanesSuscripcion (
+    id_plan INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL, -- Usar DECIMAL para precios es más preciso
+    duracion_meses INT NOT NULL
 );
 
-create table Usuario_editorial (
-id_usuario_editorial int primary key,
-nombre varchar(100),
-correo text,
-contraseña text,
-fecha_creacion date,
-id_editorial int,
-FOREIGN KEY (id_editorial) REFERENCES Editorial(id_editorial)
+CREATE TABLE Comics (
+    id_comic INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    autor VARCHAR(100),
+    descripcion TEXT,
+    id_editorial INT,
+    fecha_publicacion DATE,
+    ruta_portada VARCHAR(255), -- Campo para la imagen de portada
+    FOREIGN KEY (id_editorial) REFERENCES Editoriales(id_editorial)
 );
 
-create table Comic (
-id_comic int primary key,
-titulo varchar(100),
-autor varchar(100),
-descripcion text,
-id_editorial int,
-fecha_publicacion date,
-FOREIGN KEY (id_editorial) REFERENCES Editorial(id_editorial)
+-- TABLAS DE RELACIÓN (MUCHOS A MUCHOS)
+
+CREATE TABLE PreferenciasUsuario (
+    id_preferencia INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_personaje INT,
+    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    FOREIGN KEY (id_personaje) REFERENCES Personajes(id_personaje)
 );
 
-create table Preferencias_usuario (
-id_preferencia int primary key,
-id_usuario int,
-id_personaje int,
-fecha_agregado date,
-FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-FOREIGN KEY (id_personaje) REFERENCES Personaje(id_personaje)
+CREATE TABLE Calificaciones (
+    id_calificacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_comic INT,
+    calificacion INT,
+    comentario TEXT,
+    fecha_calificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    FOREIGN KEY (id_comic) REFERENCES Comics(id_comic),
+    CHECK (calificacion >= 1 AND calificacion <= 5) -- Asegura que la calificación esté entre 1 y 5
 );
 
-create table Calificaciones (
-id_calificacion int primary key,
-id_usuario int,
-id_comic int,
-calificacion integer(5),
-FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-FOREIGN KEY (id_comic) REFERENCES Comic(id_comic)
+CREATE TABLE Suscripciones (
+    id_suscripcion INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_plan INT,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    estado VARCHAR(50), -- 'activa', 'cancelada', 'expirada'
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    FOREIGN KEY (id_plan) REFERENCES PlanesSuscripcion(id_plan)
 );
 
-create table Suscripciones (
-id_suscripcion int primary key,
-id_usuario int,
-id_plan int,
-fecha_inicio date,
-fecha_fin date,
-estado text,
-FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-FOREIGN KEY (id_plan) REFERENCES Planes_suscripcion(id_plan)
+CREATE TABLE Transacciones (
+    id_transaccion INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_suscripcion INT, -- Es mejor ligar la transacción a una suscripción específica
+    cantidad DECIMAL(10, 2) NOT NULL,
+    fecha_transaccion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    metodo_pago VARCHAR(50),
+    referencia_pago VARCHAR(255),
+    estado VARCHAR(50), -- 'completada', 'fallida', 'pendiente'
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    FOREIGN KEY (id_suscripcion) REFERENCES Suscripciones(id_suscripcion)
 );
 
-create table Transacciones (
-id_transaccion int primary key,
-id_usuario int,
-id_plan int,
-cantidad int,
-fecha_transaccion date,
-metodo_pago text,
-referencia text,
-estado text,
-FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
-FOREIGN KEY (id_plan) REFERENCES Planes_suscripcion(id_plan)
+-- ¡NUEVA TABLA PARA REGISTRAR LECTURAS!
+CREATE TABLE HistorialLectura (
+    id_historial INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_comic INT,
+    fecha_lectura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    FOREIGN KEY (id_comic) REFERENCES Comics(id_comic)
 );
+
+-- Nota: La tabla Usuario_editorial parecía duplicar la información de un usuario.
+-- Si la intención es tener usuarios con rol de "editor", se podría manejar con un campo de "rol" en la tabla Usuarios.
+-- Por ahora, la he omitido para simplificar el esquema. Si es necesaria, la podemos añadir de nuevo.
+
