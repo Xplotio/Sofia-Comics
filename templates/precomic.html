@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Godzilla vs. Fantastic Four (2025) #1 | Marvel Comics</title>
+    <!-- Enlace al archivo CSS usando url_for para Flask -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: none;
+        }
+        .bg-blur {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            background: #181820 url('https://cdn.marvel.com/u/prod/marvel/i/mg/d/70/67d99edbea378/clean.jpg') no-repeat center center;
+            background-size: cover;
+            filter: blur(18px) brightness(0.35);
+        }
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100vw;
+            z-index: 10;
+            background: rgba(24,24,32,0.98);
+            box-shadow: 0 2px 16px #0008;
+        }
+        .comic-nav {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 18px;
+            margin: 0 auto;
+            max-width: 1100px;
+            padding: 32px 24px 0 24px;
+            z-index: 5;
+            position: relative;
+        }
+        .comic-nav button, .comic-nav a {
+            background: #23232b;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 18px;
+            font-size: 1.08rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            letter-spacing: 1px;
+        }
+        .comic-nav button:hover, .comic-nav a:hover {
+            background: #c00;
+            color: #fff;
+        }
+        .comic-main-container {
+            max-width: 1100px;
+            margin: 32px auto 0 auto;
+            padding: 40px 24px 60px 24px;
+            background: rgba(30,30,40,0.85);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.28);
+            display: flex;
+            gap: 48px;
+            align-items: flex-start;
+            position: relative;
+            z-index: 2;
+        }
+        .comic-cover {
+            width: 320px;
+            min-width: 220px;
+            max-width: 340px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px #0008;
+            background: #fff;
+        }
+        .comic-info {
+            flex: 1;
+            min-width: 260px;
+        }
+        .comic-title {
+            font-size: 2.1rem;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            margin-bottom: 18px;
+            color: #fff;
+            font-family: 'Bebas Neue', 'Inter', Arial, sans-serif;
+        }
+        .comic-meta {
+            margin-bottom: 18px;
+        }
+        .comic-meta span {
+            display: inline-block;
+            min-width: 110px;
+            color: #c00;
+            font-weight: bold;
+        }
+        .comic-description {
+            font-size: 1.08rem;
+            color: #fff;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+        .comic-link {
+            color: #c00;
+            text-decoration: underline;
+            font-weight: bold;
+            font-size: 1.05rem;
+            cursor: pointer;
+        }
+        .comic-link:hover {
+            color: #fff;
+            background: #c00;
+            border-radius: 4px;
+            padding: 2px 6px;
+            text-decoration: none;
+        }
+        @media (max-width: 900px) {
+            .comic-main-container {
+                flex-direction: column;
+                gap: 24px;
+                padding: 24px 4vw 40px 4vw;
+            }
+            .comic-cover {
+                width: 90vw;
+                max-width: 340px;
+                margin: 0 auto;
+            }
+            .comic-nav {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+                padding-top: 24px;
+            }
+            header {
+                position: fixed;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blur"></div>
+    <header>
+        <nav class="frame1920wlight-nav">
+            <div class="frame1920wlight-section">
+                <div class="frame1920wlight-horizontal-border">
+                    <div class="frame1920wlight-container11">
+                        <div class="frame1920wlight-link10">
+                            <img
+                                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
+                                alt="GeminiGeneratedImage"
+                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
+                            />
+                        </div>
+                        <div class="frame1920wlight-vertical-border1">
+                            <div class="frame1920wlight-vertical-border2">
+                                <div class="frame1920wlight-container12">
+                                    <img
+                                        src="{{ url_for('static', filename='external/svg487-p0cx.svg') }}"
+                                        alt="Marvel Logo"
+                                        class="frame1920wlight-svg10"
+                                    />
+                                </div>
+                                <div class="frame1920wlight-link11">
+                                    <span class="frame1920wlight-text100">Log In</span>
+                                </div>
+                                <span class="frame1920wlight-text101">|</span>
+                                <div class="frame1920wlight-link12">
+                                    <span class="frame1920wlight-text102">Sign Up</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="frame1920wlight-link13">
+                            <span class="frame1920wlight-text103">Sofia comics</span>
+                            <!-- Se asume que 'suscripcion' es una ruta definida en app.py -->
+                            <a href="{{ url_for('suscripcion') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
+                            <img
+                                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
+                                alt="unnamed"
+                                class="frame1920wlight-unnamed1"
+                            />
+                        </div>
+                        <div class="frame1920wlight-linksearch">
+                            <img
+                                src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
+                                alt="Buscar"
+                                class="frame1920wlight-svg11"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="frame1920wlight-list10">
+                    <div class="frame1920wlight-item-link10">
+                        <span class="frame1920wlight-text105">News</span>
+                    </div>
+                    <div class="frame1920wlight-item-link11">
+                        <span class="frame1920wlight-text106">Comics</span>
+                    </div>
+                    <div class="frame1920wlight-item-link12">
+                        <span class="frame1920wlight-text107">Characters</span>
+                    </div>
+                    <div class="frame1920wlight-item-link13"></div>
+                    <div class="frame1920wlight-item-link14"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div style="height: 120px;"></div> <!-- Espacio para que el header fijo no tape los botones -->
+    <div class="comic-nav">
+        <!-- Enlace a la ruta de inicio usando url_for -->
+        <a href="{{ url_for('home') }}">&#8592; Back to Series</a>
+        <button type="button">&#8592; Prev</button>
+        <button type="button">Next &#8594;</button>
+    </div>
+    <div class="comic-main-container">
+        <img class="comic-cover" src="https://cdn.marvel.com/u/prod/marvel/i/mg/d/70/67d99edbea378/clean.jpg" alt="Godzilla vs. Fantastic Four #1">
+        <div class="comic-info">
+            <div class="comic-title">GODZILLA VS. FANTASTIC FOUR (2025) #1</div>
+            <div class="comic-meta">
+                <div><span>PUBLISHED:</span> March 26, 2025</div>
+                <div><span>WRITER:</span> Ryan North</div>
+                <div><span>COVER ARTIST:</span> Adam Kubert</div>
+                <div><span>PENCILLER:</span> John Romita Jr.</div>
+            </div>
+            <div class="comic-description">
+                THE BATTLE OF THE CENTURY STARTS HERE! The start of six sensational, action-packed issues with MARVEL HEROES battling THE KING OF THE MONSTERS from its many different eras! How will GODZILLA's lore mix with the MIGHT MARVEL UNIVERSE? Find out as history is twisted when icons like the FANTASTIC FOUR, SPIDER-MAN, HULK, X-MEN and THOR go face off against one of the greatest monsters of all time! This issue, witness a threat never before seen as KING GHIDORAH descends upon the Earth with the POWER COSMIC as GALACTUS' newest HERALD! Can the FANTASTIC FOUR stop him from destroying New York along with the rest of the planet? It's a CITY SMASHING SPECTACULAR as GODZILLA with the help of the SILVER SURFER join forces to stop the world from certain annihilation! A must for MARVEL and GODZILLA FANS! ROUND 1 IN A SERIES OF 6 ONE-SHOT THROWDOWNS!
+            </div>
+            <a class="comic-link" href="#">See Variant Covers</a>
+        </div>
+    </div>
+</body>
+</html>
