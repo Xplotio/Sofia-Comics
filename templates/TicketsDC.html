@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DC Comics Tickets</title>
+    <title>DC Comics - Panel de Carga</title>
     <!-- Enlace al archivo CSS usando url_for para Flask -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
@@ -13,8 +13,111 @@
             margin: 0;
             font-family: 'Inter', Arial, sans-serif;
         }
+        header {
+            position: fixed; /* Mantiene el encabezado fijo en la parte superior */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100; /* Asegura que esté por encima de otros contenidos */
+            background-color: #222; /* Fondo oscuro para el encabezado */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
+        }
+        .frame1920wlight-nav {
+            background-color: #222; /* Fondo oscuro para la barra de navegación */
+            color: white; /* Color de texto predeterminado para la barra de navegación */
+            padding: 10px 0; /* Añade un poco de relleno vertical */
+        }
+        .frame1920wlight-section {
+            max-width: 1200px; /* Limita el ancho para pantallas más grandes */
+            margin: 0 auto; /* Centra el contenido */
+            padding: 0 20px; /* Relleno horizontal */
+        }
+        .frame1920wlight-horizontal-border {
+            display: flex;
+            justify-content: space-between; /* Espacia los elementos */
+            align-items: center;
+            padding-bottom: 10px; /* Espacio debajo de la fila superior */
+            border-bottom: 1px solid #444; /* Línea separadora */
+        }
+        /* Ajuste para el contenedor principal de la primera fila de la navegación */
+        .frame1920wlight-container11 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Distribuye espacio entre los grupos de elementos */
+            width: 100%; /* Ocupa todo el ancho disponible */
+        }
+
+        /* Grupo de Login/Register */
+        .frame1920wlight-vertical-border2 {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Espacio entre Log In, |, Sign Up */
+        }
+
+        /* Estilos generales para enlaces en la navegación */
+        .frame1920wlight-nav a {
+            color: white !important; /* Fuerza el color blanco para todos los enlaces en la navegación */
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+            padding: 5px 10px; /* Relleno horizontal para los enlaces */
+            white-space: nowrap; /* Evita que el texto se rompa */
+        }
+        .frame1920wlight-nav a:hover {
+            color: #ccc !important; /* Blanco más claro al pasar el ratón */
+        }
+        /* Estilo para el separador entre Login y Sign Up */
+        .frame1920wlight-vertical-border2 .frame1920wlight-text101 {
+            color: white;
+            margin: 0 5px; /* Espacio alrededor del separador */
+        }
+
+        /* Estilos para la segunda fila de navegación (Inicio, Marvel, etc.) */
+        .frame1920wlight-list10 {
+            display: flex;
+            justify-content: space-around; /* Distribuye los elementos de navegación uniformemente */
+            align-items: center;
+            padding-top: 10px; /* Espacio encima de la fila inferior */
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas más pequeñas */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            gap: 15px; /* Espacio entre los elementos de la lista */
+        }
+        .frame1920wlight-list10 > div { /* Cada contenedor de elemento de menú */
+            flex-shrink: 0; /* Evita que los elementos se encojan */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* El padding se maneja directamente en los enlaces para el borde */
+        }
+
+        /* Aplicar border-right a los enlaces dentro de los divs, excepto el último */
+        .frame1920wlight-list10 > div:not(:last-child) a {
+            border-right: 1px solid white; /* Separador vertical */
+            padding-right: 20px; /* Espacio después del texto y antes del separador */
+            /* margin-right se maneja con el gap del contenedor padre */
+        }
+
+        /* Asegura que los textos específicos también sean blancos */
+        .frame1920wlight-text100, .frame1920wlight-text102, .frame1920wlight-text103, .frame1920wlight-text104,
+        .frame1920wlight-text105, .frame1920wlight-text106, .frame1920wlight-text107, .frame1920wlight-text108, .frame1920wlight-text109 {
+            color: white; /* Asegura que estos sean blancos */
+        }
+        /* Elimina la imagen específica junto a login/register y la barra de búsqueda */
+        .frame1920wlight-svg10 {
+            display: none;
+        }
+        /* Asegura que la imagen de "Suscríbete" sea visible */
+        .frame1920wlight-unnamed1 {
+            display: inline-block; /* O block, dependiendo de la alineación deseada */
+            height: 20px; /* Ajusta el tamaño si es necesario */
+            width: auto;
+            margin-left: 10px; /* Espacio a la izquierda de la imagen */
+            vertical-align: middle; /* Alinea con el texto */
+        }
+
+
         main {
-            margin-top: 80px;
+            margin-top: 120px; /* Ajusta el margen superior del contenido principal para el encabezado fijo */
             max-width: 900px;
             margin-left: auto;
             margin-right: auto;
@@ -44,6 +147,7 @@
             gap: 18px;
             flex-wrap: wrap;
             margin-bottom: 18px;
+            justify-content: center; /* Centrar las tarjetas de cómics */
         }
         .comic-card {
             background: #fff;
@@ -76,38 +180,51 @@
         .comic-desc {
             font-size: 0.95rem;
             color: #222;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limita a 2 líneas */
+            -webkit-box-orient: vertical;
         }
-        .sugerencias-box {
+        /* Estilos para los formularios CRUD */
+        .crud-box {
             margin-top: 36px;
             background: #fff;
             border-radius: 12px;
             box-shadow: 0 2px 8px #0002;
             padding: 24px 18px 18px 18px;
-            border: 2.5px solid #00C;
+            border: 2.5px solid #c00; /* Color de borde para formularios CRUD */
         }
-        .sugerencias-box label {
+        .crud-box label {
             font-weight: 600;
-            color: #00C;
+            color: #c00;
             font-size: 1.1rem;
             margin-bottom: 8px;
             display: block;
         }
-        .sugerencias-box textarea {
-            width: 100%;
-            min-height: 90px;
+        .crud-box input[type="text"],
+        .crud-box input[type="date"],
+        .crud-box textarea,
+        .crud-box input[type="number"],
+        .crud-box select { /* Estilo para el nuevo select */
+            width: calc(100% - 24px); /* Ajuste para padding */
+            padding: 10px 12px;
             border-radius: 8px;
             border: 1.5px solid #bbb;
-            padding: 10px;
             font-size: 1rem;
             margin-bottom: 12px;
-            resize: vertical;
             font-family: 'Inter', Arial, sans-serif;
         }
-        .sugerencias-box input[type="file"] {
-            margin-bottom: 12px;
+        .crud-box textarea {
+            min-height: 80px;
+            resize: vertical;
         }
-        .sugerencias-box button {
-            background: #00C;
+        .crud-box input[type="file"] {
+            margin-bottom: 12px;
+            display: block;
+        }
+        .crud-box button {
+            background: #c00;
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -117,14 +234,88 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .sugerencias-box button:hover {
-            background: #00C;
+        .crud-box button:hover {
+            background: #a00;
         }
+        .crud-box .note {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: -8px;
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+            padding: 8px;
+            border-radius: 5px;
+            border-left: 3px solid #c00;
+        }
+        /* Estilos para los mensajes flash */
+        .flash-message {
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1em;
+            text-align: center;
+        }
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash-message.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6fb;
+        }
+        .flash-message.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .flash-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
         @media (max-width: 900px) {
             main { max-width: 99vw; }
-            .comics-list { flex-direction: column; gap: 12px; }
-            .comic-card { width: 100%; min-height: unset; flex-direction: row; align-items: center; }
+            .comics-list { flex-direction: column; gap: 12px; align-items: center; } /* Centrar en móvil */
+            .comic-card { width: 90%; min-height: unset; flex-direction: row; align-items: center; }
             .comic-img { width: 70px; height: 100px; margin-right: 12px; }
+            .crud-box input[type="text"],
+            .crud-box input[type="date"],
+            .crud-box textarea,
+            .crud-box input[type="number"],
+            .crud-box select {
+                width: calc(100% - 20px); /* Ajuste para padding en móvil */
+            }
+        }
+        @media (max-width: 768px) {
+            .frame1920wlight-horizontal-border {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            .frame1920wlight-container11 {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .frame1920wlight-list10 {
+                flex-direction: column; /* Apila los elementos verticalmente en pantallas pequeñas */
+                gap: 5px; /* Espacio más pequeño cuando están apilados */
+            }
+            .frame1920wlight-list10 > div {
+                padding: 5px 0;
+            }
+            /* Oculta los separadores en pantallas muy pequeñas cuando los elementos están apilados */
+            .frame1920wlight-list10 > div:not(:last-child) a {
+                border-right: none;
+                padding-right: 0;
+                margin-right: 0;
+            }
+            main {
+                margin-top: 200px; /* Ajusta el margen superior para un encabezado más alto en móvil */
+            }
         }
     </style>
 </head>
@@ -135,15 +326,17 @@
                 <div class="frame1920wlight-horizontal-border">
                     <div class="frame1920wlight-container11">
                         <div class="frame1920wlight-link10">
+                            <!-- Imagen del logo de Sofia Comics -->
                             <img
                                 src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                                alt="GeminiGeneratedImage"
+                                alt="Sofia Comics Logo"
                                 class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
                             />
                         </div>
                         <div class="frame1920wlight-vertical-border1">
                             <div class="frame1920wlight-vertical-border2">
                                 <div class="frame1920wlight-container12">
+                                    <!-- DC Logo, se mantiene si es relevante para la página de DC -->
                                     <img
                                         src="{{ url_for('static', filename='external/dclogo.jpg') }}"
                                         alt="DC Logo"
@@ -151,113 +344,257 @@
                                     />
                                 </div>
                                 <div class="frame1920wlight-link11">
-                                    <span class="frame1920wlight-text100">Log In</span>
+                                    <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
                                 </div>
                                 <span class="frame1920wlight-text101">|</span>
                                 <div class="frame1920wlight-link12">
-                                    <span class="frame1920wlight-text102">Sign Up</span>
+                                    <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
                                 </div>
                             </div>
                         </div>
                         <div class="frame1920wlight-link13">
                             <span class="frame1920wlight-text103">Sofia comics</span>
-                            <!-- Se asume que 'suscripcion' es una ruta definida en app.py -->
-                            <a href="{{ url_for('suscripcion') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
+                            <!-- Se asume que 'subscriptions' es una ruta definida en app.py -->
+                            <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
                             <img
                                 src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
                                 alt="unnamed"
                                 class="frame1920wlight-unnamed1"
                             />
                         </div>
-                        <div class="frame1920wlight-linksearch">
-                            <img
-                                src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
-                                alt="Buscar"
-                                class="frame1920wlight-svg11"
-                            />
-                        </div>
+                        <!-- Imagen de la barra de búsqueda eliminada -->
                     </div>
                 </div>
                 <div class="frame1920wlight-list10">
                     <div class="frame1920wlight-item-link10">
-                        <span class="frame1920wlight-text105">News</span>
+                        <a href="{{ url_for('home') }}" class="frame1920wlight-text105">Inicio</a>
                     </div>
                     <div class="frame1920wlight-item-link11">
-                        <span class="frame1920wlight-text106">Comics</span>
+                        <a href="{{ url_for('marvel_comics') }}" class="frame1920wlight-text106">Marvel</a>
                     </div>
                     <div class="frame1920wlight-item-link12">
-                        <span class="frame1920wlight-text107">Characters</span>
+                        <a href="{{ url_for('dc_comics') }}" class="frame1920wlight-text107">DC Comics</a>
                     </div>
-                    <div class="frame1920wlight-item-link13"></div>
-                    <div class="frame1920wlight-item-link14"></div>
+                    <div class="frame1920wlight-item-link13">
+                        <a href="{{ url_for('indie_comics') }}" class="frame1920wlight-text108">Indies</a>
+                    </div>
+                    <div class="frame1920wlight-item-link14">
+                        <a href="{{ url_for('videojuegos') }}" class="frame1920wlight-text109">Videojuegos</a>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <main style="margin-top: 80px; max-width: 900px; margin-left: auto; margin-right: auto; background: rgba(255,255,255,0.97); border-radius: 18px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18); padding: 36px 28px 32px 28px;">
+    <main>
         <img class="dc-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/DC_Comics_2024.svg/512px-DC_Comics_2024.svg.png" alt="DC Logo">
+
+        {# Mostrar mensajes flash de Flask #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         <h2>Comics más vistos este mes:</h2>
         <div class="comics-list">
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_3gf-6ooiko-k22-1500h.png') }}" alt="Comic más visto 1">
-                <div class="comic-title">Comic 1</div>
-                <div class="comic-desc">Descripción del comic 1</div>
-            </div>
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_aorkvmiwx4-n80jh-1500h.png') }}" alt="Comic más visto 2">
-                <div class="comic-title">Comic 2</div>
-                <div class="comic-desc">Descripción del comic 2</div>
-            </div>
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_btvpdl9a_o-1xoi-1500h.png') }}" alt="Comic más visto 3">
-                <div class="comic-title">Comic 3</div>
-                <div class="comic-desc">Descripción del comic 3</div>
-            </div>
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_c7hdlmq0tp-aw6-1500h.png') }}" alt="Comic más visto 4">
-                <div class="comic-title">Comic 4</div>
-                <div class="comic-desc">Descripción del comic 4</div>
-            </div>
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_deuyailjfj-h94a-1500h.png') }}" alt="Comic más visto 5">
-                <div class="comic-title">Comic 5</div>
-                <div class="comic-desc">Descripción del comic 5</div>
-            </div>
+            {% if top_comics %}
+                {% for comic in top_comics %}
+                <div class="comic-card">
+                    {% if comic.portada_b64 %}
+                        <img class="comic-img" src="data:image/png;base64,{{ comic.portada_b64 }}" alt="{{ comic.titulo }}">
+                    {% else %}
+                        <img class="comic-img" src="https://placehold.co/100x140/cccccc/000000?text=No+Cover" alt="No Cover">
+                    {% endif %}
+                    <div class="comic-title">{{ comic.titulo }}</div>
+                    <div class="comic-desc">{{ comic.descripcion }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No hay cómics más vistos para mostrar.</p>
+            {% endif %}
         </div>
+
         <h2>Comics menos vistos este mes:</h2>
         <div class="comics-list">
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_gfxunwyuwd-pqti-1500h.png') }}" alt="Comic menos visto 1">
-                <div class="comic-title">Comic 6</div>
-                <div class="comic-desc">Descripción del comic 6</div>
-            </div>
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_jha1dnco32-1siy-1500h.png') }}" alt="Comic menos visto 2">
-                <div class="comic-title">Comic 7</div>
-                <div class="comic-desc">Descripción del comic 7</div>
-            </div>
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_jynlxstz7y-4g7d-1500h.png') }}" alt="Comic menos visto 3">
-                <div class="comic-title">Comic 8</div>
-                <div class="comic-desc">Descripción del comic 8</div>
-            </div>
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_mhazg-wjmt-fy4-1500h.png') }}" alt="Comic menos visto 4">
-                <div class="comic-title">Comic 9</div>
-                <div class="comic-desc">Descripción del comic 9</div>
-            </div>
-            <div class="comic-card">
-                <img class="comic-img" src="{{ url_for('static', filename='external/tq_mzacris05h-qzi-1500h.png') }}" alt="Comic menos visto 5">
-                <div class="comic-title">Comic 10</div>
-                <div class="comic-desc">Descripción del comic 10</div>
-            </div>
+            {% if bottom_comics %}
+                {% for comic in bottom_comics %}
+                <div class="comic-card">
+                    {% if comic.portada_b64 %}
+                        <img class="comic-img" src="data:image/png;base64,{{ comic.portada_b64 }}" alt="{{ comic.titulo }}">
+                    {% else %}
+                        <img class="comic-img" src="https://placehold.co/100x140/cccccc/000000?text=No+Cover" alt="No Cover">
+                    {% endif %}
+                    <div class="comic-title">{{ comic.titulo }}</div>
+                    <div class="comic-desc">{{ comic.descripcion }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No hay cómics menos vistos para mostrar.</p>
+            {% endif %}
         </div>
-        <form class="sugerencias-box" enctype="multipart/form-data">
-            <label for="sugerencias">Sugerencias, dudas y actualizaciones</label>
-            <textarea id="sugerencias" name="sugerencias" placeholder="Escribe aquí tus comentarios..."></textarea>
-            <input type="file" id="archivo" name="archivo" multiple>
-            <button type="submit">Enviar</button>
+
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)); margin: 40px 0;">
+
+        {# Formulario para Subir Cómic #}
+        <form class="crud-box" method="POST" enctype="multipart/form-data" action=""> {# Action se deja vacío para que apunte a la misma ruta #}
+            <input type="hidden" name="form_type" value="comic_upload">
+            <h2>Subir Nuevo Cómic (DC)</h2>
+            <p class="note">
+                <strong>Nota sobre las imágenes del cómic:</strong><br>
+                <strong>Portada:</strong> Se recomienda un archivo PNG o JPG de tamaño moderado (ej. 300x450px a 500x750px, menos de 500KB) para una carga rápida. Es un logo, así que debe ser nítida y clara.<br>
+                <strong>Contenido:</strong> Debe ser un archivo PDF. Asegúrate de que el PDF esté optimizado para la web (tamaño razonable).
+            </p>
+            <div class="form-group">
+                <label for="comic_code">Código de Barras (ID único)</label>
+                <input type="number" id="comic_code" name="comic_code" required>
+            </div>
+            <div class="form-group">
+                <label for="title">Título del Cómic</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Autor</label>
+                <input type="text" id="author" name="author" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="publication_date">Fecha de Publicación</label>
+                <input type="date" id="publication_date" name="publication_date" required>
+            </div>
+            <div class="form-group">
+                <label for="cover_image">Imagen de Portada (PNG/JPG)</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/png, image/jpeg" required>
+            </div>
+            <div class="form-group">
+                <label for="comic_content">Contenido del Cómic (PDF)</label>
+                <input type="file" id="comic_content" name="comic_content" accept="application/pdf" required>
+            </div>
+            <div class="form-group">
+                <label for="comic_characters">Personajes que aparecen en este cómic (selecciona múltiples)</label>
+                <select id="comic_characters" name="comic_characters" multiple size="5">
+                    {% for char in all_characters %}
+                        <option value="{{ char.id_personaje }}">{{ char.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <p class="note">Mantén 'Ctrl' (Windows/Linux) o 'Cmd' (Mac) para seleccionar varios personajes.</p>
+            </div>
+            <button type="submit">Subir Cómic</button>
         </form>
+
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)); margin: 40px 0;">
+
+        {# Formulario para Subir Personaje (reincorporado) #}
+        <form class="crud-box" method="POST" enctype="multipart/form-data" action="">
+            <input type="hidden" name="form_type" value="character_upload">
+            <h2>Subir Nuevo Personaje (DC)</h2>
+            <p class="note">
+                <strong>Nota sobre la imagen del personaje:</strong><br>
+                Se recomienda un archivo PNG con fondo transparente (si es posible) de tamaño pequeño (ej. 60x60px a 100x100px, menos de 100KB) para usar como logo o ícono. Debe ser nítida y clara.
+            </p>
+            <div class="form-group">
+                <label for="character_name">Nombre del Personaje</label>
+                <input type="text" id="character_name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="character_description">Descripción del Personaje</label>
+                <textarea id="character_description" name="description" required></textarea>
+            </div>
+            {# El campo de editorial se quita y se asigna automáticamente en el backend #}
+            <div class="form-group">
+                <label for="character_image">Imagen del Personaje (PNG/JPG)</label>
+                <input type="file" id="character_image" name="character_image" accept="image/png, image/jpeg" required>
+            </div>
+            <button type="submit">Subir Personaje</button>
+        </form>
+
     </main>
+    <script>
+        // Función para mostrar un modal personalizado en lugar de alert()
+        function mostrarModalPersonalizado(mensaje, callback = null) {
+            const modalId = 'customAlertModal';
+            let modal = document.getElementById(modalId);
+
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                `;
+                modal.innerHTML = `
+                    <div style="
+                        background: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                        text-align: center;
+                        max-width: 400px;
+                        width: 90%;
+                        font-family: 'Inter', Arial, sans-serif;
+                    ">
+                        <p style="margin-bottom: 20px; font-size: 1.1em; color: #333; white-space: pre-wrap;">${mensaje}</p>
+                        <button id="modalCloseButton" style="
+                            background: #c00;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 1em;
+                            transition: background 0.2s;
+                        ">Aceptar</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                document.getElementById('modalCloseButton').addEventListener('click', function() {
+                    modal.remove();
+                    if (callback) {
+                        callback();
+                    }
+                });
+            } else {
+                // Si el modal ya existe, actualiza el mensaje y muestra
+                modal.querySelector('p').textContent = mensaje;
+                modal.style.display = 'flex';
+                const closeButton = document.getElementById('modalCloseButton');
+                const newCloseButton = closeButton.cloneNode(true);
+                closeButton.parentNode.replaceChild(newCloseButton, closeButton); // Eliminar listener anterior
+                newCloseButton.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }
+        }
+
+        // Mostrar mensajes flash al cargar la página
+        window.onload = function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            if (flashMessages.length > 0) {
+                let allMessages = "";
+                flashMessages.forEach(msg => {
+                    allMessages += msg.textContent + "\\n";
+                });
+                mostrarModalPersonalizado(allMessages.trim());
+            }
+        };
+    </script>
 </body>
 </html>

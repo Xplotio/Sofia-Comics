@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos los Cómics de DC</title>
+    <!-- Enlace al archivo CSS usando url_for para Flask -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        body {
+            background: url('https://1.bp.blogspot.com/-unJxxU7Jyck/UY69IXFD8hI/AAAAAAAAAnA/oHEbWrw0GVQ/s1600/Mundo+Superman.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        header {
+            position: fixed; /* Mantiene el encabezado fijo en la parte superior */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100; /* Asegura que esté por encima de otros contenidos */
+            background-color: #222; /* Fondo oscuro para el encabezado */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
+        }
+        .frame1920wlight-nav {
+            background-color: #222; /* Fondo oscuro para la barra de navegación */
+            color: white; /* Color de texto predeterminado para la barra de navegación */
+            padding: 10px 0; /* Añade un poco de relleno vertical */
+        }
+        .frame1920wlight-section {
+            max-width: 1200px; /* Limita el ancho para pantallas más grandes */
+            margin: 0 auto; /* Centra el contenido */
+            padding: 0 20px; /* Relleno horizontal */
+        }
+        .frame1920wlight-horizontal-border {
+            display: flex;
+            justify-content: space-between; /* Espacia los elementos */
+            align-items: center;
+            padding-bottom: 10px; /* Espacio debajo de la fila superior */
+            border-bottom: 1px solid #444; /* Línea separadora */
+        }
+        /* Ajuste para el contenedor principal de la primera fila de la navegación */
+        .frame1920wlight-container11 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Distribuye espacio entre los grupos de elementos */
+            width: 100%; /* Ocupa todo el ancho disponible */
+        }
+
+        /* Grupo de Login/Register */
+        .frame1920wlight-vertical-border2 {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Espacio entre Log In, |, Sign Up */
+        }
+
+        /* Estilos generales para enlaces en la navegación */
+        .frame1920wlight-nav a {
+            color: white !important; /* Fuerza el color blanco para todos los enlaces en la navegación */
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+            padding: 5px 10px; /* Relleno horizontal para los enlaces */
+            white-space: nowrap; /* Evita que el texto se rompa */
+        }
+        .frame1920wlight-nav a:hover {
+            color: #ccc !important; /* Blanco más claro al pasar el ratón */
+        }
+        /* Estilo para el separador entre Login y Sign Up */
+        .frame1920wlight-vertical-border2 .frame1920wlight-text101 {
+            color: white;
+            margin: 0 5px; /* Espacio alrededor del separador */
+        }
+
+        /* Estilos para la segunda fila de navegación (Inicio, DC, etc.) */
+        .frame1920wlight-list10 {
+            display: flex;
+            justify-content: space-around; /* Distribuye los elementos de navegación uniformemente */
+            align-items: center;
+            padding-top: 10px; /* Espacio encima de la fila inferior */
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas más pequeñas */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            gap: 20px; /* Espacio entre los elementos de la lista */
+            position: relative; /* Anula el posicionamiento absoluto del CSS externo */
+            top: auto; /* Anula la propiedad top del CSS externo */
+            left: auto; /* Anula la propiedad left del CSS externo */
+            height: auto; /* Permite que la altura se ajuste al contenido */
+            margin: 0 auto; /* Centra la lista horizontalmente */
+        }
+        .frame1920wlight-list10 > div { /* Cada contenedor de elemento de menú */
+            flex-shrink: 0; /* Evita que los elementos se encojan */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* El padding se maneja directamente en los enlaces para el borde */
+        }
+
+        /* Aplicar border-right a los enlaces dentro de los divs, excepto el último */
+        .frame1920wlight-list10 > div:not(:last-child) a {
+            border-right: 1px solid white; /* Separador vertical */
+            padding-right: 20px; /* Espacio después del texto y antes del separador */
+            /* margin-right se maneja con el gap del contenedor padre */
+        }
+
+        /* Asegura que los textos específicos también sean blancos */
+        .frame1920wlight-text100, .frame1920wlight-text102, .frame1920wlight-text103, .frame1920wlight-text104,
+        .frame1920wlight-text105, .frame1920wlight-text106, .frame1920wlight-text107, .frame1920wlight-text108, .frame1920wlight-text109 {
+            color: white; /* Asegura que estos sean blancos */
+        }
+        /* Asegura que la imagen de "Suscríbete" sea visible */
+        .frame1920wlight-unnamed1 {
+            display: inline-block; /* O block, dependiendo de la alineación deseada */
+            height: 20px; /* Ajusta el tamaño si es necesario */
+            width: auto;
+            margin-left: 10px; /* Espacio a la izquierda de la imagen */
+            vertical-align: middle; /* Alinea con el texto */
+        }
+        /* Estilo para el logo de la editorial específica (DC) */
+        .frame1920wlight-svg10 {
+            display: inline-block; /* Asegura que sea visible */
+            height: 30px; /* Ajusta el tamaño según sea necesario */
+            width: auto;
+            margin-right: 10px; /* Espacio a la derecha del logo */
+            vertical-align: middle; /* Alinea con el texto */
+        }
+
+
+        main {
+            margin-top: 120px; /* Ajusta el margen superior del contenido principal para el encabezado fijo */
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(255,255,255,0.97);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
+            padding: 36px 28px 32px 28px;
+        }
+        .dc-logo {
+            display: block;
+            margin: 0 auto 24px auto;
+            max-width: 320px;
+            width: 100%;
+            height: auto;
+        }
+        h1 {
+            color: #00C; /* Azul para títulos de DC */
+            margin-top: 32px;
+            margin-bottom: 24px;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .comics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Columnas responsivas */
+            gap: 18px;
+            margin-bottom: 18px;
+            justify-content: center; /* Centrar las tarjetas de cómics */
+        }
+        .comic-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0002;
+            width: 100%; /* Ocupa el ancho de la columna */
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 8px 10px 8px;
+            text-align: center;
+            border: 2px solid #00C; /* Color de borde para DC */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer; /* Indica que es clicable */
+        }
+        .comic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .comic-card a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .comic-img {
+            width: 100px;
+            height: 140px;
+            background: #eee;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            object-fit: cover;
+            display: block;
+        }
+        .comic-title {
+            font-weight: bold;
+            color: #00C; /* Color de texto para DC */
+            font-size: 1.05rem;
+            margin-bottom: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; /* Evita que el título se rompa */
+            width: 100%; /* Asegura que el ellipsis funcione */
+        }
+        /* Estilos para los mensajes flash */
+        .flash-message {
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1em;
+            text-align: center;
+        }
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash-message.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6fb;
+        }
+        .flash-message.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .flash-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 900px) {
+            main { max-width: 99vw; }
+            .comics-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); } /* Ajuste para móviles */
+            .comic-card { min-height: unset; }
+            .comic-img { width: 90px; height: 130px; }
+        }
+        @media (max-width: 768px) {
+            .frame1920wlight-horizontal-border {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            .frame1920wlight-container11 {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .frame1920wlight-list10 {
+                flex-direction: column; /* Apila los elementos verticalmente en pantallas pequeñas */
+                gap: 5px; /* Espacio más pequeño cuando están apilados */
+            }
+            .frame1920wlight-list10 > div {
+                padding: 5px 0;
+            }
+            /* Oculta los separadores en pantallas muy pequeñas cuando los elementos están apilados */
+            .frame1920wlight-list10 > div:not(:last-child) a {
+                border-right: none;
+                padding-right: 0;
+                margin-right: 0;
+            }
+            main {
+                margin-top: 200px; /* Ajusta el margen superior para un encabezado más alto en móvil */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="frame1920wlight-nav">
+            <div class="frame1920wlight-section">
+                <div class="frame1920wlight-horizontal-border">
+                    <div class="frame1920wlight-container11">
+                        <div class="frame1920wlight-link10">
+                            <!-- Imagen del logo de Sofia Comics -->
+                            <img
+                                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
+                                alt="Sofia Comics Logo"
+                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
+                            />
+                        </div>
+                        <div class="frame1920wlight-vertical-border1">
+                            <div class="frame1920wlight-vertical-border2">
+                                <div class="frame1920wlight-container12">
+                                    <!-- DC Logo -->
+                                    <img
+                                        src="{{ url_for('static', filename='external/dclogo.jpg') }}"
+                                        alt="DC Logo"
+                                        class="frame1920wlight-svg10"
+                                    />
+                                </div>
+                                {% if session.get('logged_in') %}
+                                    <span class="frame1920wlight-text100">Hola, {{ session.get('user_name', 'Usuario') }}!</span>
+                                    {% if session.get('user_type') == 'editorial' %}
+                                        <div class="frame1920wlight-link11">
+                                            <a href="{{ url_for('editorial_dashboard') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Dashboard Editorial</a>
+                                        </div>
+                                    {% elif session.get('user_type') == 'admin' %}
+                                        <div class="frame1920wlight-link11">
+                                            <a href="{{ url_for('admin_dashboard') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Dashboard Admin</a>
+                                        </div>
+                                    {% endif %}
+                                    <span class="frame1920wlight-text101">|</span>
+                                    <div class="frame1920wlight-link12">
+                                        <a href="{{ url_for('logout') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Cerrar Sesión</a>
+                                    </div>
+                                {% else %}
+                                    <div class="frame1920wlight-link11">
+                                        <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
+                                    </div>
+                                    <span class="frame1920wlight-text101">|</span>
+                                    <div class="frame1920wlight-link12">
+                                        <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="frame1920wlight-link13">
+                            <span class="frame1920wlight-text103">Sofia comics</span>
+                            <!-- Enlace a la ruta de suscripción -->
+                            <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
+                            <img
+                                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
+                                alt="unnamed"
+                                class="frame1920wlight-unnamed1"
+                            />
+                        </div>
+                        <div class="frame1920wlight-linksearch">
+                            <img
+                                src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
+                                alt="Buscar"
+                                class="frame1920wlight-svg11"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="frame1920wlight-list10">
+                    <div class="frame1920wlight-item-link10">
+                        <span class="frame1920wlight-text105">News</span>
+                    </div>
+                    <div class="frame1920wlight-item-link11">
+                        <a href="{{ url_for('home') }}" class="frame1920wlight-text106" style="text-decoration:none; color:inherit;">Comics</a>
+                    </div>
+                    <div class="frame1920wlight-item-link12">
+                        <span class="frame1920wlight-text107">Characters</span>
+                    </div>
+                    <div class="frame1920wlight-item-link13"></div>
+                    <div class="frame1920wlight-item-link14"></div>
+                    <div class="frame1920wlight-item-link15"></div>
+                    <div class="frame1920wlight-item-link16">
+                        <span class="frame1920wlight-text108">More</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <img class="dc-logo" src="https://upload.wikimedia.org/wikipedia/commons/3/3d/DC_Comics_logo.svg" alt="DC Comics Logo">
+        <h1>Todos los Cómics de DC</h1>
+
+        {# Mostrar mensajes flash de Flask #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {# Sección para mostrar TODOS los cómics (para la vista pública /dc_comics) #}
+        {% if comics %}
+            <div class="comics-grid">
+                {% for comic in comics %}
+                <div class="comic-card"> {# Removed onclick attribute #}
+                    <a href="{{ url_for('comic_detail', comic_id=comic.codigo_de_barras) }}">
+                        {% if comic.portada_b64 %}
+                            <img class="comic-img" src="data:image/png;base64,{{ comic.portada_b64 }}" alt="{{ comic.titulo }}">
+                        {% else %}
+                            <img class="comic-img" src="https://placehold.co/100x140/cccccc/000000?text=No+Portada" alt="No Portada">
+                        {% endif %}
+                        <div class="comic-title">{{ comic.titulo }}</div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; font-size: 1.1em; color: #555;">No hay cómics de DC para mostrar en este momento.</p>
+        {% endif %}
+
+    </main>
+    <script>
+        // Función para mostrar un modal personalizado en lugar de alert()
+        function mostrarModalPersonalizado(mensaje, callback = null) {
+            const modalId = 'customAlertModal';
+            let modal = document.getElementById(modalId);
+
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                `;
+                modal.innerHTML = `
+                    <div style="
+                        background: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                        text-align: center;
+                        max-width: 400px;
+                        width: 90%;
+                        font-family: 'Inter', Arial, sans-serif;
+                    ">
+                        <p style="margin-bottom: 20px; font-size: 1.1em; color: #333; white-space: pre-wrap;">${mensaje}</p>
+                        <button id="modalCloseButton" style="
+                            background: #c00;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 1em;
+                            transition: background 0.2s;
+                        ">Aceptar</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                document.getElementById('modalCloseButton').addEventListener('click', function() {
+                    modal.remove();
+                    if (callback) {
+                        callback();
+                    }
+                });
+            } else {
+                // Si el modal ya existe, actualiza el mensaje y muestra
+                modal.querySelector('p').textContent = mensaje;
+                modal.style.display = 'flex';
+                const closeButton = document.getElementById('modalCloseButton');
+                const newCloseButton = closeButton.cloneNode(true);
+                closeButton.parentNode.replaceChild(newCloseButton, closeButton); // Eliminar listener anterior
+                newCloseButton.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }
+        }
+
+        // Mostrar mensajes flash al cargar la página
+        window.onload = function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            if (flashMessages.length > 0) {
+                let allMessages = "";
+                flashMessages.forEach(msg => {
+                    allMessages += msg.textContent + "\\n";
+                });
+                mostrarModalPersonalizado(allMessages.trim());
+            }
+        };
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrar Tarjeta - Marvel</title>
+  <title>Realizar Pago - SofiaComics</title>
   <!-- Enlace al archivo CSS usando url_for para Flask -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
   <style>
@@ -116,6 +116,56 @@
       .fav-characters-group label:hover {
         background: #ffeaea;
       }
+      /* Modal Styles */
+      .custom-modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.7);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      .custom-modal.show {
+          opacity: 1;
+          visibility: visible;
+      }
+      .custom-modal-content {
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          text-align: center;
+          max-width: 400px;
+          width: 90%;
+          font-family: 'Inter', Arial, sans-serif;
+          color: #333;
+      }
+      .custom-modal-content p {
+          margin-bottom: 20px;
+          font-size: 1.1em;
+          white-space: pre-wrap; /* Para que los saltos de línea de \n funcionen */
+      }
+      .custom-modal-content button {
+          background: #c00;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1em;
+          transition: background 0.2s;
+      }
+      .custom-modal-content button:hover {
+          background: #a00;
+      }
+
       @media (max-width: 600px) {
         form {
           min-width: unset;
@@ -140,7 +190,7 @@
             <div class="frame1920wlight-link10">
               <img
                 src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                alt="GeminiGeneratedImage"
+                alt="Logo SofiaComics"
                 class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
               />
             </div>
@@ -154,18 +204,17 @@
                   />
                 </div>
                 <div class="frame1920wlight-link11">
-                  <span class="frame1920wlight-text100">Log In</span>
+                  <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
                 </div>
                 <span class="frame1920wlight-text101">|</span>
                 <div class="frame1920wlight-link12">
-                  <span class="frame1920wlight-text102">Sign Up</span>
+                  <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
                 </div>
               </div>
             </div>
             <div class="frame1920wlight-link13">
               <span class="frame1920wlight-text103">Sofia comics</span>
-              <!-- Se asume que 'suscripcion' es una ruta definida en app.py -->
-              <a href="{{ url_for('suscripcion') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
+              <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
               <img
                 src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
                 alt="unnamed"
@@ -186,7 +235,7 @@
             <span class="frame1920wlight-text105">News</span>
           </div>
           <div class="frame1920wlight-item-link11">
-            <span class="frame1920wlight-text106">Comics</span>
+            <a href="{{ url_for('home') }}" class="frame1920wlight-text106" style="text-decoration:none; color:inherit;">Comics</a>
           </div>
           <div class="frame1920wlight-item-link12">
             <span class="frame1920wlight-text107">Characters</span>
@@ -203,8 +252,29 @@
   </header>
   <main>
     <section>
-      <form id="formTarjeta" autocomplete="off" style="background: rgba(255,255,255,0.97); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18); border-radius: 16px; padding: 32px 36px 24px 36px; min-width: 320px; max-width: 400px; width: 100%; margin-top: 32px;">
-        <h2>Registrar Tarjeta</h2>
+      {# Bloque para mostrar mensajes flash de Flask #}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              <div class="flash-messages" style="margin-bottom: 20px;">
+                  {% for category, message in messages %}
+                      <div class="flash-message {{ category }}">{{ message }}</div>
+                  {% endfor %}
+              </div>
+          {% endif %}
+      {% endwith %}
+
+      <form id="formTarjeta" method="POST" action="{{ url_for('checkout', plan_id=plan.id_plan) }}" autocomplete="off">
+        <h2>Realizar Pago</h2>
+
+        {% if plan %}
+        <p style="text-align: center; font-size: 1.1em; color: #333; margin-bottom: 20px;">
+            Estás a punto de suscribirte al plan: <strong>{{ plan.nombre }}</strong> por <strong>${{ "%.2f"|format(plan.costo_suscripcion) }}</strong>.
+        </p>
+        {% else %}
+        <p style="text-align: center; font-size: 1.1em; color: #333; margin-bottom: 20px;">
+            No se ha seleccionado ningún plan. Por favor, regresa a la página de suscripciones.
+        </p>
+        {% endif %}
 
         <div class="form-group">
           <label for="nombreTitular">Nombre del Titular</label>
@@ -246,7 +316,39 @@
       </form>
     </section>
   </main>
+
+  <div id="customAlertModal" class="custom-modal">
+      <div class="custom-modal-content">
+          <p id="modalMessage"></p>
+          <button id="modalCloseButton">Aceptar</button>
+      </div>
+  </div>
+
   <script>
+    // Función para mostrar un modal personalizado en lugar de alert()
+    function mostrarModalPersonalizado(mensaje, callback = null) {
+        const modal = document.getElementById('customAlertModal');
+        const messageParagraph = document.getElementById('modalMessage');
+        const closeButton = document.getElementById('modalCloseButton');
+
+        messageParagraph.textContent = mensaje;
+        modal.classList.add('show');
+
+        // Clonar para eliminar listeners anteriores y añadir uno nuevo
+        const newCloseButton = closeButton.cloneNode(true);
+        closeButton.parentNode.replaceChild(newCloseButton, closeButton);
+
+        newCloseButton.addEventListener('click', function() {
+            modal.classList.remove('show');
+            // Si el mensaje contiene "exitosamente", redirigir a la página de inicio
+            if (mensaje.includes('exitosamente')) {
+                window.location.href = '{{ url_for('home') }}';
+            } else if (callback) {
+                callback();
+            }
+        });
+    }
+
     // Selección visual de tipo de pago
     document.querySelectorAll('.tipo-pago-btn').forEach(btn => {
       btn.addEventListener('click', function() {
@@ -260,42 +362,63 @@
       let mensaje = "";
       let valid = true;
 
+      const nombreTitular = document.getElementById('nombreTitular').value.trim();
       const numero = document.getElementById('numeroTarjeta').value.replace(/\s+/g, '');
       const fechaInput = document.getElementById('fechaExpiracion').value.trim();
       const cvv = document.getElementById('cvv').value.trim();
       const tipo = document.getElementById('tipoTarjeta').value;
 
+      // Validar campos vacíos
+      if (!nombreTitular) {
+          valid = false;
+          mensaje += "El campo Nombre del Titular es obligatorio.\\n";
+      }
+      if (!numero) {
+          valid = false;
+          mensaje += "El campo Número de Tarjeta es obligatorio.\\n";
+      }
+      if (!fechaInput) {
+          valid = false;
+          mensaje += "El campo Fecha de Expiración es obligatorio.\\n";
+      }
+      if (!cvv) {
+          valid = false;
+          mensaje += "El campo CVV es obligatorio.\\n";
+      }
+
       // Validar número de tarjeta (solo números, 13 a 19 dígitos)
-      if (!/^\d{13,19}$/.test(numero)) {
+      if (numero && !/^\d{13,19}$/.test(numero)) {
         valid = false;
         mensaje += "El número de tarjeta debe tener entre 13 y 19 dígitos numéricos.\\n";
       }
 
       // Validar fecha de expiración (MM/AA) y que no sea pasada
-      const fechaPartes = fechaInput.split('/');
-      
-      if (fechaPartes.length !== 2) {
-        valid = false;
-        mensaje += "La fecha de expiración debe tener formato MM/AA (Mes/Año de 2 dígitos).\\n";
-      } else {
-        const mes = parseInt(fechaPartes[0], 10);
-        const anio = parseInt(fechaPartes[1], 10); // Esto es solo los últimos dos dígitos
-
-        const fechaActual = new Date();
-        const anioActual = fechaActual.getFullYear() % 100; // Últimos dos dígitos del año actual
-        const mesActual = fechaActual.getMonth() + 1; // getMonth() es 0-indexado
-
-        if (isNaN(mes) || isNaN(anio) || mes < 1 || mes > 12) {
+      if (fechaInput) {
+        const fechaPartes = fechaInput.split('/');
+        
+        if (fechaPartes.length !== 2) {
           valid = false;
-          mensaje += "El mes de expiración no es válido (debe ser entre 01 y 12).\\n";
-        } else if (anio < anioActual || (anio === anioActual && mes < mesActual)) {
-          valid = false;
-          mensaje += "La tarjeta ha expirado o la fecha es inválida.\\n";
+          mensaje += "La fecha de expiración debe tener formato MM/AA (Mes/Año de 2 dígitos).\\n";
+        } else {
+          const mes = parseInt(fechaPartes[0], 10);
+          const anio = parseInt(fechaPartes[1], 10); // Esto es solo los últimos dos dígitos
+
+          const fechaActual = new Date();
+          const anioActual = fechaActual.getFullYear() % 100; // Últimos dos dígitos del año actual
+          const mesActual = fechaActual.getMonth() + 1; // getMonth() es 0-indexado
+
+          if (isNaN(mes) || isNaN(anio) || mes < 1 || mes > 12) {
+            valid = false;
+            mensaje += "El mes de expiración no es válido (debe ser entre 01 y 12).\\n";
+          } else if (anio < anioActual || (anio === anioActual && mes < mesActual)) {
+            valid = false;
+            mensaje += "La tarjeta ha expirado o la fecha es inválida.\\n";
+          }
         }
       }
 
       // Validar CVV (3 o 4 dígitos)
-      if (!/^\d{3,4}$/.test(cvv)) {
+      if (cvv && !/^\d{3,4}$/.test(cvv)) {
         valid = false;
         mensaje += "El CVV debe ser un número de 3 o 4 dígitos.\\n";
       }
@@ -308,78 +431,21 @@
 
       if (!valid) {
         e.preventDefault();
-        // NO USAR alert() en Canvas, usar un modal personalizado
         mostrarModalPersonalizado(mensaje);
       }
     });
 
-    // Función para mostrar un modal personalizado en lugar de alert()
-    function mostrarModalPersonalizado(mensaje, callback = null) {
-        const modalId = 'customAlertModal';
-        let modal = document.getElementById(modalId);
-
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = modalId;
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            `;
-            modal.innerHTML = `
-                <div style="
-                    background: white;
-                    padding: 30px;
-                    border-radius: 10px;
-                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-                    text-align: center;
-                    max-width: 400px;
-                    width: 90%;
-                    font-family: 'Inter', Arial, sans-serif;
-                ">
-                    <p style="margin-bottom: 20px; font-size: 1.1em; color: #333;">${mensaje}</p>
-                    <button id="modalCloseButton" style="
-                        background: #c00;
-                        color: white;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        font-size: 1em;
-                        transition: background 0.2s;
-                    ">Aceptar</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-
-            document.getElementById('modalCloseButton').addEventListener('click', function() {
-                modal.remove();
-                if (callback) {
-                    callback();
-                }
+    // Mostrar mensajes flash al cargar la página
+    window.onload = function() {
+        const flashMessages = document.querySelectorAll('.flash-message');
+        if (flashMessages.length > 0) {
+            let allMessages = "";
+            flashMessages.forEach(msg => {
+                allMessages += msg.textContent + "\\n";
             });
-        } else {
-            // Si el modal ya existe, actualiza el mensaje y muestra
-            modal.querySelector('p').textContent = mensaje;
-            modal.style.display = 'flex';
-            const closeButton = document.getElementById('modalCloseButton');
-            const newCloseButton = closeButton.cloneNode(true);
-            closeButton.parentNode.replaceChild(newCloseButton, closeButton); // Eliminar listener anterior
-            newCloseButton.addEventListener('click', function() {
-                modal.style.display = 'none';
-                if (callback) {
-                    callback();
-                }
-            });
+            mostrarModalPersonalizado(allMessages.trim());
         }
-    }
+    };
   </script>
 </body>
 </html>

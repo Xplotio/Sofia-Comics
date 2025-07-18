@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cómic - SofiaComics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        body {
+            background: #f4f7f6;
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            color: #333;
+        }
+        main {
+            margin-top: 80px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1);
+            padding: 36px;
+            margin-bottom: 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #c00;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: calc(100% - 24px); /* Ajuste para padding */
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        input[type="file"] {
+            margin-top: 5px;
+        }
+        button[type="submit"] {
+            background: #00C;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            width: 100%;
+        }
+        button[type="submit"]:hover {
+            background: #009;
+        }
+        .current-image {
+            margin-top: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .current-image img {
+            max-width: 150px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .flash-message {
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1em;
+            text-align: center;
+        }
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash-message.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .flash-message.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .flash-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="frame1920wlight-nav">
+            <div class="frame1920wlight-section">
+                <div class="frame1920wlight-horizontal-border">
+                    <div class="frame1920wlight-container11">
+                        <div class="frame1920wlight-link10">
+                            <img
+                                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
+                                alt="GeminiGeneratedImage"
+                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
+                            />
+                        </div>
+                        <div class="frame1920wlight-vertical-border1">
+                            <div class="frame1920wlight-vertical-border2">
+                                <div class="frame1920wlight-container12">
+                                    <img
+                                        src="{{ url_for('static', filename='external/dclogo.jpg') }}"
+                                        alt="DC Logo"
+                                        class="frame1920wlight-svg10"
+                                    />
+                                </div>
+                                <div class="frame1920wlight-link11">
+                                    <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
+                                </div>
+                                <span class="frame1920wlight-text101">|</span>
+                                <div class="frame1920wlight-link12">
+                                    <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="frame1920wlight-link13">
+                            <span class="frame1920wlight-text103">Sofia comics</span>
+                            <!-- Se asume que 'suscripcion' es una ruta definida en app.py -->
+                            <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
+                            <img
+                                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
+                                alt="unnamed"
+                                class="frame1920wlight-unnamed1"
+                            />
+                        </div>
+                        <div class="frame1920wlight-linksearch">
+                            <img
+                                src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
+                                alt="Buscar"
+                                class="frame1920wlight-svg11"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="frame1920wlight-list10">
+                    <div class="frame1920wlight-item-link10">
+                        <span class="frame1920wlight-text105">News</span>
+                    </div>
+                    <div class="frame1920wlight-item-link11">
+                        <span class="frame1920wlight-text106">Comics</span>
+                    </div>
+                    <div class="frame1920wlight-item-link12">
+                        <span class="frame1920wlight-text107">Characters</span>
+                    </div>
+                    <div class="frame1920wlight-item-link13"></div>
+                    <div class="frame1920wlight-item-link14"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>Editar Cómic</h1>
+
+        {# Mostrar mensajes flash de Flask #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="comic_code">Código de Barras (ID)</label>
+                <input type="number" id="comic_code" name="comic_code" value="{{ comic.codigo_de_barras }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="title">Título del Cómic</label>
+                <input type="text" id="title" name="title" value="{{ comic.titulo }}" required>
+            </div>
+            <div class="form-group">
+                <label for="author">Autor</label>
+                <input type="text" id="author" name="author" value="{{ comic.autor }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción</label>
+                <textarea id="description" name="description" required>{{ comic.descripcion }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="publication_date">Fecha de Publicación</label>
+                <input type="date" id="publication_date" name="publication_date" value="{{ comic.fecha_publicacion.strftime('%Y-%m-%d') }}" required>
+            </div>
+            <div class="form-group">
+                <label for="cover_image">Imagen de Portada (dejar en blanco para mantener la actual)</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/png, image/jpeg">
+                {% if comic.portada_b64 %}
+                    <div class="current-image">
+                        <p>Portada actual:</p>
+                        <img src="data:image/png;base64,{{ comic.portada_b64 }}" alt="Portada actual de {{ comic.titulo }}">
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="comic_content">Contenido del Cómic (PDF, dejar en blanco para mantener el actual)</label>
+                <input type="file" id="comic_content" name="comic_content" accept="application/pdf">
+            </div>
+            <div class="form-group">
+                <label for="comic_characters">Personajes que aparecen en este cómic (selecciona múltiples)</label>
+                <select id="comic_characters" name="comic_characters" multiple size="5">
+                    {% for char in all_characters %}
+                        <option value="{{ char.id_personaje }}" {% if char.id_personaje in comic_characters %}selected{% endif %}>{{ char.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <p class="note">Mantén 'Ctrl' (Windows/Linux) o 'Cmd' (Mac) para seleccionar varios personajes.</p>
+            </div>
+            <button type="submit">Actualizar Cómic</button>
+        </form>
+    </main>
+    <script>
+        // Función para mostrar un modal personalizado en lugar de alert()
+        function mostrarModalPersonalizado(mensaje, callback = null) {
+            const modalId = 'customAlertModal';
+            let modal = document.getElementById(modalId);
+
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                `;
+                modal.innerHTML = `
+                    <div style="
+                        background: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                        text-align: center;
+                        max-width: 400px;
+                        width: 90%;
+                        font-family: 'Inter', Arial, sans-serif;
+                    ">
+                        <p style="margin-bottom: 20px; font-size: 1.1em; color: #333; white-space: pre-wrap;">${mensaje}</p>
+                        <button id="modalCloseButton" style="
+                            background: #c00;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 1em;
+                            transition: background 0.2s;
+                        ">Aceptar</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                document.getElementById('modalCloseButton').addEventListener('click', function() {
+                    modal.remove();
+                    if (callback) {
+                        callback();
+                    }
+                });
+            } else {
+                // Si el modal ya existe, actualiza el mensaje y muestra
+                modal.querySelector('p').textContent = mensaje;
+                modal.style.display = 'flex';
+                const closeButton = document.getElementById('modalCloseButton');
+                const newCloseButton = closeButton.cloneNode(true);
+                closeButton.parentNode.replaceChild(newCloseButton, closeButton); // Eliminar listener anterior
+                newCloseButton.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }
+        }
+
+        // Mostrar mensajes flash al cargar la página
+        window.onload = function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            if (flashMessages.length > 0) {
+                let allMessages = "";
+                flashMessages.forEach(msg => {
+                    allMessages += msg.textContent + "\\n";
+                });
+                mostrarModalPersonalizado(allMessages.trim());
+            }
+        };
+    </script>
+</body>
+</html>

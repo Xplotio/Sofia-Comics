@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - SofiaComics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        body {
+            background: #f4f7f6;
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            color: #333;
+        }
+        main {
+            margin-top: 80px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1);
+            padding: 36px;
+            margin-bottom: 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #c00;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .stat-card {
+            background: #f0f0f0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #ddd;
+        }
+        .stat-card h3 {
+            color: #00C;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .stat-card p {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #c00;
+        }
+        .admin-sections {
+            margin-top: 40px;
+        }
+        .admin-sections h2 {
+            color: #222;
+            margin-top: 32px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+            border-left: 5px solid #00C;
+            padding-left: 15px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .action-buttons a, .action-buttons button {
+            background: #00C;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .action-buttons a:hover, .action-buttons button:hover {
+            background: #009;
+        }
+        .action-buttons button.delete {
+            background: #c00;
+        }
+        .action-buttons button.delete:hover {
+            background: #a00;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            overflow: hidden; /* Para que los bordes redondeados se apliquen al contenido */
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #00C;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .table-actions a, .table-actions button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .table-actions a.edit {
+            background: #00C;
+            color: #fff;
+        }
+        .table-actions a.edit:hover {
+            background: #009;
+        }
+        .table-actions button.delete {
+            background: #c00;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .table-actions button.delete:hover {
+            background: #a00;
+        }
+        .character-img-thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+        .flash-message {
+            padding: 10px 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1em;
+            text-align: center;
+        }
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash-message.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .flash-message.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .flash-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+            .action-buttons a, .action-buttons button {
+                width: 100%;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 15px;
+                border-radius: 12px;
+                overflow: hidden;
+            }
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: bold;
+                color: #555;
+            }
+            td:nth-of-type(1):before { content: "ID Cómic"; }
+            td:nth-of-type(2):before { content: "Título"; }
+            td:nth-of-type(3):before { content: "Autor"; }
+            td:nth-of-type(4):before { content: "Portada"; }
+            td:nth-of-type(5):before { content: "Acciones"; }
+
+            /* Para la tabla de personajes */
+            td:nth-of-type(6):before { content: "ID Personaje"; }
+            td:nth-of-type(7):before { content: "Nombre"; }
+            td:nth-of-type(8):before { content: "Imagen"; }
+            td:nth-of-type(9):before { content: "Editorial"; }
+            td:nth-of-type(10):before { content: "Acciones"; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="frame1920wlight-nav">
+            <div class="frame1920wlight-section">
+                <div class="frame1920wlight-horizontal-border">
+                    <div class="frame1920wlight-container11">
+                        <div class="frame1920wlight-link10">
+                            <img
+                                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
+                                alt="GeminiGeneratedImage"
+                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
+                            />
+                        </div>
+                        <div class="frame1920wlight-vertical-border1">
+                            <div class="frame1920wlight-vertical-border2">
+                                <div class="frame1920wlight-container12">
+                                    <img
+                                        src="{{ url_for('static', filename='external/dclogo.jpg') }}"
+                                        alt="DC Logo"
+                                        class="frame1920wlight-svg10"
+                                    />
+                                </div>
+                                <div class="frame1920wlight-link11">
+                                    <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
+                                </div>
+                                <span class="frame1920wlight-text101">|</span>
+                                <div class="frame1920wlight-link12">
+                                    <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="frame1920wlight-link13">
+                            <span class="frame1920wlight-text103">Sofia comics</span>
+                            <!-- Se asume que 'suscripcion' es una ruta definida en app.py -->
+                            <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
+                            <img
+                                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
+                                alt="unnamed"
+                                class="frame1920wlight-unnamed1"
+                            />
+                        </div>
+                        <div class="frame1920wlight-linksearch">
+                            <img
+                                src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
+                                alt="Buscar"
+                                class="frame1920wlight-svg11"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="frame1920wlight-list10">
+                    <div class="frame1920wlight-item-link10">
+                        <span class="frame1920wlight-text105">News</span>
+                    </div>
+                    <div class="frame1920wlight-item-link11">
+                        <span class="frame1920wlight-text106">Comics</span>
+                    </div>
+                    <div class="frame1920wlight-item-link12">
+                        <span class="frame1920wlight-text107">Characters</span>
+                    </div>
+                    <div class="frame1920wlight-item-link13"></div>
+                    <div class="frame1920wlight-item-link14"></div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>Panel de Administración</h1>
+
+        {# Mostrar mensajes flash de Flask #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Usuarios Registrados</h3>
+                <p>{{ users_count }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Editoriales Registradas</h3>
+                <p>{{ editorials_count }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Cómics Totales</h3>
+                <p>{{ comics_count }}</p>
+            </div>
+        </div>
+
+        <div class="admin-sections">
+            <h2>Gestión de Cómics</h2>
+            <div class="action-buttons">
+                <a href="{{ url_for('admin_upload_marvel') }}">Subir Cómic Marvel</a>
+                <a href="{{ url_for('admin_upload_dc') }}">Subir Cómic DC</a>
+                <a href="{{ url_for('admin_upload_indie') }}">Subir Cómic Indie</a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Cómic</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Portada</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comic in all_comics %}
+                    <tr>
+                        <td>{{ comic.codigo_de_barras }}</td>
+                        <td>{{ comic.titulo }}</td>
+                        <td>{{ comic.autor }}</td>
+                        <td>
+                            {% if comic.portada_b64 %}
+                                <img src="data:image/png;base64,{{ comic.portada_b64 }}" alt="Portada de {{ comic.titulo }}" class="character-img-thumb">
+                            {% else %}
+                                <img src="https://placehold.co/50x50/cccccc/000000?text=No+Img" alt="No Image" class="character-img-thumb">
+                            {% endif %}
+                        </td>
+                        <td class="table-actions">
+                            <a href="{{ url_for('admin_edit_comic', comic_id=comic.codigo_de_barras) }}" class="edit">Editar</a>
+                            <form action="{{ url_for('admin_delete_comic', comic_id=comic.codigo_de_barras) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="delete" onclick="return confirm('¿Estás seguro de que quieres eliminar este cómic? Esta acción es irreversible.');">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Gestión de Personajes</h2>
+            <div class="action-buttons">
+                <a href="{{ url_for('admin_upload_character') }}">Subir Nuevo Personaje</a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Personaje</th>
+                        <th>Nombre</th>
+                        <th>Imagen</th>
+                        <th>Editorial</th> {# Nueva columna para la editorial #}
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for character in all_characters %}
+                    <tr>
+                        <td>{{ character.id_personaje }}</td>
+                        <td>{{ character.nombre }}</td>
+                        <td>
+                            {% if character.imagen_b64 %}
+                                <img src="data:image/png;base64,{{ character.imagen_b64 }}" alt="Imagen de {{ character.nombre }}" class="character-img-thumb">
+                            {% else %}
+                                <img src="https://placehold.co/50x50/cccccc/000000?text=No+Img" alt="No Image" class="character-img-thumb">
+                            {% endif %}
+                        </td>
+                        <td>{{ character.editorial_nombre if character.editorial_nombre else 'N/A' }}</td> {# Mostrar nombre de la editorial #}
+                        <td class="table-actions">
+                            <a href="{{ url_for('admin_edit_character', character_id=character.id_personaje) }}" class="edit">Editar</a>
+                            <form action="{{ url_for('admin_delete_character', character_id=character.id_personaje) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="delete" onclick="return confirm('¿Estás seguro de que quieres eliminar este personaje? Esta acción es irreversible.');">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script>
+        // Función para mostrar un modal personalizado en lugar de alert()
+        function mostrarModalPersonalizado(mensaje, callback = null) {
+            const modalId = 'customAlertModal';
+            let modal = document.getElementById(modalId);
+
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                `;
+                modal.innerHTML = `
+                    <div style="
+                        background: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                        text-align: center;
+                        max-width: 400px;
+                        width: 90%;
+                        font-family: 'Inter', Arial, sans-serif;
+                    ">
+                        <p style="margin-bottom: 20px; font-size: 1.1em; color: #333; white-space: pre-wrap;">${mensaje}</p>
+                        <button id="modalCloseButton" style="
+                            background: #c00;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 1em;
+                            transition: background 0.2s;
+                        ">Aceptar</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+
+                document.getElementById('modalCloseButton').addEventListener('click', function() {
+                    modal.remove();
+                    if (callback) {
+                        callback();
+                    }
+                });
+            } else {
+                // Si el modal ya existe, actualiza el mensaje y muestra
+                modal.querySelector('p').textContent = mensaje;
+                modal.style.display = 'flex';
+                const closeButton = document.getElementById('modalCloseButton');
+                const newCloseButton = closeButton.cloneNode(true);
+                closeButton.parentNode.replaceChild(newCloseButton, closeButton); // Eliminar listener anterior
+                newCloseButton.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    if (callback) {
+                        callback();
+                    }
+                });
+            }
+        }
+
+        // Mostrar mensajes flash al cargar la página
+        window.onload = function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            if (flashMessages.length > 0) {
+                let allMessages = "";
+                flashMessages.forEach(msg => {
+                    allMessages += msg.textContent + "\\n";
+                });
+                mostrarModalPersonalizado(allMessages.trim());
+            }
+        };
+    </script>
+</body>
+</html>
