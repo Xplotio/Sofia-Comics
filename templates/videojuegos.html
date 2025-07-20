@@ -1,88 +1,179 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Videojuegos - SofiaComics</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <style>
-        main {
-            margin-top: 80px;
-            text-align: center;
-            padding: 40px;
-        }
-        h1 {
-            color: #c00;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>ComicVerse - Juegos</title>
+  <style>
+    body {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+    header {
+      background: #222;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .juegos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .juego-box {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .juego-box h2 {
+      margin-bottom: 1rem;
+    }
+    .juego-box a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #333;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .juego-box a:hover {
+      background: #555;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <!-- Aquí iría tu barra de navegación, similar a TicketsDC.html -->
-        <nav class="frame1920wlight-nav">
-            <div class="frame1920wlight-section">
-                <div class="frame1920wlight-horizontal-border">
-                    <div class="frame1920wlight-container11">
-                        <div class="frame1920wlight-link10">
-                            <img
-                                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                                alt="Sofia Comics Logo"
-                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
-                            />
-                        </div>
-                        <div class="frame1920wlight-vertical-border1">
-                            <div class="frame1920wlight-vertical-border2">
-                                <div class="frame1920wlight-container12">
-                                    <!-- Puedes poner un logo de videojuegos aquí si quieres -->
-                                    <img
-                                        src="{{ url_for('static', filename='external/dclogo.jpg') }}"
-                                        alt="Gaming Logo"
-                                        class="frame1920wlight-svg10"
-                                    />
-                                </div>
-                                <div class="frame1920wlight-link11">
-                                    <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
-                                </div>
-                                <span class="frame1920wlight-text101">|</span>
-                                <div class="frame1920wlight-link12">
-                                    <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="frame1920wlight-link13">
-                            <span class="frame1920wlight-text103">Sofia comics</span>
-                            <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
-                            <img
-                                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
-                                alt="unnamed"
-                                class="frame1920wlight-unnamed1"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="frame1920wlight-list10">
-                    <div class="frame1920wlight-item-link10">
-                        <a href="{{ url_for('home') }}" class="frame1920wlight-text105" style="text-decoration:none; color:inherit;">Inicio</a>
-                    </div>
-                    <div class="frame1920wlight-item-link11">
-                        <a href="{{ url_for('marvel_comics') }}" class="frame1920wlight-text106" style="text-decoration:none; color:inherit;">Marvel</a>
-                    </div>
-                    <div class="frame1920wlight-item-link12">
-                        <a href="{{ url_for('dc_comics') }}" class="frame1920wlight-text107" style="text-decoration:none; color:inherit;">DC Comics</a>
-                    </div>
-                    <div class="frame1920wlight-item-link13">
-                        <a href="{{ url_for('indie_comics') }}" class="frame1920wlight-text108" style="text-decoration:none; color:inherit;">Indies</a>
-                    </div>
-                    <div class="frame1920wlight-item-link14">
-                        <a href="{{ url_for('videojuegos') }}" class="frame1920wlight-text109" style="text-decoration:none; color:inherit;">Videojuegos</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <main>
-        <h1>Próximamente: Sección de Videojuegos</h1>
-        <p>¡Estamos trabajando para traerte el mejor contenido de videojuegos!</p>
-    </main>
+  <header>
+    <h1>🎮 ComicVerse - Selección de Juegos</h1>
+    <p>Haz clic en un juego para jugarlo en su propia página</p>
+  </header>
+  <main class="juegos-grid">
+    <div class="juego-box" style="background: #004aad; color: white">
+      <h2>Superman</h2>
+      <a href="{{ url_for('play_game', game_name='superman.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #e60012; color: white">
+      <h2>Spider-Man: Maximum Carnage</h2>
+      <a href="{{ url_for('play_game', game_name='spiderman1.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #e60012; color: white">
+      <h2>Spider-Man: Animated Series</h2>
+      <a href="{{ url_for('play_game', game_name='spiderman2.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: black; color: white">
+      <h2>The Punisher</h2>
+      <a href="{{ url_for('play_game', game_name='punisher.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #006400; color: white">
+      <h2>The Incredible Hulk</h2>
+      <a href="{{ url_for('play_game', game_name='hulk.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #002244; color: white">
+      <h2>X-Men</h2>
+      <a href="{{ url_for('play_game', game_name='xmen.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #002244; color: white">
+      <h2>Spider-Man & X-Men</h2>
+      <a href="{{ url_for('play_game', game_name='spiderman_xmen.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #222; color: white">
+      <h2>Batman Returns</h2>
+      <a href="{{ url_for('play_game', game_name='batman_returns.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #222; color: white">
+      <h2>Batman: Revenge of the Joker</h2>
+      <a href="{{ url_for('play_game', game_name='batman_joker.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #0a0a4a; color: white">
+      <h2>Fantastic Four</h2>
+      <a href="{{ url_for('play_game', game_name='fantastic_four.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #006400; color: white">
+      <h2>WrestleMania Arcade</h2>
+      <a href="{{ url_for('play_game', game_name='wrestlemania.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #000000; color: white">
+      <h2>Star Wars Arcade</h2>
+      <a href="{{ url_for('play_game', game_name='star_wars.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #008000; color: white">
+      <h2>TMNT: Hyperstone Heist</h2>
+      <a href="{{ url_for('play_game', game_name='tmnt_hyperstone.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #008000; color: white">
+      <h2>Streets of Rage 2 + TMNT</h2>
+      <a href="{{ url_for('play_game', game_name='tmnt_sor2.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #8b0000; color: white">
+      <h2>Power Rangers Fighting Edition</h2>
+      <a href="{{ url_for('play_game', game_name='powerrangers.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #800000; color: white">
+      <h2>Marvel vs Capcom</h2>
+      <a href="{{ url_for('play_game', game_name='marvel_vs_capcom.html') }}">Jugar</a>
+    </div>
+       <div class="juego-box" style="background: #800000; color: white">
+      <h2>XMVSF - X-Men vs Street Fighter</h2>
+      <a href="{{ url_for('play_game', game_name='xmvsf.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #800000; color: white">
+      <h2>MSHVSF - Marvel Super Heroes vs Street Fighter</h2>
+      <a href="{{ url_for('play_game', game_name='mshvsf.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #2a2a72; color: white">
+      <h2>Buttercup (Game Boy Color)</h2>
+      <a href="{{ url_for('play_game', game_name='buttercup_gbc.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #222; color: white">
+      <h2>Adventures of Batman and Robin (Sega Genesis)</h2>
+      <a href="{{ url_for('play_game', game_name='batman_robin.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #006400; color: white">
+      <h2>Captain Commando</h2>
+      <a href="{{ url_for('play_game', game_name='captcommando.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #8b0000; color: white">
+      <h2>Battletoads & Double Dragon</h2>
+      <a href="{{ url_for('play_game', game_name='battletoads_dd.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #cc0066; color: white">
+      <h2>Bishoujo Senshi Sailor Moon</h2>
+      <a href="{{ url_for('play_game', game_name='sailormoon.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #e60012; color: white">
+      <h2>Spider-Man vs The Kingpin</h2>
+      <a href="{{ url_for('play_game', game_name='spiderman_kingpin.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #e60012; color: white">
+      <h2>Spider-Man: Return of the Sinister Six</h2>
+      <a href="{{ url_for('play_game', game_name='spiderman_sinister.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #004aad; color: white">
+      <h2>Justice League Task Force</h2>
+      <a href="{{ url_for('play_game', game_name='justice_league.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #222; color: white">
+      <h2>Spider-Man: Warriors of Fate (32X)</h2>
+      <a href="{{ url_for('play_game', game_name='spiderman_wof.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #006400; color: white">
+      <h2>Captain America and The Avengers</h2>
+      <a href="{{ url_for('play_game', game_name='captain_america.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #4b4b4b; color: white">
+      <h2>Wolverine: Adamantium Rage</h2>
+      <a href="{{ url_for('play_game', game_name='wolverine.html') }}">Jugar</a>
+    </div>
+    <div class="juego-box" style="background: #800000; color: white">
+      <h2>MSHVSF (repetido)</h2>
+      <a href="{{ url_for('play_game', game_name='mshvsf.html') }}">Jugar</a>
+    </div>
+  </main>
+  <footer style="background: #222; color: white; text-align: center; padding: 0.5rem;">
+    <p>&copy; 2025 ComicVerse</p>
+  </footer>
 </body>
 </html>

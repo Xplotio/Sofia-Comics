@@ -257,6 +257,74 @@
             background: #218838;
         }
 
+        /* Characters Section Styles */
+        .characters-section {
+            background: rgba(0,0,0,0.7);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 900px; /* Increased max-width for characters */
+            margin-top: 30px;
+            text-align: center;
+            color: #fff;
+        }
+        .characters-section h3 {
+            font-size: 1.8rem;
+            color: #c00;
+            margin-bottom: 25px;
+        }
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            justify-content: center;
+            align-items: start; /* Align items to the start of their grid area */
+        }
+        .character-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            height: 100%; /* Ensure cards have equal height */
+        }
+        .character-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+        }
+        .character-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%; /* Circular image */
+            border: 3px solid #c00;
+            margin-bottom: 15px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.4);
+        }
+        .character-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #c00;
+            margin-bottom: 8px;
+        }
+        .character-description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #eee;
+            flex-grow: 1; /* Allow description to take available space */
+            margin-bottom: 10px;
+        }
+        .character-editorial {
+            font-size: 0.85rem;
+            color: #bbb;
+            margin-top: auto; /* Push editorial to the bottom */
+        }
+
         /* Flash Messages */
         .flash-message {
             padding: 10px 20px;
@@ -350,6 +418,19 @@
             }
             .comic-img {
                 max-width: 250px;
+            }
+            .characters-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust for smaller screens */
+            }
+            .character-img {
+                width: 100px;
+                height: 100px;
+            }
+            .character-name {
+                font-size: 1.1rem;
+            }
+            .character-description {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -457,6 +538,31 @@
                     <a class="comic-link read-comic-button" href="{{ url_for('read_comic', comic_id=comic.codigo_de_barras) }}">Leer Cómic</a>
                 </div>
             </div>
+
+            {# Sección de Personajes #}
+            <section class="characters-section">
+                <h3>Personajes:</h3>
+                {% if characters %}
+                    <div class="characters-grid">
+                        {% for character in characters %}
+                            <div class="character-card">
+                                {% if character.imagen_b64 %}
+                                    <img class="character-img" src="data:image/png;base64,{{ character.imagen_b64 }}" alt="{{ character.nombre }}">
+                                {% else %}
+                                    <img class="character-img" src="https://placehold.co/120x120/cccccc/000000?text=No+Image" alt="No Image Available">
+                                {% endif %}
+                                <h4 class="character-name">{{ character.nombre }}</h4>
+                                <p class="character-description">{{ character.descripcion }}</p>
+                                {% if character.editorial_nombre %}
+                                    <p class="character-editorial">Editorial: {{ character.editorial_nombre }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No hay personajes asociados a este cómic.</p>
+                {% endif %}
+            </section>
 
             <div class="rating-section">
                 <h3>Califica este Cómic</h3>

@@ -1,1562 +1,949 @@
 <!DOCTYPE html>
-<html lang="es"> <!-- Cambiado a español para consistencia -->
+<html lang="es">
   <head>
-    <title>Sofia Comics</title> <!-- Título más descriptivo -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
-    <meta property="twitter:card" content="summary_large_image" />
-
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;  -webkit-font-smoothing: antialiased;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"] ,[type="reset"] ,[type="submit"] {  -webkit-appearance: button;  color: inherit;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}details {  display: block;  margin: 0;  padding: 0;}summary::-webkit-details-marker {  display: none;}[data-thq="accordion"] [data-thq="accordion-content"] {  max-height: 0;  overflow: hidden;  transition: max-height 0.3s ease-in-out;  padding: 0;}[data-thq="accordion"] details[data-thq="accordion-trigger"][open] + [data-thq="accordion-content"] {  max-height: 1000vh;}details[data-thq="accordion-trigger"][open] summary [data-thq="accordion-icon"] {  transform: rotate(180deg);}html { scroll-behavior: smooth  }
-    </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: Inter;
-        font-size: 16px;
-      }
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofia Cómics</title>
+    <style>
+      /* Estilos generales del body */
       body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: none;
-        text-transform: none;
-        letter-spacing: normal;
-        line-height: 1.15;
-        color: var(--dl-color-theme-neutral-dark);
-        background: var(--dl-color-theme-neutral-light);
+        margin: 0;
+        font-family: 'Inter', Arial, sans-serif; /* Usando Inter como se especifica */
+        background-color: whitesmoke;
+        color: black;
+        padding-top: 60px; /* Compensación para el encabezado fijo, ajustado para ser más pequeño */
+      }
 
-        fill: var(--dl-color-theme-neutral-dark);
+      /* Estilos del encabezado */
+      header {
+        background-color: black;
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 5px 20px; /* Padding reducido para hacerlo más chico verticalmente */
+        gap: 15px;
+        flex-wrap: wrap;
+        position: fixed; /* Encabezado fijo */
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100; /* Asegura que esté por encima de otros contenidos */
+        box-sizing: border-box; /* Incluye padding en el ancho */
+      }
+
+      header .header-content-flex {
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 1.2rem; /* Tamaño de fuente reducido */
+      }
+
+      header a {
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+        font-size: 0.9rem; /* Tamaño de fuente reducido */
+      }
+
+      header input[type="search"] {
+        padding: 4px 8px; /* Padding reducido */
+        border-radius: 4px;
+        border: none;
+        flex-grow: 1;
+        max-width: 200px; /* Ancho máximo reducido */
+        font-size: 0.9rem; /* Tamaño de fuente reducido */
+      }
+
+      header .auth-links {
+        text-align: right;
+        padding: 5px; /* Padding reducido */
+        white-space: nowrap;
+      }
+
+      header .sub-header {
+        background-color: black;
+        text-align: center;
+        width: 100%;
+        padding-top: 5px; /* Padding reducido */
+        padding-bottom: 5px; /* Padding reducido */
+      }
+
+      header .sub-header img {
+        height: 30px; /* Ajustado para ser más pequeño */
+        opacity: 0.7;
+      }
+
+      header nav a {
+        margin: 0 10px; /* Margen reducido */
+        font-size: 0.9rem; /* Tamaño de fuente reducido */
+      }
+
+      /* Estilos del carrusel superior */
+      .carousel-container {
+        position: relative;
+        width: 100%; /* Ancho completo de la página */
+        overflow: hidden;
+        background-color: black;
+        margin: 0 auto;
+        height: 570px; /* Altura fija para el contenedor del carrusel */
+      }
+
+      .carousel-slide {
+        display: flex;
+        height: 100%;
+        transition: transform 1s ease-in-out; /* Transición para el deslizamiento */
+        /* El ancho se establecerá dinámicamente con JS */
+      }
+
+      .carousel-slide a {
+        flex-shrink: 0; /* Evita que los elementos se encojan */
+        width: 100%; /* Cada elemento ocupa el 100% del ancho del contenedor del carrusel */
+        height: 100%;
+        display: block;
+        position: relative; /* Para posicionar el contenido de la superposición */
+      }
+
+      .carousel-slide img {
+        width: 100%;
+        height: 100%; /* Ocupa toda la altura del contenedor */
+        object-fit: cover; /* Asegura que la imagen cubra el área */
+        object-position: top; /* Prioriza la parte superior de la imagen */
+        display: block;
+      }
+
+      /* Contenido de la superposición del carrusel */
+      .carousel-overlay-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 40px 60px; /* Más padding para que se vea mejor */
+        box-sizing: border-box;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+        color: white;
+        text-align: left;
+      }
+
+      .carousel-overlay-content .characters-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+        color: #ccc;
+      }
+
+      .carousel-overlay-content .comic-title {
+        font-size: 3rem; /* Título más grande */
+        font-weight: 700;
+        margin-bottom: 20px;
+        line-height: 1.2;
+      }
+
+      .carousel-overlay-content .read-now-button {
+        background-color: #e62429; /* Rojo Marvel */
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .carousel-overlay-content .read-now-button:hover {
+        background-color: #c00;
+        transform: translateY(-2px);
+      }
+
+      /* Botones de navegación del carrusel */
+      .carousel-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        font-size: 2rem;
+        cursor: pointer;
+        z-index: 10;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+
+      .carousel-button:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .carousel-button.prev {
+        left: 10px;
+      }
+
+      .carousel-button.next {
+        right: 10px;
+      }
+
+      /* Indicadores del carrusel (bolitas) */
+      .carousel-indicators {
+        position: absolute;
+        bottom: 20px; /* Posición más arriba para no chocar con el contenido */
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 11; /* Asegura que esté por encima de la superposición */
+      }
+
+      .indicator-dot {
+        width: 12px;
+        height: 12px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .indicator-dot.active {
+        background-color: white;
+        transform: scale(1.2);
+      }
+
+
+      /* Contenedor de la cuadrícula de cómics (para los más leídos del mes) */
+      .comics-grid-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 32px; /* Espacio entre los elementos */
+        max-width: 1248px; /* Ancho máximo del contenedor */
+        margin: 40px auto; /* Margen superior e inferior para separar, centrado */
+        padding: 0 20px; /* Padding a los lados para evitar que los cómics toquen los bordes */
+        box-sizing: border-box; /* Incluye padding en el ancho/alto */
+      }
+
+      /* Título de la sección de cómics */
+      .section-title {
+        color: #333; /* Color más oscuro para contraste */
+        width: 100%; /* Ocupa todo el ancho */
+        text-align: center; /* Centrado */
+        font-size: 2.5rem; /* Tamaño de fuente mucho más grande */
+        font-style: Bold;
+        font-family: 'Inter', sans-serif;
+        font-weight: 900; /* Más peso */
+        line-height: 1.2;
+        margin-top: 60px; /* Más margen superior */
+        margin-bottom: 40px; /* Más margen inferior */
+        display: block;
+        text-transform: uppercase; /* Mayúsculas */
+        letter-spacing: 2px; /* Espaciado entre letras */
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* Sombra ligera */
+      }
+
+      /* Estilos para cada enlace de cómic (la tarjeta completa) */
+      .comic-card-link {
+        width: 100%; /* Ocupa el 100% del espacio de la celda de la cuadrícula */
+        height: 355.19000244140625px; /* Altura fija de la tarjeta */
+        display: flex;
+        position: relative;
+        align-items: flex-start;
+        flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s cubic-bezier(0.4, 2, 0.6, 1), box-shadow 0.3s;
+        will-change: transform;
+        z-index: 1;
+        background-color: whitesmoke;
+        text-decoration: none; /* Quita el subrayado de los enlaces */
+      }
+
+      /* Efecto hover en la tarjeta completa */
+      .comic-card-link:hover {
+        transform: scale(1.2);
+        z-index: 10;
+        box-shadow: 0 16px 40px 0 rgba(0,0,0,0.35);
+      }
+
+      /* Estilos para la imagen de fondo dentro de la tarjeta */
+      .comic-card-background {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        align-items: flex-start;
+        flex-shrink: 0;
+        background-color: transparent;
+      }
+
+      /* Estilos para el contenedor de la imagen */
+      .comic-card-image-fill {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        overflow: hidden;
+        position: absolute;
+        align-items: flex-start;
+        flex-shrink: 0;
+      }
+
+      /* Estilos para las imágenes de portada de los cómics */
+      .comic-cover-image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        overflow: hidden;
+        position: absolute;
+        align-items: flex-start;
+        flex-shrink: 0;
+        background-size: cover;
+        background-position: center;
+        transition: none;
+      }
+
+      /* Estilos para el texto superpuesto en la parte inferior de la imagen */
+      .comic-info-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 10px;
+        box-sizing: border-box;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        color: white;
+        z-index: 2;
+        text-decoration: none;
+      }
+
+      .comic-title-text {
+        color: rgba(255, 255, 255, 1);
+        width: 100%;
+        height: auto;
+        font-size: 11px;
+        font-style: Bold;
+        text-align: left;
+        font-family: Inter;
+        font-weight: 700;
+        line-height: 20px;
+        font-stretch: normal;
+        text-decoration: none;
+      }
+
+      /* Estilos para el carrusel de personajes */
+      .carrusel {
+        position: relative;
+        overflow: hidden;
+        padding: 20px;
+        background-color: whitesmoke;
+      }
+
+      .carrusel-contenedor {
+        display: flex;
+        gap: 16px;
+        transition: transform 0.5s ease;
+        scroll-behavior: smooth;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 10px;
+      }
+
+      .tarjeta {
+        min-width: 180px;
+        background-color: whitesmoke;
+        color: black;
+        text-align: center;
+        border-radius: 10px;
+        overflow: hidden;
+        text-decoration: none;
+        scroll-snap-align: start;
+        transition: transform 0.3s cubic-bezier(0.4, 2, 0.6, 1), box-shadow 0.3s; /* Transición mejorada */
+        z-index: 1; /* Asegura el z-index para el hover */
+      }
+
+      .tarjeta:hover {
+        transform: scale(1.2); /* Mismo efecto hover que los cómics más leídos */
+        z-index: 10;
+        box-shadow: 0 16px 40px 0 rgba(0,0,0,0.35);
+      }
+
+      .tarjeta img {
+        width: 100%;
+        height: 250px; /* Altura fija para consistencia */
+        object-fit: cover; /* Asegura que la imagen cubra el espacio, recortando si es necesario */
+        display: block;
+      }
+
+      .btn-derecha {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 10px 14px;
+        font-size: 24px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      /* Estilos para el pie de página */
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 40px 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .footer-logo img {
+        max-height: 80px; /* Aumenta el tamaño del logo */
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px; /* Aumenta el espacio entre enlaces */
+      }
+
+      .footer-links a {
+        color: #ccc;
+        text-decoration: none;
+        font-size: 16px; /* Aumenta el tamaño de la fuente */
+        transition: color 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: #fff;
+      }
+
+      /* Media Queries para Responsividad */
+      @media (max-width: 1600px) {
+        .comics-grid-section {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+          max-width: 1000px;
+        }
+      }
+
+      @media (max-width: 1200px) {
+        .comics-grid-section {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          max-width: 800px;
+        }
+        .carousel-overlay-content .comic-title {
+          font-size: 2.5rem; /* Ajuste para pantallas medianas */
+        }
+      }
+
+      @media (max-width: 768px) {
+        .comics-grid-section {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 15px;
+          max-width: 500px;
+        }
+        body {
+          padding-top: 60px;
+        }
+        .carousel-container {
+            height: 300px; /* Altura reducida para móviles */
+        }
+        .carousel-button {
+            font-size: 1.5rem;
+            padding: 8px 12px;
+        }
+        .carousel-overlay-content {
+          padding: 20px 30px; /* Menos padding en móviles */
+        }
+        .carousel-overlay-content .characters-text {
+          font-size: 1rem;
+        }
+        .carousel-overlay-content .comic-title {
+          font-size: 1.8rem; /* Título más pequeño en móviles */
+        }
+        .carousel-overlay-content .read-now-button {
+          padding: 10px 20px;
+          font-size: 1rem;
+        }
+        .section-title {
+          font-size: 1.8rem; /* Título de sección más pequeño en móviles */
+          margin-top: 40px;
+          margin-bottom: 30px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .comics-grid-section {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          max-width: 250px;
+        }
+        .comic-card-link {
+          height: 300px;
+        }
+        .carousel-container {
+            height: 250px; /* Altura aún más reducida para pantallas muy pequeñas */
+        }
+        .carousel-overlay-content {
+          padding: 15px 20px;
+        }
+        .carousel-overlay-content .comic-title {
+          font-size: 1.5rem;
+        }
+        .section-title {
+          font-size: 1.5rem;
+          letter-spacing: 1px;
+        }
+      }
+
+      /* Estilos para el modal de mensajes */
+      .custom-modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.7);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+      }
+
+      .custom-modal-content {
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          text-align: center;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          max-width: 400px;
+          width: 90%;
+          color: #333;
+      }
+
+      .custom-modal-content h2 {
+          color: #c00;
+          margin-bottom: 15px;
+      }
+
+      .custom-modal-content p {
+          margin-bottom: 20px;
+          font-size: 1.1em;
+          color: #333;
+      }
+
+      .custom-modal-content button {
+          background: #c00;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1em;
+          transition: background 0.2s;
+      }
+
+      .custom-modal-content button:hover {
+          background: #e00;
+      }
+
+      /* Estilos para las sugerencias de búsqueda */
+      #searchResults {
+          position: absolute;
+          top: 100%; /* Posiciona justo debajo del input */
+          left: 0;
+          width: 100%;
+          background-color: white;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+          z-index: 101; /* Asegura que esté por encima de otros elementos */
+          max-height: 200px;
+          overflow-y: auto;
+          display: none; /* Oculto por defecto */
+      }
+
+      .search-suggestion-item {
+          padding: 8px 10px;
+          cursor: pointer;
+          color: black;
+          text-decoration: none;
+          display: block;
+      }
+
+      .search-suggestion-item:hover {
+          background-color: #f0f0f0;
       }
     </style>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/animate.css@4.1.1/animate.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
-    />
   </head>
   <body>
-    <!-- Enlace al archivo CSS principal usando url_for para Flask -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <div>
-      <!-- Enlace al archivo CSS específico de la página usando url_for para Flask -->
-      <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" />
 
-      <div class="frame1920wlight-container10">
-        <div class="frame1920wlight-frame1920wlight">
-          <div class="frame1920wlight-background10">
-            <div class="frame1920wlight-nav">
-              <div class="frame1920wlight-section">
-                <div class="frame1920wlight-horizontal-border">
-                  <div class="frame1920wlight-container11">
-                    <div class="frame1920wlight-link10">
-                      <img
-                        src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                        alt="GeminiGeneratedImagephk2vsphk2vsphk2114820"
-                        class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
-                      />
-                    </div>
-                    <div class="frame1920wlight-vertical-border1">
-                      <div class="frame1920wlight-vertical-border2">
-                        <div class="frame1920wlight-container12">
-                          <img
-                            src="{{ url_for('static', filename='external/svg487-p0cx.svg') }}"
-                            alt="SVG487"
-                            class="frame1920wlight-svg10"
-                          />
-                        </div>
-                        <div class="frame1920wlight-link11">
-                          <span class="frame1920wlight-text100">Log In</span>
-                        </div>
-                        <span class="frame1920wlight-text101">|</span>
-                        <div class="frame1920wlight-link12">
-                          <span class="frame1920wlight-text102">Sign Up</span>
-                        </div>
-                      </div>
-                    </div>
-                      <div class="frame1920wlight-link13">
-                        <span class="frame1920wlight-text103">Sofia comics</span>
-                        <!-- Enlace a la ruta de suscripción usando url_for -->
-                        <a href="{{ url_for('suscripcion') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
-                        <img
-                          src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
-                          alt="unnamed14821"
-                          class="frame1920wlight-unnamed1"
-                        />
-                      </div>
-                    <div class="frame1920wlight-linksearch">
-                      <img
-                        src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
-                        alt="SVG499"
-                        class="frame1920wlight-svg11"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-list10">
-                  <div class="frame1920wlight-item-link10">
-                    <span class="frame1920wlight-text105">News</span>
-                  </div>
-                  <div class="frame1920wlight-item-link11">
-                    <span class="frame1920wlight-text106">Comics</span>
-                  </div>
-                  <div class="frame1920wlight-item-link12">
-                    <span class="frame1920wlight-text107">Characters</span>
-                  </div>
-                  <div class="frame1920wlight-item-link13"></div>
-                  <div class="frame1920wlight-item-link14"></div>
-                  <div class="frame1920wlight-item-link15"></div>
-                  <div class="frame1920wlight-item-link16">
-                    <span class="frame1920wlight-text108">More</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="frame1920wlight-container13">
-            <div class="frame1920wlight-container14">
-              <div class="frame1920wlight-container15">
-                <div class="frame1920wlight-link14">
-                  <div class="frame1920wlight-border1">
-                    <div class="frame1920wlight-container16"></div>
-                  </div>
-                </div>
-                <button class="frame1920wlight-button1">
-                  <span class="frame1920wlight-text109">Read More</span>
-                </button>
-              </div>
-              <div class="frame1920wlight-container17">
-                <div class="frame1920wlight-amazing-spider-man-gang-war"></div>
-                <div class="frame1920wlight-link15">
-                  <div class="frame1920wlight-border2">
-                    <div class="frame1920wlight-container18">
-                      <span class="frame1920wlight-text110">Event</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-link16">
-                  <span class="frame1920wlight-text111">
-                    Amazing Spider-Man: Gang War
-                  </span>
-                </div>
-                <button class="frame1920wlight-button2">
-                  <span class="frame1920wlight-text112">Read More</span>
-                </button>
-                <img
-                  src="{{ url_for('static', filename='external/gradient4139-j0o8-600h.png') }}"
-                  alt="Gradient4139"
-                  class="frame1920wlight-gradient"
-                />
-              </div>
-              <div class="frame1920wlight-container19">
-                <div class="frame1920wlight-link17">
-                  <div class="frame1920wlight-border3">
-                    <div class="frame1920wlight-container20"></div>
-                  </div>
-                </div>
-                <button class="frame1920wlight-button3">
-                  <span class="frame1920wlight-text113">Read More</span>
-                </button>
-              </div>
-              <div class="frame1920wlight-container21">
-                <div class="frame1920wlight-link18">
-                  <div class="frame1920wlight-border4">
-                    <div class="frame1920wlight-container22"></div>
-                  </div>
-                </div>
-                <button class="frame1920wlight-button4">
-                  <span class="frame1920wlight-text114">Read More</span>
-                </button>
-              </div>
-              <div class="frame1920wlight-container23">
-                <div class="frame1920wlight-link19">
-                  <div class="frame1920wlight-border5">
-                    <div class="frame1920wlight-container24"></div>
-                  </div>
-                </div>
-                <button class="frame1920wlight-button5">
-                  <span class="frame1920wlight-text115">Read More</span>
-                </button>
-              </div>
-              <img
-                src="{{ url_for('static', filename='external/buttongotoslide14161-lyr6-200h.png') }}"
-                alt="ButtonGotoslide14161"
-                class="frame1920wlight-button-gotoslide1"
-              />
-              <img
-                src="{{ url_for('static', filename='external/buttongotoslide24162-5xq-200h.png') }}"
-                alt="ButtonGotoslide24162"
-                class="frame1920wlight-button-gotoslide2"
-              />
-              <img
-                src="{{ url_for('static', filename='external/buttongotoslide34163-6pmm-200h.png') }}"
-                alt="ButtonGotoslide34163"
-                class="frame1920wlight-button-gotoslide3"
-              />
-              <img
-                src="{{ url_for('static', filename='external/buttongotoslide44164-9c6a-200h.png') }}"
-                alt="ButtonGotoslide44164"
-                class="frame1920wlight-button-gotoslide4"
-              />
-              <img
-                src="{{ url_for('static', filename='external/buttongotoslide54165-6uzk-200h.png') }}"
-                alt="ButtonGotoslide54165"
-                class="frame1920wlight-button-gotoslide5"
-              />
-            </div>
-          </div>
-          <div class="frame1920wlight-container25">
-            <span class="frame1920wlight-text116">JunE : most read comics</span>
-            <div class="frame1920wlight-link20">
-              <div class="frame1920wlight-background11">
-                <div class="frame1920wlight-imagefill10">
-                  <div class="frame1920wlight-image10">
-                    <div class="frame1920wlight-clippathgroup10">
-                      <div class="frame1920wlight-a10">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4176-9zle.svg') }}"
-                          alt="Vector4176"
-                          class="frame1920wlight-vector10"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group10">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4173-i7cr.svg') }}"
-                          alt="Vector4173"
-                          class="frame1920wlight-vector11"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4174-x27p.svg') }}"
-                          alt="Vector4174"
-                          class="frame1920wlight-vector12"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg10"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link21">
-              <span class="frame1920wlight-text117">
-                <span>One World Under Doom (2025)</span>
-                <br />
-                <span>#2</span>
-              </span>
-            </div>
-            <div class="frame1920wlight-list11">
-              <div class="frame1920wlight-item-link17">
-                <span class="frame1920wlight-text121">North,</span>
-              </div>
-              <div class="frame1920wlight-item-link18">
-                <span class="frame1920wlight-text122">Silva,</span>
-              </div>
-              <div class="frame1920wlight-item-link19">
-                <span class="frame1920wlight-text123">Harvey</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4188-ckyn.svg') }}"
-              alt="Frame4188"
-              class="frame1920wlight-frame10"
-            />
-            <div class="frame1920wlight-link22">
-              <div class="frame1920wlight-background12">
-                <div class="frame1920wlight-imagefill11">
-                  <div class="frame1920wlight-image11">
-                    <div class="frame1920wlight-clippathgroup11">
-                      <div class="frame1920wlight-a11">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4202-sc49.svg') }}"
-                          alt="Vector4202"
-                          class="frame1920wlight-vector13"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group11">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4199-u1uc.svg') }}"
-                          alt="Vector4199"
-                          class="frame1920wlight-vector14"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4200-o889.svg') }}"
-                          alt="Vector4200"
-                          class="frame1920wlight-vector15"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg11"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link23">
-              <span class="frame1920wlight-text124">
-                <span>Eddie Brock: Carnage (2025)</span>
-                <br />
-                <span>#2</span>
-              </span>
-            </div>
-            <div class="frame1920wlight-list12">
-              <div class="frame1920wlight-item-link20">
-                <span class="frame1920wlight-text128">Soule,</span>
-              </div>
-              <div class="frame1920wlight-item-link21">
-                <span class="frame1920wlight-text129">Saiz,</span>
-              </div>
-              <div class="frame1920wlight-item-link22">
-                <span class="frame1920wlight-text130">Coello</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4214-gjb9.svg') }}"
-              alt="Frame4214"
-              class="frame1920wlight-frame11"
-            />
-            <div class="frame1920wlight-link24">
-              <div class="frame1920wlight-background13">
-                <div class="frame1920wlight-imagefill12">
-                  <div class="frame1920wlight-image12">
-                    <div class="frame1920wlight-clippathgroup12">
-                      <div class="frame1920wlight-a12">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4228-5du.svg') }}"
-                          alt="Vector4228"
-                          class="frame1920wlight-vector16"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group12">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4225-c5z.svg') }}"
-                          alt="Vector4225"
-                          class="frame1920wlight-vector17"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4226-wbtc.svg') }}"
-                          alt="Vector4226"
-                          class="frame1920wlight-vector18"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg12"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link25">
-              <span class="frame1920wlight-text131">
-                <span>Cable: Love and Chrome</span>
-                <br />
-                <span>(2025) #3</span>
-              </span>
-            </div>
-            <div class="frame1920wlight-list13">
-              <div class="frame1920wlight-item-link23">
-                <span class="frame1920wlight-text135">Pepose,</span>
-              </div>
-              <div class="frame1920wlight-item-link24">
-                <span class="frame1920wlight-text136">Henderson,</span>
-              </div>
-              <div class="frame1920wlight-item-link25">
-                <span class="frame1920wlight-text137">Churchill</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4240-87fc.svg') }}"
-              alt="Frame4240"
-              class="frame1920wlight-frame12"
-            />
-            <div class="frame1920wlight-link26">
-              <div class="frame1920wlight-background14">
-                <div class="frame1920wlight-imagefill13">
-                  <div class="frame1920wlight-image13">
-                    <div class="frame1920wlight-clippathgroup13">
-                      <div class="frame1920wlight-a13">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4254-9iz7.svg') }}"
-                          alt="Vector4254"
-                          class="frame1920wlight-vector19"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group13">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4251-sn1o.svg') }}"
-                          alt="Vector4251"
-                          class="frame1920wlight-vector20"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4252-8cjb.svg') }}"
-                          alt="Vector4252"
-                          class="frame1920wlight-vector21"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg13"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link27">
-              <span class="frame1920wlight-text138">Magik (2025) #3</span>
-            </div>
-            <div class="frame1920wlight-list14">
-              <div class="frame1920wlight-item-link26">
-                <span class="frame1920wlight-text139">Allen,</span>
-              </div>
-              <div class="frame1920wlight-item-link27">
-                <span class="frame1920wlight-text140">Peralta,</span>
-              </div>
-              <div class="frame1920wlight-item-link28">
-                <span class="frame1920wlight-text141">Campbell</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4266-fhwj.svg') }}"
-              alt="Frame4266"
-              class="frame1920wlight-frame13"
-            />
-            <div class="frame1920wlight-link28">
-              <div class="frame1920wlight-background15">
-                <div class="frame1920wlight-imagefill14">
-                  <div class="frame1920wlight-image14">
-                    <div class="frame1920wlight-clippathgroup14">
-                      <div class="frame1920wlight-a14">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4280-isdp.svg') }}"
-                          alt="Vector4280"
-                          class="frame1920wlight-vector22"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group14">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4277-scu4d.svg') }}"
-                          alt="Vector4277"
-                          class="frame1920wlight-vector23"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4278-fo09.svg') }}"
-                          alt="Vector4278"
-                          class="frame1920wlight-vector24"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg14"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link29">
-              <span class="frame1920wlight-text142">
-                <span>Deadpool/Wolverine (2025)</span>
-                <br />
-                <span>#3</span>
-              </span>
-            </div>
-            <div class="frame1920wlight-list15">
-              <div class="frame1920wlight-item-link29">
-                <span class="frame1920wlight-text146">Percy,</span>
-              </div>
-              <div class="frame1920wlight-item-link30">
-                <span class="frame1920wlight-text147">Cassara</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4290-9wd.svg') }}"
-              alt="Frame4290"
-              class="frame1920wlight-frame14"
-            />
-            <div class="frame1920wlight-link30">
-              <div class="frame1920wlight-background16">
-                <div class="frame1920wlight-imagefill15">
-                  <div class="frame1920wlight-image15">
-                    <div class="frame1920wlight-clippathgroup15">
-                      <div class="frame1920wlight-a15">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4304-ya0m.svg') }}"
-                          alt="Vector4304"
-                          class="frame1920wlight-vector25"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group15">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4301-9y1s.svg') }}"
-                          alt="Vector4301"
-                          class="frame1920wlight-vector26"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4302-a84.svg') }}"
-                          alt="Vector4302"
-                          class="frame1920wlight-vector27"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg15"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link31">
-              <span class="frame1920wlight-text148">
-                <span>FANTASTIC FOUR FACSIMILE</span>
-                <br />
-                <span>EDITION (2025) #3</span>
-              </span>
-            </div>
-            <div class="frame1920wlight-list16">
-              <div class="frame1920wlight-item-link31">
-                <span class="frame1920wlight-text152">Lee,</span>
-              </div>
-              <div class="frame1920wlight-item-link32">
-                <span class="frame1920wlight-text153">Kirby</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4314-003.svg') }}"
-              alt="Frame4314"
-              class="frame1920wlight-frame15"
-            />
-            <div class="frame1920wlight-link32">
-              <div class="frame1920wlight-background17">
-                <div class="frame1920wlight-imagefill16">
-                  <div class="frame1920wlight-image16">
-                    <div class="frame1920wlight-clippathgroup16">
-                      <div class="frame1920wlight-a16">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4328-jkoj.svg') }}"
-                          alt="Vector4328"
-                          class="frame1920wlight-vector28"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group16">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4325-nck7.svg') }}"
-                          alt="Vector4325"
-                          class="frame1920wlight-vector29"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4326-dpgh.svg') }}"
-                          alt="Vector4326"
-                          class="frame1920wlight-vector30"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg16"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link33">
-              <span class="frame1920wlight-text154">
-                <span>Sam Wilson, Captain America</span>
-                <br />
-                <span>(2025) #3</span>
-              </span>
-            </div>
-            <div class="frame1920wlight-list17">
-              <div class="frame1920wlight-item-link33">
-                <span class="frame1920wlight-text158">Narcisse,</span>
-              </div>
-              <div class="frame1920wlight-item-link34">
-                <span class="frame1920wlight-text159">Landro,</span>
-              </div>
-              <div class="frame1920wlight-item-link35">
-                <span class="frame1920wlight-text160">Clarke</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4340-uum5.svg') }}"
-              alt="Frame4340"
-              class="frame1920wlight-frame16"
-            />
-            <div class="frame1920wlight-link34">
-              <div class="frame1920wlight-background18">
-                <div class="frame1920wlight-imagefill17">
-                  <div class="frame1920wlight-image17">
-                    <div class="frame1920wlight-clippathgroup17">
-                      <div class="frame1920wlight-a17">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4354-u0h.svg') }}"
-                          alt="Vector4354"
-                          class="frame1920wlight-vector31"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group17">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4351-i479.svg') }}"
-                          alt="Vector4351"
-                          class="frame1920wlight-vector32"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4352-w8d.svg') }}"
-                          alt="Vector4352"
-                          class="frame1920wlight-vector33"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg17"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link35">
-              <span class="frame1920wlight-text161">
-                New Champions (2025) #3
-              </span>
-            </div>
-            <div class="frame1920wlight-list18">
-              <div class="frame1920wlight-item-link36">
-                <span class="frame1920wlight-text162">Foxe,</span>
-              </div>
-              <div class="frame1920wlight-item-link37">
-                <span class="frame1920wlight-text163">Fiorelli,</span>
-              </div>
-              <div class="frame1920wlight-item-link38">
-                <span class="frame1920wlight-text164">Nauck</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4366-eimq.svg') }}"
-              alt="Frame4366"
-              class="frame1920wlight-frame17"
-            />
-            <div class="frame1920wlight-link36">
-              <div class="frame1920wlight-background19">
-                <div class="frame1920wlight-imagefill18">
-                  <div class="frame1920wlight-image18">
-                    <div class="frame1920wlight-clippathgroup18">
-                      <div class="frame1920wlight-a18">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4380-413.svg') }}"
-                          alt="Vector4380"
-                          class="frame1920wlight-vector34"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group18">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4377-ogun.svg') }}"
-                          alt="Vector4377"
-                          class="frame1920wlight-vector35"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4378-z7rm.svg') }}"
-                          alt="Vector4378"
-                          class="frame1920wlight-vector36"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg18"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link37">
-              <span class="frame1920wlight-text165">TVA (2024) #4</span>
-            </div>
-            <div class="frame1920wlight-list19">
-              <div class="frame1920wlight-item-link39">
-                <span class="frame1920wlight-text166">Blair,</span>
-              </div>
-              <div class="frame1920wlight-item-link40">
-                <span class="frame1920wlight-text167">Balam,</span>
-              </div>
-              <div class="frame1920wlight-item-link41">
-                <span class="frame1920wlight-text168">Perez</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4392-0sxm.svg') }}"
-              alt="Frame4392"
-              class="frame1920wlight-frame18"
-            />
-            <div class="frame1920wlight-link38">
-              <div class="frame1920wlight-background20">
-                <div class="frame1920wlight-imagefill19">
-                  <div class="frame1920wlight-image19">
-                    <div class="frame1920wlight-clippathgroup19">
-                      <div class="frame1920wlight-a19">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4406-k83.svg') }}"
-                          alt="Vector4406"
-                          class="frame1920wlight-vector37"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group19">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4403-vrh.svg') }}"
-                          alt="Vector4403"
-                          class="frame1920wlight-vector38"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4404-humn.svg') }}"
-                          alt="Vector4404"
-                          class="frame1920wlight-vector39"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg19"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link39">
-              <span class="frame1920wlight-text169">Psylocke (2024) #5</span>
-            </div>
-            <div class="frame1920wlight-list20">
-              <div class="frame1920wlight-item-link42">
-                <span class="frame1920wlight-text170">Wong,</span>
-              </div>
-              <div class="frame1920wlight-item-link43">
-                <span class="frame1920wlight-text171">Carratu,</span>
-              </div>
-              <div class="frame1920wlight-item-link44">
-                <span class="frame1920wlight-text172">Asrar</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4418-llf7.svg') }}"
-              alt="Frame4418"
-              class="frame1920wlight-frame19"
-            />
-            <div class="frame1920wlight-link40">
-              <div class="frame1920wlight-background21">
-                <div class="frame1920wlight-imagefill20">
-                  <div class="frame1920wlight-image20">
-                    <div class="frame1920wlight-clippathgroup20">
-                      <div class="frame1920wlight-a20">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4432-tgeo.svg') }}"
-                          alt="Vector4432"
-                          class="frame1920wlight-vector40"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group20">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4429-pvak.svg') }}"
-                          alt="Vector4429"
-                          class="frame1920wlight-vector41"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4430-ax1n.svg') }}"
-                          alt="Vector4430"
-                          class="frame1920wlight-vector42"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg20"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link41">
-              <span class="frame1920wlight-text173">
-                Exceptional X-Men (2024) #7
-              </span>
-            </div>
-            <div class="frame1920wlight-list21">
-              <div class="frame1920wlight-item-link45">
-                <span class="frame1920wlight-text174">Ewing,</span>
-              </div>
-              <div class="frame1920wlight-item-link46">
-                <span class="frame1920wlight-text175">Carnero</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4442-ex0x.svg') }}"
-              alt="Frame4442"
-              class="frame1920wlight-frame20"
-            />
-            <div class="frame1920wlight-link42">
-              <div class="frame1920wlight-background22">
-                <div class="frame1920wlight-imagefill21">
-                  <div class="frame1920wlight-image21">
-                    <div class="frame1920wlight-clippathgroup21">
-                      <div class="frame1920wlight-a21">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4456-fksu.svg') }}"
-                          alt="Vector4456"
-                          class="frame1920wlight-vector43"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group21">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4453-45wk.svg') }}"
-                          alt="Vector4453"
-                          class="frame1920wlight-vector44"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4454-09sv.svg') }}"
-                          alt="Vector4454"
-                          class="frame1920wlight-vector45"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg21"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link43">
-              <span class="frame1920wlight-text176">X-Force (2024) #9</span>
-            </div>
-            <div class="frame1920wlight-list22">
-              <div class="frame1920wlight-item-link47">
-                <span class="frame1920wlight-text177">Thorne,</span>
-              </div>
-              <div class="frame1920wlight-item-link48">
-                <span class="frame1920wlight-text178">To,</span>
-              </div>
-              <div class="frame1920wlight-item-link49">
-                <span class="frame1920wlight-text179">Segovia</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4468-2n5q.svg') }}"
-              alt="Frame4468"
-              class="frame1920wlight-frame21"
-            />
-            <div class="frame1920wlight-link44">
-              <div class="frame1920wlight-background23">
-                <div class="frame1920wlight-imagefill22">
-                  <div class="frame1920wlight-image22">
-                    <div class="frame1920wlight-clippathgroup22">
-                      <div class="frame1920wlight-a22">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4482-9baq.svg') }}"
-                          alt="Vector4482"
-                          class="frame1920wlight-vector46"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group22">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4479-ateg.svg') }}"
-                          alt="Vector4479"
-                          class="frame1920wlight-vector47"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4480-zc7f.svg') }}"
-                          alt="Vector4480"
-                          class="frame1920wlight-vector48"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg22"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link45">
-              <span class="frame1920wlight-text180">
-                Ultimate X-Men (2024) #13
-              </span>
-            </div>
-            <div class="frame1920wlight-list-item-link1">
-              <span class="frame1920wlight-text181">Momoko</span>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4489-8gz.svg') }}"
-              alt="Frame4489"
-              class="frame1920wlight-frame22"
-            />
-            <div class="frame1920wlight-link46">
-              <div class="frame1920wlight-background24">
-                <div class="frame1920wlight-imagefill23">
-                  <div class="frame1920wlight-image23">
-                    <div class="frame1920wlight-clippathgroup23">
-                      <div class="frame1920wlight-a23">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4503-c64i.svg') }}"
-                          alt="Vector4503"
-                          class="frame1920wlight-vector49"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group23">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4500-w2ii.svg') }}"
-                          alt="Vector4500"
-                          class="frame1920wlight-vector50"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4501-o6y.svg') }}"
-                          alt="Vector4501"
-                          class="frame1920wlight-vector51"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg23"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link47">
-              <span class="frame1920wlight-text182">
-                <span>Ultimate Black Panther</span>
-                <br />
-                <span>(2024) #14</span>
-              </span>
-            </div>
-            <div class="frame1920wlight-list23">
-              <div class="frame1920wlight-item-link50">
-                <span class="frame1920wlight-text186">Hill,</span>
-              </div>
-              <div class="frame1920wlight-item-link51">
-                <span class="frame1920wlight-text187">Nieto,</span>
-              </div>
-              <div class="frame1920wlight-item-link52">
-                <span class="frame1920wlight-text188">Caselli</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4515-ktpf.svg') }}"
-              alt="Frame4515"
-              class="frame1920wlight-frame23"
-            />
-            <div class="frame1920wlight-link48">
-              <div class="frame1920wlight-background25">
-                <div class="frame1920wlight-imagefill24">
-                  <div class="frame1920wlight-image24">
-                    <div class="frame1920wlight-clippathgroup24">
-                      <div class="frame1920wlight-a24">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4529-qdn9.svg') }}"
-                          alt="Vector4529"
-                          class="frame1920wlight-vector52"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group24">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4526-kl5v.svg') }}"
-                          alt="Vector4526"
-                          class="frame1920wlight-vector53"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4527-zmxo.svg') }}"
-                          alt="Vector4527"
-                          class="frame1920wlight-vector54"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="frame1920wlight-portraituncannyjpg24"></div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link49">
-              <span class="frame1920wlight-text189">Avengers (2023) #24</span>
-            </div>
-            <div class="frame1920wlight-list24">
-              <div class="frame1920wlight-item-link53">
-                <span class="frame1920wlight-text190">Mackay,</span>
-              </div>
-              <div class="frame1920wlight-item-link54">
-                <span class="frame1920wlight-text191">Karami,</span>
-              </div>
-              <div class="frame1920wlight-item-link55">
-                <span class="frame1920wlight-text192">Schiti</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4541-8bfm.svg') }}"
-              alt="Frame4541"
-              class="frame1920wlight-frame24"
-            />
-            <button class="frame1920wlight-button6">
-              <span class="frame1920wlight-text193">Load More</span>
-            </button>
-          </div>
-          <span class="frame1920wlight-text194">ADVERTISEMENT</span>
-          <span class="frame1920wlight-text195">favorite characters</span>
-          <button class="frame1920wlight-button7">
-            <span class="frame1920wlight-text196">See All</span>
-            <img
-              src="{{ url_for('static', filename='external/frame4554-vthh.svg') }}"
-              alt="Frame4554"
-              class="frame1920wlight-frame25"
-            />
-          </button>
-          <button class="frame1920wlight-button8">
-            <img
-              src="{{ url_for('static', filename='external/frame4557-uzh.svg') }}"
-              alt="Frame4557"
-              class="frame1920wlight-frame26"
-            />
-          </button>
-          <div class="frame1920wlight-container26">
-            <div class="frame1920wlight-link50">
-              <div class="frame1920wlight-background26">
-                <div class="frame1920wlight-imagefill25">
-                  <div class="frame1920wlight-image25">
-                    <div class="frame1920wlight-clippathgroup25">
-                      <div class="frame1920wlight-a25">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4568-6nxu.svg') }}"
-                          alt="Vector4568"
-                          class="frame1920wlight-vector55"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group25">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4565-deka.svg') }}"
-                          alt="Vector4565"
-                          class="frame1920wlight-vector56"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4566-zobb.svg') }}"
-                          alt="Vector4566"
-                          class="frame1920wlight-vector57"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <img
-                    src="{{ url_for('static', filename='external/hdwallpaperspidermanartworkartstationintothespider4822-m0oc-300w.png') }}"
-                    alt="HDwallpaperspidermanartworkartstationintothespider4822"
-                    class="frame1920wlight-h-dwallpaperspidermanartworkartstationintothespider"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link51">
-              <span class="frame1920wlight-text197">
-                Spiderman (miles morales)
-              </span>
-            </div>
-            <div class="frame1920wlight-list25">
-              <div class="frame1920wlight-item-link56">
-                <span class="frame1920wlight-text198">Kelly,</span>
-              </div>
-              <div class="frame1920wlight-item-link57">
-                <span class="frame1920wlight-text199">Cappuccio,</span>
-              </div>
-              <div class="frame1920wlight-item-link58">
-                <span class="frame1920wlight-text200">Gist</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4580-k6id.svg') }}"
-              alt="Frame4580"
-              class="frame1920wlight-frame27"
-            />
-            <div class="frame1920wlight-link52">
-              <div class="frame1920wlight-background27">
-                <div class="frame1920wlight-imagefill26">
-                  <div class="frame1920wlight-image26">
-                    <div class="frame1920wlight-clippathgroup26">
-                      <div class="frame1920wlight-a26">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4594-a06a.svg') }}"
-                          alt="Vector4594"
-                          class="frame1920wlight-vector58"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group26">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4591-5q4k.svg') }}"
-                          alt="Vector4591"
-                          class="frame1920wlight-vector59"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4592-cgde.svg') }}"
-                          alt="Vector4592"
-                          class="frame1920wlight-vector60"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <img
-                    src="{{ url_for('static', filename='external/images14823-3j2-500h.png') }}"
-                    alt="images14823"
-                    class="frame1920wlight-images1"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link53">
-              <span class="frame1920wlight-text201">
-                Spiderman (peter parker)
-              </span>
-            </div>
-            <div class="frame1920wlight-list26">
-              <div class="frame1920wlight-item-link59">
-                <span class="frame1920wlight-text202">Templeton,</span>
-              </div>
-              <div class="frame1920wlight-item-link60">
-                <span class="frame1920wlight-text203">Davis</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4604-n7mp.svg') }}"
-              alt="Frame4604"
-              class="frame1920wlight-frame28"
-            />
-            <div class="frame1920wlight-link54">
-              <div class="frame1920wlight-background28">
-                <div class="frame1920wlight-imagefill27">
-                  <div class="frame1920wlight-image27">
-                    <div class="frame1920wlight-clippathgroup27">
-                      <div class="frame1920wlight-a27">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4618-zjqk.svg') }}"
-                          alt="Vector4618"
-                          class="frame1920wlight-vector61"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group27">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4615-laq.svg') }}"
-                          alt="Vector4615"
-                          class="frame1920wlight-vector62"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4616-z1ls.svg') }}"
-                          alt="Vector4616"
-                          class="frame1920wlight-vector63"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <img
-                    src="{{ url_for('static', filename='external/venomcomicbook842x1280wallpaperf3odp1dwq26svfml14824-4yu2j-300w.png') }}"
-                    alt="venomcomicbook842x1280wallpaperf3odp1dwq26svfml14824"
-                    class="frame1920wlight-venomcomicbook842x1280wallpaperf3odp1dwq26svfml1"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link55">
-              <span class="frame1920wlight-text204">Venom (eddie brock)</span>
-            </div>
-            <div class="frame1920wlight-list27">
-              <div class="frame1920wlight-item-link61">
-                <span class="frame1920wlight-text205">Ryan,</span>
-              </div>
-              <div class="frame1920wlight-item-link62">
-                <span class="frame1920wlight-text206">Carlos</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4628-skwn.svg') }}"
-              alt="Frame4628"
-              class="frame1920wlight-frame29"
-            />
-            <div class="frame1920wlight-link56">
-              <div class="frame1920wlight-background29">
-                <div class="frame1920wlight-imagefill28">
-                  <div class="frame1920wlight-image28">
-                    <div class="frame1920wlight-clippathgroup28">
-                      <div class="frame1920wlight-a28">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4642-9ic.svg') }}"
-                          alt="Vector4642"
-                          class="frame1920wlight-vector64"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group28">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4639-dk2h.svg') }}"
-                          alt="Vector4639"
-                          class="frame1920wlight-vector65"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4640-jzpl.svg') }}"
-                          alt="Vector4640"
-                          class="frame1920wlight-vector66"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <img
-                    src="{{ url_for('static', filename='external/hdwallpaperstarlordlordstarstarlord14825-66d-500h.png') }}"
-                    alt="HDwallpaperstarlordlordstarstarlord14825"
-                    class="frame1920wlight-h-dwallpaperstarlordlordstarstarlord1"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link57">
-              <span class="frame1920wlight-text207">Star lord</span>
-            </div>
-            <div class="frame1920wlight-list28">
-              <div class="frame1920wlight-item-link63">
-                <span class="frame1920wlight-text208">Lee,</span>
-              </div>
-              <div class="frame1920wlight-item-link64">
-                <span class="frame1920wlight-text209">Colan</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4652-qxbl.svg') }}"
-              alt="Frame4652"
-              class="frame1920wlight-frame30"
-            />
-            <div class="frame1920wlight-link58">
-              <div class="frame1920wlight-background30">
-                <div class="frame1920wlight-imagefill29">
-                  <div class="frame1920wlight-image29">
-                    <div class="frame1920wlight-clippathgroup29">
-                      <div class="frame1920wlight-a29">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4666-gw1.svg') }}"
-                          alt="Vector4666"
-                          class="frame1920wlight-vector67"
-                        />
-                      </div>
-                      <div class="frame1920wlight-group29">
-                        <img
-                          src="{{ url_for('static', filename='external/vector4663-ynf7.svg') }}"
-                          alt="Vector4663"
-                          class="frame1920wlight-vector68"
-                        />
-                        <img
-                          src="{{ url_for('static', filename='external/vector4664-b65.svg') }}"
-                          alt="Vector4664"
-                          class="frame1920wlight-vector69"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link59">
-              <span class="frame1920wlight-text210">imagen blanco</span>
-            </div>
-            <div class="frame1920wlight-list29">
-              <div class="frame1920wlight-item-link65">
-                <span class="frame1920wlight-text211">Ewing,</span>
-              </div>
-              <div class="frame1920wlight-item-link66">
-                <span class="frame1920wlight-text212">Iulis</span>
-              </div>
-            </div>
-            <img
-              src="{{ url_for('static', filename='external/frame4676-7jfj.svg') }}"
-              alt="Frame4676"
-              class="frame1920wlight-frame31"
-            />
-            <div class="frame1920wlight-link60"></div>
-            <div class="frame1920wlight-link61"></div>
-            <div class="frame1920wlight-list-item-link2"></div>
-            <div class="frame1920wlight-link62"></div>
-            <div class="frame1920wlight-link63"></div>
-            <div class="frame1920wlight-list-item-link3"></div>
-            <div class="frame1920wlight-link64"></div>
-            <div class="frame1920wlight-link65"></div>
-            <div class="frame1920wlight-list-item-link4"></div>
-            <div class="frame1920wlight-link66"></div>
-            <div class="frame1920wlight-link67"></div>
-            <div class="frame1920wlight-list-item-link5"></div>
-            <div class="frame1920wlight-link68"></div>
-            <div class="frame1920wlight-link69"></div>
-            <div class="frame1920wlight-list-item-link6"></div>
-          </div>
-          <div class="frame1920wlight-footer">
-            <div class="frame1920wlight-container27">
-              <div class="frame1920wlight-link70">
-                <img
-                  src="{{ url_for('static', filename='external/svg4730-n1g.svg') }}"
-                  alt="SVG4730"
-                  class="frame1920wlight-svg12"
-                />
-              </div>
-              <div class="frame1920wlight-nav-primaryfooternavigtion-list">
-                <div class="frame1920wlight-item-link67">
-                  <span class="frame1920wlight-text213">About Marvel</span>
-                </div>
-                <div class="frame1920wlight-item-link68">
-                  <span class="frame1920wlight-text214">Help/FAQs</span>
-                </div>
-                <div class="frame1920wlight-item-link69">
-                  <span class="frame1920wlight-text215">Careers</span>
-                </div>
-                <div class="frame1920wlight-item-link70">
-                  <span class="frame1920wlight-text216">Internships</span>
-                </div>
-              </div>
-              <div class="frame1920wlight-nav-secondaryfooternavigtion-list">
-                <div class="frame1920wlight-item-link71">
-                  <span class="frame1920wlight-text217">Advertising</span>
-                </div>
-                <div class="frame1920wlight-item-link72">
-                  <span class="frame1920wlight-text218">Disney+</span>
-                </div>
-                <div class="frame1920wlight-item-link73">
-                  <span class="frame1920wlight-text219">Marvelhq.com</span>
-                </div>
-                <div class="frame1920wlight-item-link74">
-                  <span class="frame1920wlight-text220">
-                    <span>Redeem Digital</span>
-                    <br />
-                    <span>Comics</span>
-                  </span>
-                </div>
-              </div>
-              <div class="frame1920wlight-nav-promotionalfooternavigtion-link">
-                <span class="frame1920wlight-text224">Marvel Unlimited</span>
-                <span class="frame1920wlight-text225">
-                  Access Over 30,000+ Digital Comics
-                </span>
-                <div class="frame1920wlight-marvel-unlimited-logo"></div>
-              </div>
-              <div class="frame1920wlight-nav-socialfooternavigtion">
-                <span class="frame1920wlight-text226">Follow Marvel</span>
-                <div class="frame1920wlight-list30">
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-facebookopensanewwindow"
-                  >
-                    <div class="frame1920wlight-container28">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4760-8tw.svg') }}"
-                        alt="SVG4760"
-                        class="frame1920wlight-svg13"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-twitteropensanewwindow"
-                  >
-                    <div class="frame1920wlight-container29">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4764-fya.svg') }}"
-                        alt="SVG4764"
-                        class="frame1920wlight-svg14"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-instagramopensanewwindow"
-                  >
-                    <div class="frame1920wlight-container30">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4768-vexn.svg') }}"
-                        alt="SVG4768"
-                        class="frame1920wlight-svg15"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-tumblropensanewwindow"
-                  >
-                    <div class="frame1920wlight-container31">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4772-vhys.svg') }}"
-                        alt="SVG4772"
-                        class="frame1920wlight-svg16"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-youtubeopensanewwindow"
-                  >
-                    <div class="frame1920wlight-container32">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4776-v1y.svg') }}"
-                        alt="SVG4776"
-                        class="frame1920wlight-svg17"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-snapchatopensanewwindow"
-                  >
-                    <div class="frame1920wlight-container33">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4780-obg8.svg') }}"
-                        alt="SVG4780"
-                        class="frame1920wlight-svg18"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-pinterestopensanewwindow"
-                  >
-                    <div class="frame1920wlight-container34">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4784-tnn5.svg') }}"
-                        alt="SVG4784"
-                        class="frame1920wlight-svg19"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-twitchopensanewwindow"
-                  >
-                    <div class="frame1920wlight-container35">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4788-8pf.svg') }}"
-                        alt="SVG4788"
-                        class="frame1920wlight-svg20"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="frame1920wlight-item-linkfollowuson-tiktokopensanewwindow"
-                  >
-                    <div class="frame1920wlight-container36">
-                      <img
-                        src="{{ url_for('static', filename='external/svg4794-8wxm.svg') }}"
-                        alt="SVG4794"
-                        class="frame1920wlight-svg21"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="frame1920wlight-nav-legalfooternavigtion">
-              <div class="frame1920wlight-link71">
-                <span class="frame1920wlight-text227">Terms of Use</span>
-              </div>
-              <div class="frame1920wlight-link72">
-                <span class="frame1920wlight-text228">Privacy Policy</span>
-              </div>
-              <div class="frame1920wlight-link73">
-                <span class="frame1920wlight-text229">
-                  Your US State Privacy Rights
-                </span>
-              </div>
-              <div class="frame1920wlight-link74">
-                <span class="frame1920wlight-text230">
-                  Children's Online Privacy Policy
-                </span>
-              </div>
-              <div class="frame1920wlight-link75">
-                <span class="frame1920wlight-text231">License Agreement</span>
-              </div>
-              <div class="frame1920wlight-link76">
-                <span class="frame1920wlight-text232">Interest-Based Ads</span>
-              </div>
-              <div class="frame1920wlight-link77">
-                <span class="frame1920wlight-text233">
-                  Marvel Insider Terms
-                </span>
-              </div>
-              <span class="frame1920wlight-text234">©2025 MARVEL</span>
-            </div>
-          </div>
-        </div>
+    <header>
+      <!-- Nombre y enlace "Suscribe" -->
+      <div class="header-content-flex">
+        <h1>Sofia Cómics</h1>
+        <a href="{{ url_for('subscriptions') }}">Suscribe</a>
       </div>
+
+      <!-- Barra de búsqueda -->
+      <form action="#" method="GET" style="flex-grow: 1; max-width: 250px; display: flex; position: relative;">
+        <input type="search" id="searchInput" name="query" placeholder="Buscar cómics..." style="flex-grow: 1;" oninput="fetchSuggestions()">
+        <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0 5px;">
+            <img src="https://img.icons8.com/ios-filled/20/ffffff/search--v1.png" alt="Buscar">
+        </button>
+        <div id="searchResults"></div>
+      </form>
+
+      <!-- Botones de Log in y Sign up -->
+      <div class="auth-links">
+        <a href="{{ url_for('login') }}">Log In</a>
+        <span>|</span>
+        <a href="{{ url_for('register') }}">Sign Up</a>
+      </div>
+
+      <!-- Subencabezado/Navegación inferior del header -->
+      <div class="sub-header">
+        <!-- Imagen decorativa -->
+        <div style="display: flex; justify-content: center; margin-bottom: 5px;">
+          <img
+            src="{{ url_for('static', filename='public/external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
+            alt="Decoración">
+        </div>
+
+        <!-- Botones/enlaces de navegación -->
+        <nav>
+          <a href="#news">News</a>
+          <a href="{{ url_for('marvel_comics') }}">Marvel Comics</a>
+          <a href="{{ url_for('dc_comics') }}">DC Comics</a>
+          <a href="{{ url_for('indie_comics') }}">Indie Comics</a>
+          <a href="{{ url_for('videojuegos') }}">Videojuegos</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Carrusel Superior (Cómics más leídos del mes) -->
+    <div class="carousel-container">
+      <div class="carousel-slide" id="topCarouselSlide">
+        {% for comic in most_read_comics_month %}
+        <a href="{{ url_for('comic_detail', comic_id=comic.codigo_de_barras) }}">
+          <img src="{% if comic.portada_b64 %}data:image/jpeg;base64,{{ comic.portada_b64 }}{% else %}https://placehold.co/1355x570/cccccc/333333?text=No+Cover{% endif %}" alt="{{ comic.titulo }} Cover">
+          <div class="carousel-overlay-content">
+            
+            </span>
+            <h1 class="comic-title">{{ comic.titulo }}</h1>
+            <button class="read-now-button" onclick="window.location.href='{{ url_for('comic_detail', comic_id=comic.codigo_de_barras) }}'">Haz click y lee ahora</button>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <button class="carousel-button prev" id="prevSlideButton">&#10094;</button>
+      <button class="carousel-button next" id="nextSlideButton">&#10095;</button>
+      <div class="carousel-indicators" id="carouselIndicators"></div>
     </div>
+
+    <!-- Sección de Cómics Más Leídos del Mes -->
+    <span class="section-title">{{ current_month_name }}: los cómics más leídos</span>
+    <div class="comics-grid-section">
+      {% if most_read_comics_month %}
+        {% for comic in most_read_comics_month %}
+        <a href="{{ url_for('comic_detail', comic_id=comic.codigo_de_barras) }}" class="comic-card-link">
+          <div class="comic-card-background">
+            <div class="comic-card-image-fill">
+              <div class="comic-cover-image" style="background-image: url('{% if comic.portada_b64 %}data:image/jpeg;base64,{{ comic.portada_b64 }}{% else %}https://placehold.co/180x250/cccccc/333333?text=No+Cover{% endif %}');">
+              </div>
+            </div>
+          </div>
+          <div class="comic-info-overlay">
+            <span class="comic-title-text">
+              <span>{{ comic.titulo }}</span>
+              <br />
+              <span>{{ comic.autor }}</span>
+            </span>
+          </div>
+        </a>
+        {% endfor %}
+      {% else %}
+        <p style="text-align: center; width: 100%; color: #555;">No hay cómics disponibles para este mes.</p>
+      {% endif %}
+    </div>
+
+    <!-- Sección de Cómics de tus Personajes Favoritos -->
+    <span class="section-title">Cómics de tus personajes favoritos</span>
+    <section class="carrusel">
+      <div class="carrusel-contenedor" id="carruselPersonajesContenedor">
+        {% if favorite_character_comics %}
+          {% for comic in favorite_character_comics %}
+          <a href="{{ url_for('comic_detail', comic_id=comic.codigo_de_barras) }}" class="tarjeta">
+            {% if comic.portada_b64 %}
+            <img src="data:image/jpeg;base64,{{ comic.portada_b64 }}" alt="{{ comic.titulo }} Cover">
+            {% else %}
+            <img src="https://placehold.co/180x250/cccccc/333333?text=No+Cover" alt="No Cover Available">
+            {% endif %}
+            <div class="detalles">{{ comic.titulo }}</div>
+          </a>
+          {% endfor %}
+        {% else %}
+          <p style="color: black; text-align: center; width: 100%; padding: 20px;">Inicia sesión y selecciona tus personajes favoritos en tu perfil para ver cómics aquí.</p>
+        {% endif %}
+      </div>
+      {% if favorite_character_comics %}
+      <button class="btn-derecha" id="botonDerechaPersonajes">→</button>
+      {% endif %}
+    </section>
+
+    <!-- PIE DE PAGINA -->
+    <footer class="footer">
+      <div class="footer-logo">
+        <img src="{{ url_for('static', filename='public/external/unnamed14821-q9e-200h.png') }}" alt="Sofia Cómics Logo" />
+      </div>
+      <div class="footer-links">
+        <a href="#">About Sofía Cómics</a>
+        <a href="{{ url_for('subscriptions') }}">Subscriptions</a>
+        <a href="#news">News</a>
+        <a href="#">Our comics</a>
+        <a href="{{ url_for('dc_comics') }}">DC</a>
+        <a href="{{ url_for('marvel_comics') }}">MARVEL</a>
+        <a href="{{ url_for('indie_comics') }}">indie comics</a>
+      </div>
+    </footer>
+
+    <script>
+      // Script para el carrusel de personajes favoritos (se mantiene)
+      const carruselPersonajes = document.getElementById('carruselPersonajesContenedor');
+      const botonDerechaPersonajes = document.getElementById('botonDerechaPersonajes');
+
+      if (botonDerechaPersonajes) {
+        botonDerechaPersonajes.addEventListener('click', () => {
+          carruselPersonajes.scrollBy({
+            left: carruselPersonajes.clientWidth,
+            behavior: 'smooth'
+          });
+        });
+      }
+
+      // Lógica para mostrar modal personalizado (se mantiene)
+      function mostrarModalPersonalizado(mensaje, callback) {
+          let modal = document.getElementById('customFlashModal');
+          if (!modal) {
+              modal = document.createElement('div');
+              modal.id = 'customFlashModal';
+              modal.className = 'custom-modal-overlay';
+              modal.innerHTML = `
+                  <div class="custom-modal-content">
+                      <h2>Mensaje</h2>
+                      <p>${mensaje}</p>
+                      <button id="modalCloseButton">Aceptar</button>
+                  </div>
+              `;
+              document.body.appendChild(modal);
+
+              document.getElementById('modalCloseButton').addEventListener('click', function() {
+                  modal.remove();
+                  if (callback) {
+                      callback();
+                  }
+              });
+          } else {
+              // Si el modal ya existe, actualiza el mensaje y muestra
+              modal.querySelector('p').textContent = mensaje;
+              modal.style.display = 'flex';
+              const closeButton = document.getElementById('modalCloseButton');
+              const newCloseButton = closeButton.cloneNode(true);
+              closeButton.parentNode.replaceChild(newCloseButton, closeButton); // Eliminar listener anterior
+              newCloseButton.addEventListener('click', function() {
+                  modal.style.display = 'none';
+                  if (callback) {
+                      callback();
+                  }
+              });
+          }
+      }
+
+      // Lógica para mostrar mensajes flash al cargar la página (se mantiene)
+      window.addEventListener('load', function() {
+        const flashMessages = document.querySelectorAll('.flash-message');
+        if (flashMessages.length > 0) {
+            let allMessages = "";
+            flashMessages.forEach(msg => {
+                allMessages += msg.textContent + "\n";
+            });
+            mostrarModalPersonalizado(allMessages.trim());
+        }
+      });
+
+      // --- Lógica de Sugerencias de Búsqueda (Autocomplete) ---
+      const searchInput = document.getElementById('searchInput');
+      const searchResultsDiv = document.getElementById('searchResults');
+
+      async function fetchSuggestions() {
+          const query = searchInput.value.trim();
+          if (query.length < 2) { // Muestra sugerencias solo si hay al menos 2 caracteres
+              searchResultsDiv.innerHTML = '';
+              searchResultsDiv.style.display = 'none';
+              return;
+          }
+
+          try {
+              const response = await fetch(`/search_suggestions?query=${encodeURIComponent(query)}`);
+              const suggestions = await response.json();
+
+              searchResultsDiv.innerHTML = ''; // Limpiar sugerencias anteriores
+
+              if (suggestions.length > 0) {
+                  suggestions.forEach(comic => {
+                      const suggestionItem = document.createElement('a');
+                      suggestionItem.href = `{{ url_for('comic_detail', comic_id=0) }}`.replace('0', comic.codigo_de_barras);
+                      suggestionItem.classList.add('search-suggestion-item');
+                      suggestionItem.textContent = comic.titulo;
+                      searchResultsDiv.appendChild(suggestionItem);
+                  });
+                  searchResultsDiv.style.display = 'block'; // Mostrar el div de resultados
+              } else {
+                  searchResultsDiv.style.display = 'none'; // Ocultar si no hay sugerencias
+              }
+          } catch (error) {
+              console.error('Error fetching search suggestions:', error);
+              searchResultsDiv.style.display = 'none';
+          }
+      }
+
+      // Ocultar sugerencias al hacer clic fuera del input de búsqueda o de los resultados
+      document.addEventListener('click', function(event) {
+          if (!searchInput.contains(event.target) && !searchResultsDiv.contains(event.target)) {
+              searchResultsDiv.style.display = 'none';
+          }
+      });
+
+      // Evitar que el formulario se envíe al presionar Enter en el input de búsqueda
+      // ya que la navegación se hará a través de las sugerencias
+      searchInput.closest('form').addEventListener('submit', function(event) {
+          event.preventDefault();
+      });
+
+      // --- Lógica del Carrusel Superior de Auto-Deslizamiento y Navegación Manual ---
+      const topCarouselSlide = document.getElementById('topCarouselSlide');
+      const prevSlideButton = document.getElementById('prevSlideButton');
+      const nextSlideButton = document.getElementById('nextSlideButton');
+      const carouselIndicators = document.getElementById('carouselIndicators');
+      let slideIndex = 0;
+      const slideDuration = 5000; // 5 segundos por diapositiva
+      let autoSlideTimeout; // Para controlar el temporizador de auto-deslizamiento
+
+      function updateIndicators() {
+          carouselIndicators.innerHTML = ''; // Limpiar indicadores existentes
+          const totalSlides = topCarouselSlide.children.length;
+          for (let i = 0; i < totalSlides; i++) {
+              const dot = document.createElement('span');
+              dot.classList.add('indicator-dot');
+              if (i === slideIndex) {
+                  dot.classList.add('active');
+              }
+              dot.addEventListener('click', () => goToSlide(i));
+              carouselIndicators.appendChild(dot);
+          }
+      }
+
+      function updateCarousel() {
+          const containerWidth = topCarouselSlide.parentElement.clientWidth;
+          const translateXValue = -slideIndex * containerWidth;
+          topCarouselSlide.style.transition = 'transform 1s ease-in-out';
+          topCarouselSlide.style.transform = `translateX(${translateXValue}px)`;
+          updateIndicators(); // Actualizar los indicadores al cambiar de slide
+      }
+
+      function startAutoSlide() {
+          const totalSlides = topCarouselSlide.children.length;
+          if (totalSlides <= 1) return; // No auto-deslizar si hay 0 o 1 imagen
+
+          clearTimeout(autoSlideTimeout); // Limpiar cualquier temporizador existente
+          autoSlideTimeout = setTimeout(() => {
+              slideIndex = (slideIndex + 1) % totalSlides;
+              updateCarousel();
+              startAutoSlide(); // Llamada recursiva para el siguiente auto-deslizamiento
+          }, slideDuration);
+      }
+
+      function goToSlide(index) {
+          const totalSlides = topCarouselSlide.children.length;
+          if (totalSlides === 0) return;
+
+          slideIndex = index;
+          if (slideIndex < 0) {
+              slideIndex = totalSlides - 1; // Ir al final si se va antes del primero
+          } else if (slideIndex >= totalSlides) {
+              slideIndex = 0; // Ir al principio si se va después del último
+          }
+          updateCarousel();
+          // Reiniciar el auto-deslizamiento después de una interacción manual
+          startAutoSlide();
+      }
+
+      // Event listeners para los botones de navegación
+      if (prevSlideButton) {
+        prevSlideButton.addEventListener('click', () => {
+            goToSlide(slideIndex - 1);
+        });
+      }
+
+      if (nextSlideButton) {
+        nextSlideButton.addEventListener('click', () => {
+            goToSlide(slideIndex + 1);
+        });
+      }
+
+      // Inicializar el carrusel y comenzar el auto-deslizamiento
+      window.addEventListener('load', () => {
+          const totalImages = topCarouselSlide.children.length;
+          if (totalImages > 0) {
+            // Establecer el ancho del contenedor de diapositivas para que todas las imágenes quepan en una fila
+            // Cada imagen ocupa el 100% del ancho del contenedor padre del slide (carousel-container)
+            topCarouselSlide.style.width = `${totalImages * 100}%`;
+            // Establecer el ancho de cada imagen para que ocupe el espacio correcto dentro del slide
+            Array.from(topCarouselSlide.children).forEach(child => {
+                child.style.width = `${100 / totalImages}%`;
+            });
+            updateCarousel(); // Posicionar el carrusel en la primera diapositiva y actualizar indicadores
+            startAutoSlide(); // Iniciar el auto-deslizamiento
+          }
+      });
+
+      // Ajustar el carrusel al redimensionar la ventana
+      window.addEventListener('resize', () => {
+          // Desactivar la transición temporalmente para evitar saltos al redimensionar
+          topCarouselSlide.style.transition = 'none';
+          const totalImages = topCarouselSlide.children.length;
+          if (totalImages > 0) {
+            topCarouselSlide.style.width = `${totalImages * 100}%`;
+            Array.from(topCarouselSlide.children).forEach(child => {
+                child.style.width = `${100 / totalImages}%`;
+            });
+            updateCarousel(); // Reposicionar el carrusel y actualizar indicadores
+          }
+          // Volver a habilitar la transición después de un pequeño retraso
+          setTimeout(() => {
+              topCarouselSlide.style.transition = 'transform 1s ease-in-out';
+          }, 50);
+      });
+
+    </script>
   </body>
 </html>

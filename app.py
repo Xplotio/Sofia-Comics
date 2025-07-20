@@ -2,12 +2,13 @@ import os
 import io
 import base64
 import hashlib
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, Response, jsonify
 import mysql.connector
 from mysql.connector import Error
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import json
 from functools import wraps # Importar wraps para los decoradores
+import re # Importar re para validación de email
 
 # Inicialización de la aplicación Flask
 app = Flask(__name__)
@@ -135,8 +136,22 @@ def login():
                     session['user_type'] = 'editorial'
                     session['editorial_id'] = editorial_user['id_editorial']
                     session['editorial_name'] = editorial_user['editorial_nombre']
-                    flash(f'Has iniciado sesión como editorial: {editorial_user["editorial_nombre"]}.', 'success')
-                    return redirect(url_for('editorial_dashboard'))
+
+                    # Redirigir al usuario editorial a su página de tickets específica
+                    editorial_name_lower = editorial_user['editorial_nombre'].lower()
+                    if editorial_name_lower in ['marvel comics', 'marvel']:
+                        flash(f'Has iniciado sesión como editorial: {editorial_user["editorial_nombre"]}.', 'success')
+                        return redirect(url_for('editorial_upload_marvel'))
+                    elif editorial_name_lower == 'dc comics':
+                        flash(f'Has iniciado sesión como editorial: {editorial_user["editorial_nombre"]}.', 'success')
+                        return redirect(url_for('editorial_upload_dc'))
+                    elif editorial_name_lower == 'indie comics':
+                        flash(f'Has iniciado sesión como editorial: {editorial_user["editorial_nombre"]}.', 'success')
+                        return redirect(url_for('editorial_upload_indie'))
+                    else:
+                        # Fallback si la editorial no tiene una página de tickets específica configurada
+                        flash(f'Has iniciado sesión como editorial: {editorial_user["editorial_nombre"]}. No hay una página de subida específica para tu editorial.', 'warning')
+                        return redirect(url_for('editorial_dashboard'))
                 else:
                     # Finalmente, verificar si es el usuario maestro (admin)
                     # Asumimos un correo y contraseña fijos para el admin por simplicidad,
@@ -252,30 +267,122 @@ def logout():
 
 @app.route('/')
 def home():
-    # Puedes cargar algunos cómics destacados aquí para la página principal
     conn = get_db_connection()
-    comics = []
+    most_read_comics_month = []
+    favorite_character_comics = []
+
+    current_month_name = datetime.now().strftime('%B').capitalize() # Nombre del mes actual en español
+    current_year = datetime.now().year
+
+    # Diccionario para traducir el nombre del mes a español
+    month_names_es = {
+        'January': 'Enero', 'February': 'Febrero', 'March': 'Marzo', 'April': 'Abril',
+        'May': 'Mayo', 'June': 'Junio', 'July': 'Julio', 'August': 'Agosto',
+        'September': 'Septiembre', 'October': 'Octubre', 'November': 'Noviembre', 'December': 'Diciembre'
+    }
+    current_month_name = month_names_es.get(datetime.now().strftime('%B'), datetime.now().strftime('%B')).capitalize()
+
+
     if conn:
         cursor = conn.cursor(dictionary=True)
         try:
-            # Ejemplo: Obtener los 6 cómics más recientes
-            cursor.execute("SELECT codigo_de_barras, titulo, autor, portada FROM Comic ORDER BY fecha_publicacion DESC LIMIT 6")
+            # Lógica para cómics más leídos del mes
+            # Consulta para obtener los cómics más leídos del mes (ejemplo: los 15 más recientes)
+            # Se incluye c.fecha_publicacion en SELECT y GROUP BY para compatibilidad con ONLY_FULL_GROUP_BY
+            cursor.execute("""
+                SELECT c.codigo_de_barras, c.titulo, c.autor, c.portada, c.fecha_publicacion, COUNT(hl.codigo_de_barras) AS read_count
+                FROM Comic c
+                LEFT JOIN HistorialLectura hl ON c.codigo_de_barras = hl.codigo_de_barras
+                WHERE MONTH(c.fecha_publicacion) = %s AND YEAR(c.fecha_publicacion) = %s
+                GROUP BY c.codigo_de_barras, c.titulo, c.autor, c.portada, c.fecha_publicacion
+                ORDER BY read_count DESC, c.fecha_publicacion DESC
+                LIMIT 15
+            """, (datetime.now().month, current_year))
             comics_data = cursor.fetchall()
+
+            # Convertir BLOB de portada a base64 para cada cómic
             for comic in comics_data:
-                # Convertir BLOB de portada a base64 para incrustar en HTML
                 if comic['portada']:
                     comic['portada_b64'] = base64.b64encode(comic['portada']).decode('utf-8')
                 else:
-                    comic['portada_b64'] = None # O una imagen de placeholder
-                comics.append(comic)
+                    comic['portada_b64'] = None
+                most_read_comics_month.append(comic)
+
+            # Lógica para cómics de personajes favoritos (si el usuario está logueado)
+            if 'logged_in' in session and session['user_type'] == 'user':
+                user_email = session['user_email']
+                # Obtener los personajes favoritos del usuario
+                cursor.execute("""
+                    SELECT id_personaje FROM Preferencias_usuario WHERE correo_usuario = %s
+                """, (user_email,))
+                favorite_character_ids = [row['id_personaje'] for row in cursor.fetchall()]
+
+                if favorite_character_ids:
+                    # Obtener cómics relacionados con esos personajes
+                    # Se incluye c.fecha_publicacion en SELECT DISTINCT para compatibilidad con ONLY_FULL_GROUP_BY
+                    placeholders = ','.join(['%s'] * len(favorite_character_ids))
+                    query = f"""
+                        SELECT DISTINCT c.codigo_de_barras, c.titulo, c.autor, c.portada, c.fecha_publicacion
+                        FROM Comic c
+                        JOIN ComicPersonaje cp ON c.codigo_de_barras = cp.codigo_de_barras
+                        WHERE cp.id_personaje IN ({placeholders})
+                        ORDER BY c.fecha_publicacion DESC
+                        LIMIT 10
+                    """
+                    cursor.execute(query, tuple(favorite_character_ids))
+                    fav_comics_raw = cursor.fetchall()
+
+                    for comic in fav_comics_raw:
+                        if comic['portada']:
+                            comic['portada_b64'] = base64.b64encode(comic['portada']).decode('utf-8')
+                        else:
+                            comic['portada_b64'] = None
+                        favorite_character_comics.append(comic)
+                else:
+                    flash('No has seleccionado personajes favoritos. Visita tu perfil para hacerlo.', 'info')
+
         except Error as e:
             flash(f"Error al cargar cómics: {e}", 'danger')
+            print(f"Error al cargar cómics: {e}") # Para depuración en consola
         finally:
             if cursor:
                 cursor.close()
             if conn:
                 conn.close()
-    return render_template('index.html', comics=comics)
+
+    return render_template('index.html',
+                           most_read_comics_month=most_read_comics_month,
+                           current_month_name=current_month_name,
+                           favorite_character_comics=favorite_character_comics)
+
+# --- Nueva Ruta para Sugerencias de Búsqueda (AJAX) ---
+@app.route('/search_suggestions')
+def search_suggestions():
+    query = request.args.get('query', '').strip()
+    suggestions = []
+    if query:
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor(dictionary=True)
+            try:
+                search_pattern = f"%{query}%"
+                cursor.execute("""
+                    SELECT codigo_de_barras, titulo
+                    FROM Comic
+                    WHERE titulo LIKE %s
+                    ORDER BY titulo ASC
+                    LIMIT 10
+                """, (search_pattern,))
+                suggestions = cursor.fetchall()
+            except Error as e:
+                print(f"Error al obtener sugerencias de búsqueda: {e}")
+            finally:
+                if cursor:
+                    cursor.close()
+                if conn:
+                    conn.close()
+    return jsonify(suggestions)
+
 
 # --- Rutas de Cómics por Editorial (Públicas) ---
 
@@ -371,21 +478,16 @@ def indie_comics():
                 conn.close()
     return render_template('IndieComics.html', comics=comics)
 
-@app.route('/videojuegos')
-def videojuegos():
-    # Esta ruta es nueva, puedes añadir lógica para cargar datos de videojuegos si los tienes
-    # Por ahora, simplemente renderiza un template vacío o con contenido estático
-    return render_template('videojuegos.html')
-
-
 # --- Rutas de Detalle y Lectura de Cómic ---
 
 @app.route('/comic/<int:comic_id>', methods=['GET', 'POST'])
 def comic_detail(comic_id):
-    conn = get_db_connection()
     comic = None
     average_rating = None
     user_rating = None
+    characters = [] # Inicializa la lista de personajes
+
+    conn = get_db_connection()
     if conn:
         cursor = conn.cursor(dictionary=True)
         try:
@@ -418,24 +520,52 @@ def comic_detail(comic_id):
                     if user_rating_result:
                         user_rating = user_rating_result['calificacion']
 
-            if request.method == 'POST' and 'logged_in' in session and session['user_type'] == 'user':
-                rating = request.form.get('rating')
-                if rating and rating.isdigit() and 1 <= int(rating) <= 5:
-                    user_email = session['user_email']
-                    # Insertar o actualizar la calificación del usuario
-                    cursor.execute("""
-                        INSERT INTO Calificaciones (correo_usuario, codigo_de_barras, calificacion)
-                        VALUES (%s, %s, %s)
-                        ON DUPLICATE KEY UPDATE calificacion = %s
-                    """, (user_email, comic_id, int(rating), int(rating)))
-                    conn.commit()
-                    flash('Tu calificación ha sido guardada.', 'success')
-                    return redirect(url_for('comic_detail', comic_id=comic_id))
-                else:
-                    flash('Por favor, selecciona una calificación válida (1-5).', 'danger')
+                # Procesar envío de calificación (si es POST y el usuario está logueado)
+                if request.method == 'POST' and 'logged_in' in session and session['user_type'] == 'user':
+                    rating = request.form.get('rating')
+                    if rating and rating.isdigit() and 1 <= int(rating) <= 5:
+                        user_email = session['user_email']
+                        try:
+                            # Insertar o actualizar la calificación del usuario
+                            cursor.execute("""
+                                INSERT INTO Calificaciones (correo_usuario, codigo_de_barras, calificacion)
+                                VALUES (%s, %s, %s)
+                                ON DUPLICATE KEY UPDATE calificacion = %s
+                            """, (user_email, comic_id, int(rating), int(rating)))
+                            conn.commit()
+                            flash('Tu calificación ha sido guardada.', 'success')
+                            # Recalcular el promedio y la calificación del usuario para la vista actualizada
+                            cursor.execute("SELECT AVG(calificacion) AS avg_rating FROM Calificaciones WHERE codigo_de_barras = %s", (comic_id,))
+                            avg_result = cursor.fetchone()
+                            if avg_result and avg_result['avg_rating'] is not None:
+                                average_rating = round(avg_result['avg_rating'], 2)
+                            user_rating = int(rating) # Actualizar la calificación del usuario en la sesión actual
+                        except Error as e:
+                            flash(f'Error al guardar tu calificación: {e}', 'danger')
+                            conn.rollback()
+                    else:
+                        flash('Por favor, selecciona una calificación válida (1-5).', 'danger')
+                
+                # --- NUEVO: Obtener personajes asociados al cómic ---
+                cursor.execute("""
+                    SELECT p.id_personaje, p.nombre, p.descripcion, p.imagen, e.nombre AS editorial_nombre
+                    FROM Personaje p
+                    JOIN ComicPersonaje cp ON p.id_personaje = cp.id_personaje
+                    LEFT JOIN Editorial e ON p.id_editorial = e.id_editorial
+                    WHERE cp.codigo_de_barras = %s
+                    ORDER BY p.nombre ASC
+                """, (comic_id,))
+                characters_data = cursor.fetchall()
+                for char in characters_data:
+                    if char['imagen']:
+                        char['imagen_b64'] = base64.b64encode(char['imagen']).decode('utf-8')
+                    else:
+                        char['imagen_b64'] = None
+                    characters.append(char)
 
         except Error as e:
             flash(f"Error al cargar detalles del cómic o procesar calificación: {e}", 'danger')
+            print(f"Error en comic_detail: {e}") # Para depuración
         finally:
             if cursor:
                 cursor.close()
@@ -446,7 +576,8 @@ def comic_detail(comic_id):
         flash('Cómic no encontrado.', 'danger')
         return redirect(url_for('home')) # Redirigir a la página principal si el cómic no existe
 
-    return render_template('precomic.html', comic=comic, average_rating=average_rating, user_rating=user_rating)
+    return render_template('precomic.html', comic=comic, average_rating=average_rating, user_rating=user_rating, characters=characters)
+
 
 @app.route('/read_comic/<int:comic_id>')
 @login_required # Solo usuarios logueados pueden leer cómics
@@ -464,7 +595,7 @@ def read_comic(comic_id):
                 user_email = session['user_email']
                 cursor.execute("""
                     SELECT s.estado FROM Suscripciones s
-                    WHERE s.correo_usuario = %s AND s.fecha_fin >= CURDATE() AND s.estado = 'Activa'
+                    WHERE s.correo_usuario = %s AND s.id_plan IN (1, 2, 3) AND estado = 'Activa' AND fecha_fin >= CURDATE()
                 """, (user_email,))
                 subscription = cursor.fetchone()
 
@@ -1094,39 +1225,6 @@ def editorial_upload_indie():
                 flash(f'Error al procesar el formulario de cómic: falta el campo {e}', 'danger')
             except Exception as e:
                 flash(f'Ocurrió un error inesperado al subir el cómic: {e}', 'danger')
-
-        elif form_type == 'character_upload':
-            try:
-                name = request.form['name']
-                description = request.form['description']
-                image_file = request.files.get('character_image')
-
-                imagen_blob = image_file.read() if image_file else None
-
-                conn = get_db_connection()
-                if conn:
-                    cursor = conn.cursor()
-                    try:
-                        # Asignar automáticamente a la editorial Indie Comics
-                        cursor.execute(
-                            "INSERT INTO Personaje (nombre, descripcion, imagen, id_editorial) VALUES (%s, %s, %s, %s)",
-                            (name, description, imagen_blob, indie_editorial_id)
-                        )
-                        conn.commit()
-                        flash('Personaje Indie subido exitosamente.', 'success')
-                        return redirect(url_for('editorial_upload_indie')) # Redirigir para recargar la página
-                    except Error as e:
-                        flash(f'Error al subir el personaje Indie: {e}', 'danger')
-                        conn.rollback()
-                    finally:
-                        if cursor:
-                            cursor.close()
-                        if conn:
-                            conn.close()
-            except KeyError as e:
-                flash(f'Error al procesar el formulario de personaje: falta el campo {e}', 'danger')
-            except Exception as e:
-                flash(f'Ocurrió un error inesperado al subir el personaje: {e}', 'danger')
         else:
             flash('Tipo de formulario desconocido.', 'danger')
 
@@ -1243,7 +1341,7 @@ def admin_upload_marvel():
                         flash('Cómic de Marvel subido exitosamente por el administrador.', 'success')
                         return redirect(url_for('admin_upload_marvel')) # Redirigir a la misma página para ver cambios
                     except Error as e:
-                        flash(f'Error al subir el cómic de Marvel (Admin): {e}', 'danger')
+                        flash(f'Error al subir el cómic de Marvel: {e}', 'danger')
                         conn.rollback()
                     finally:
                         if cursor:
@@ -1398,7 +1496,7 @@ def admin_upload_dc():
                         flash('Cómic de DC subido exitosamente por el administrador.', 'success')
                         return redirect(url_for('admin_upload_dc')) # Redirigir a la misma página para ver cambios
                     except Error as e:
-                        flash(f'Error al subir el cómic de DC (Admin): {e}', 'danger')
+                        flash(f'Error al subir el cómic de DC: {e}', 'danger')
                         conn.rollback()
                     finally:
                         if cursor:
@@ -1524,7 +1622,7 @@ def admin_upload_indie():
                 description = request.form['description']
                 publication_date = request.form['publication_date']
                 comic_code = request.form['comic_code']
-                selected_character_ids = request.form.getlist('comic_characters')
+                selected_character_ids = request.form.getlist('comic_characters') # Obtener la lista de IDs de personajes
 
                 cover_file = request.files.get('cover_image')
                 content_file = request.files.get('comic_content')
@@ -1542,6 +1640,7 @@ def admin_upload_indie():
                         )
                         conn.commit()
 
+                        # Insertar relaciones Comic-Personaje
                         if selected_character_ids:
                             for char_id in selected_character_ids:
                                 cursor.execute(
@@ -1553,7 +1652,7 @@ def admin_upload_indie():
                         flash('Cómic Indie subido exitosamente por el administrador.', 'success')
                         return redirect(url_for('admin_upload_indie')) # Redirigir a la misma página para ver cambios
                     except Error as e:
-                        flash(f'Error al subir el cómic Indie (Admin): {e}', 'danger')
+                        flash(f'Error al subir el cómic Indie: {e}', 'danger')
                         conn.rollback()
                     finally:
                         if cursor:
@@ -1564,39 +1663,6 @@ def admin_upload_indie():
                 flash(f'Error al procesar el formulario de cómic: falta el campo {e}', 'danger')
             except Exception as e:
                 flash(f'Ocurrió un error inesperado al subir el cómic: {e}', 'danger')
-
-        elif form_type == 'character_upload':
-            try:
-                name = request.form['name']
-                description = request.form['description']
-                image_file = request.files.get('character_image')
-
-                imagen_blob = image_file.read() if image_file else None
-
-                conn = get_db_connection()
-                if conn:
-                    cursor = conn.cursor()
-                    try:
-                        # Asignar automáticamente a la editorial Indie Comics
-                        cursor.execute(
-                            "INSERT INTO Personaje (nombre, descripcion, imagen, id_editorial) VALUES (%s, %s, %s, %s)",
-                            (name, description, imagen_blob, indie_editorial_id)
-                        )
-                        conn.commit()
-                        flash('Personaje Indie subido exitosamente.', 'success')
-                        return redirect(url_for('admin_upload_indie')) # Redirigir para recargar la página
-                    except Error as e:
-                        flash(f'Error al subir el personaje Indie: {e}', 'danger')
-                        conn.rollback()
-                    finally:
-                        if cursor:
-                            cursor.close()
-                        if conn:
-                            conn.close()
-            except KeyError as e:
-                flash(f'Error al procesar el formulario de personaje: falta el campo {e}', 'danger')
-            except Exception as e:
-                flash(f'Ocurrió un error inesperado al subir el personaje: {e}', 'danger')
         else:
             flash('Tipo de formulario desconocido.', 'danger')
 
@@ -1891,6 +1957,9 @@ def admin_dashboard():
     comics_count = 0
     all_comics = []
     all_characters = []
+    all_editorials = []
+    all_users = []
+    all_editorial_users = [] # Nueva variable para usuarios editoriales
 
     if conn:
         cursor = conn.cursor(dictionary=True)
@@ -1933,6 +2002,24 @@ def admin_dashboard():
                     char['imagen_b64'] = None
                 all_characters.append(char)
 
+            # Obtener todas las editoriales para la gestión
+            cursor.execute("SELECT id_editorial, nombre FROM Editorial ORDER BY nombre ASC")
+            all_editorials = cursor.fetchall()
+
+            # Obtener todos los usuarios regulares para la gestión
+            cursor.execute("SELECT correo_usuario, nombre, fecha_creacion FROM Usuario ORDER BY nombre ASC")
+            all_users = cursor.fetchall()
+
+            # NUEVO: Obtener todos los usuarios editoriales para la gestión
+            cursor.execute("""
+                SELECT ue.correo_editorial, ue.nombre, e.nombre AS editorial_nombre
+                FROM Usuario_editorial ue
+                JOIN Editorial e ON ue.id_editorial = e.id_editorial
+                ORDER BY ue.nombre ASC
+            """)
+            all_editorial_users = cursor.fetchall()
+
+
         except Error as e:
             flash(f"Error al cargar estadísticas o datos de gestión: {e}", 'danger')
         finally:
@@ -1945,7 +2032,294 @@ def admin_dashboard():
                            editorials_count=editorials_count,
                            comics_count=comics_count,
                            all_comics=all_comics,
-                           all_characters=all_characters)
+                           all_characters=all_characters,
+                           all_editorials=all_editorials,
+                           all_users=all_users,
+                           all_editorial_users=all_editorial_users) # Pasar los usuarios editoriales
+
+# --- NUEVAS RUTAS: Gestión de Editoriales (Solo Admin) ---
+
+@app.route('/admin/add_editorial', methods=['POST'])
+@admin_required
+def admin_add_editorial():
+    if request.method == 'POST':
+        editorial_name = request.form['editorial_name']
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute("INSERT INTO Editorial (nombre) VALUES (%s)", (editorial_name,))
+                conn.commit()
+                flash(f'Editorial "{editorial_name}" añadida exitosamente.', 'success')
+            except Error as e:
+                if e.errno == 1062: # Duplicate entry
+                    flash(f'Error: La editorial "{editorial_name}" ya existe.', 'danger')
+                else:
+                    flash(f'Error al añadir la editorial: {e}', 'danger')
+                conn.rollback()
+            finally:
+                if cursor:
+                    cursor.close()
+                if conn:
+                    conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/update_editorial', methods=['POST']) # Esta es la ruta correcta para actualizar via POST
+@admin_required
+def admin_update_editorial():
+    if request.method == 'POST':
+        editorial_id = request.form['editorial_id'] # Obtener ID del campo oculto
+        new_name = request.form['new_editorial_name']
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute("UPDATE Editorial SET nombre = %s WHERE id_editorial = %s", (new_name, editorial_id))
+                conn.commit()
+                if cursor.rowcount > 0:
+                    flash(f'Editorial actualizada a "{new_name}" exitosamente.', 'success')
+                else:
+                    flash('Editorial no encontrada para actualizar.', 'danger')
+            except Error as e:
+                if e.errno == 1062: # Duplicate entry
+                    flash(f'Error: La editorial "{new_name}" ya existe.', 'danger')
+                else:
+                    flash(f'Error al actualizar la editorial: {e}', 'danger')
+                conn.rollback()
+            finally:
+                if cursor:
+                    cursor.close()
+                if conn:
+                    conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete_editorial/<int:editorial_id>', methods=['POST'])
+@admin_required
+def admin_delete_editorial(editorial_id):
+    conn = get_db_connection()
+    if conn:
+        cursor = conn.cursor()
+        try:
+            # Primero, desvincular personajes y cómics de esta editorial
+            # Se asume que las FKs en Comic y Personaje tienen ON DELETE RESTRICT/NO ACTION,
+            # o que se deben eliminar en cascada. Aquí, se eliminarán en cascada
+            # los cómics y personajes asociados a la editorial para evitar errores de FK.
+
+            # Eliminar relaciones Comic-Personaje para cómics de esta editorial
+            cursor.execute("""
+                DELETE cp FROM ComicPersonaje cp
+                JOIN Comic c ON cp.codigo_de_barras = c.codigo_de_barras
+                WHERE c.id_editorial = %s
+            """, (editorial_id,))
+
+            # Eliminar calificaciones de cómics de esta editorial
+            cursor.execute("""
+                DELETE cal FROM Calificaciones cal
+                JOIN Comic c ON cal.codigo_de_barras = c.codigo_de_barras
+                WHERE c.id_editorial = %s
+            """, (editorial_id,))
+
+            # Eliminar historial de lectura de cómics de esta editorial
+            cursor.execute("""
+                DELETE hl FROM HistorialLectura hl
+                JOIN Comic c ON hl.codigo_de_barras = c.codigo_de_barras
+                WHERE c.id_editorial = %s
+            """, (editorial_id,))
+
+            # Eliminar cómics de esta editorial
+            cursor.execute("DELETE FROM Comic WHERE id_editorial = %s", (editorial_id,))
+
+            # Eliminar preferencias de usuario asociadas a personajes de esta editorial
+            cursor.execute("""
+                DELETE pu FROM Preferencias_usuario pu
+                JOIN Personaje p ON pu.id_personaje = p.id_personaje
+                WHERE p.id_editorial = %s
+            """, (editorial_id,))
+
+            # Eliminar personajes de esta editorial
+            cursor.execute("DELETE FROM Personaje WHERE id_editorial = %s", (editorial_id,))
+
+            # Eliminar usuarios editoriales asociados a esta editorial
+            cursor.execute("DELETE FROM Usuario_editorial WHERE id_editorial = %s", (editorial_id,))
+
+            # Finalmente, eliminar la editorial
+            cursor.execute("DELETE FROM Editorial WHERE id_editorial = %s", (editorial_id,))
+            conn.commit()
+            flash('Editorial y todos sus datos asociados eliminados exitosamente.', 'success')
+        except Error as e:
+            flash(f'Error al eliminar la editorial: {e}', 'danger')
+            conn.rollback()
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+# --- NUEVAS RUTAS: Gestión de Usuarios (Solo Admin) ---
+
+@app.route('/admin/add_editorial_user', methods=['POST'])
+@admin_required
+def admin_add_editorial_user():
+    if request.method == 'POST':
+        email = request.form['email']
+        name = request.form['name']
+        password = request.form['password']
+        editorial_id = request.form['editorial_id']
+
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            flash('Formato de correo electrónico inválido.', 'danger')
+            return redirect(url_for('admin_dashboard'))
+        if len(password) < 6:
+            flash('La contraseña debe tener al menos 6 caracteres.', 'danger')
+            return redirect(url_for('admin_dashboard'))
+
+        hashed_password = hash_password(password)
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor()
+            try:
+                # INSERT CORRECTO para Usuario_editorial (sin fecha_registro)
+                cursor.execute(
+                    "INSERT INTO Usuario_editorial (correo_editorial, nombre, contraseña, id_editorial) VALUES (%s, %s, %s, %s)",
+                    (email, name, hashed_password, editorial_id)
+                )
+                conn.commit()
+                flash(f'Usuario editorial "{name}" añadido exitosamente para la editorial ID {editorial_id}.', 'success')
+            except Error as e:
+                if e.errno == 1062: # Duplicate entry
+                    flash(f'Error: El correo electrónico "{email}" ya está registrado como usuario editorial.', 'danger')
+                else:
+                    flash(f'Error al añadir el usuario editorial: {e}', 'danger')
+                conn.rollback()
+            finally:
+                if cursor:
+                    cursor.close()
+                if conn:
+                    conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete_user/<string:user_email>', methods=['POST'])
+@admin_required
+def admin_delete_user(user_email):
+    conn = get_db_connection()
+    if conn:
+        cursor = conn.cursor()
+        try:
+            # Eliminar registros relacionados primero (si hay FK ON DELETE RESTRICT/NO ACTION)
+            cursor.execute("DELETE FROM HistorialLectura WHERE correo_usuario = %s", (user_email,))
+            cursor.execute("DELETE FROM Calificaciones WHERE correo_usuario = %s", (user_email,))
+            cursor.execute("DELETE FROM Preferencias_usuario WHERE correo_usuario = %s", (user_email,))
+            cursor.execute("DELETE FROM Transacciones WHERE correo_usuario = %s", (user_email,))
+            cursor.execute("DELETE FROM Suscripciones WHERE correo_usuario = %s", (user_email,))
+
+            # Eliminar el usuario
+            cursor.execute("DELETE FROM Usuario WHERE correo_usuario = %s", (user_email,))
+            conn.commit()
+            flash(f'Usuario "{user_email}" y todos sus datos asociados eliminados exitosamente.', 'success')
+        except Error as e:
+            flash(f'Error al eliminar el usuario: {e}', 'danger')
+            conn.rollback()
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+# NUEVA RUTA: Eliminar Usuario Editorial
+@app.route('/admin/delete_editorial_user/<string:editorial_user_email>', methods=['POST'])
+@admin_required
+def admin_delete_editorial_user(editorial_user_email):
+    conn = get_db_connection()
+    if conn:
+        cursor = conn.cursor()
+        try:
+            # No hay FKs complejas para Usuario_editorial, solo eliminar directamente
+            cursor.execute("DELETE FROM Usuario_editorial WHERE correo_editorial = %s", (editorial_user_email,))
+            conn.commit()
+            flash(f'Usuario editorial "{editorial_user_email}" eliminado exitosamente.', 'success')
+        except Error as e:
+            flash(f'Error al eliminar el usuario editorial: {e}', 'danger')
+            conn.rollback()
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+    return redirect(url_for('admin_dashboard'))
+
+
+# --- Ruta para la página de Videojuegos con verificación de suscripción ---
+@app.route('/videojuegos')
+@login_required # Asegura que el usuario esté logueado
+def videojuegos():
+    user_email = session['user_email']
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor(dictionary=True)
+            # Verificar si el usuario tiene una suscripción "Anual Premium" (id_plan = 3) activa
+            # y que la fecha de fin sea mayor o igual a la fecha actual
+            cursor.execute("""
+                SELECT * FROM Suscripciones
+                WHERE correo_usuario = %s AND id_plan = 3 AND estado = 'Activa' AND fecha_fin >= CURDATE()
+            """, (user_email,))
+            premium_subscription = cursor.fetchone()
+
+            if premium_subscription:
+                # Si tiene la suscripción, renderiza el contenido de videojuegos.html
+                return render_template('videojuegos.html')
+            else:
+                flash('Necesitas una suscripción "Anual Premium" activa para acceder a la sección de videojuegos.', 'warning')
+                return redirect(url_for('subscriptions'))
+    except Error as e:
+        flash(f"Error al verificar la suscripción: {e}", 'danger')
+        return redirect(url_for('home')) # Redirigir a inicio en caso de error de DB
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+# --- NUEVA RUTA: Para servir los archivos HTML de juegos individuales ---
+@app.route('/videojuegos/<string:game_name>')
+@login_required
+def play_game(game_name):
+    user_email = session['user_email']
+    conn = None
+    cursor = None
+    try:
+        conn = get_db_connection()
+        if conn:
+            cursor = conn.cursor(dictionary=True)
+            # Verificar si el usuario tiene una suscripción "Anual Premium" (id_plan = 3) activa
+            cursor.execute("""
+                SELECT * FROM Suscripciones
+                WHERE correo_usuario = %s AND id_plan = 3 AND estado = 'Activa' AND fecha_fin >= CURDATE()
+            """, (user_email,))
+            premium_subscription = cursor.fetchone()
+
+            if premium_subscription:
+                # Si tiene la suscripción, renderiza el archivo HTML del juego desde la subcarpeta 'locura'
+                # Flask buscará 'templates/locura/superman.html', 'templates/locura/spiderman1.html', etc.
+                return render_template(f'locura/{game_name}')
+            else:
+                flash('Necesitas una suscripción "Anual Premium" activa para jugar a los videojuegos.', 'warning')
+                return redirect(url_for('subscriptions'))
+    except Exception as e:
+        # Captura cualquier error, incluyendo TemplateNotFound si el archivo no existe
+        flash(f"Error al cargar el juego: {e}. Asegúrate de que el archivo '{game_name}' exista en la carpeta 'templates/locura'.", 'danger')
+        print(f"Error al cargar el juego '{game_name}': {e}") # Para depuración
+        return redirect(url_for('videojuegos')) # Redirigir a la lista de juegos
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
 
 # --- Rutas de Errores ---
 

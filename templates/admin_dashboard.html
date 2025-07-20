@@ -6,12 +6,14 @@
     <title>Panel de Administración - SofiaComics</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
+        /* Estilos generales del body */
         body {
             background: #f4f7f6;
             margin: 0;
             font-family: 'Inter', Arial, sans-serif;
             color: #333;
         }
+        /* Estilos del contenedor principal */
         main {
             margin-top: 80px;
             max-width: 1200px;
@@ -23,6 +25,7 @@
             padding: 36px;
             margin-bottom: 40px;
         }
+        /* Estilos del título principal */
         h1 {
             text-align: center;
             color: #c00;
@@ -30,6 +33,7 @@
             font-size: 2.5rem;
             letter-spacing: 1px;
         }
+        /* Estilos de la cuadrícula de estadísticas */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -37,6 +41,7 @@
             margin-bottom: 40px;
             text-align: center;
         }
+        /* Estilos de las tarjetas de estadísticas */
         .stat-card {
             background: #f0f0f0;
             border-radius: 12px;
@@ -54,6 +59,7 @@
             font-weight: bold;
             color: #c00;
         }
+        /* Estilos de las secciones de administración */
         .admin-sections {
             margin-top: 40px;
         }
@@ -66,6 +72,7 @@
             border-left: 5px solid #00C;
             padding-left: 15px;
         }
+        /* Estilos de los botones de acción */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -97,6 +104,7 @@
         .action-buttons button.delete:hover {
             background: #a00;
         }
+        /* Estilos de las tablas */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -152,6 +160,7 @@
         .table-actions button.delete:hover {
             background: #a00;
         }
+        /* Estilos de las miniaturas de imágenes de personajes */
         .character-img-thumb {
             width: 50px;
             height: 50px;
@@ -159,6 +168,7 @@
             border-radius: 50%;
             border: 1px solid #ddd;
         }
+        /* Estilos de los mensajes flash */
         .flash-message {
             padding: 10px 20px;
             margin-bottom: 15px;
@@ -188,6 +198,91 @@
             border: 1px solid #bee5eb;
         }
 
+        /* Estilos para los modales */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            font-family: 'Inter', Arial, sans-serif;
+            position: relative;
+        }
+        .modal-content h2 {
+            color: #00C;
+            margin-bottom: 20px;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .modal-content label {
+            text-align: left;
+            font-weight: bold;
+            color: #555;
+        }
+        .modal-content input[type="text"],
+        .modal-content input[type="email"],
+        .modal-content input[type="password"],
+        .modal-content select,
+        .modal-content button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box; /* Asegura que el padding no aumente el ancho */
+        }
+        .modal-content button {
+            background: #00C;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        .modal-content button:hover {
+            background: #009;
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-close-button:hover {
+            color: #333;
+        }
+
+        /* Media queries para responsividad */
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -230,6 +325,7 @@
                 font-weight: bold;
                 color: #555;
             }
+            /* Etiquetas para celdas en pantallas pequeñas */
             td:nth-of-type(1):before { content: "ID Cómic"; }
             td:nth-of-type(2):before { content: "Título"; }
             td:nth-of-type(3):before { content: "Autor"; }
@@ -242,6 +338,24 @@
             td:nth-of-type(8):before { content: "Imagen"; }
             td:nth-of-type(9):before { content: "Editorial"; }
             td:nth-of-type(10):before { content: "Acciones"; }
+
+            /* Nuevas etiquetas para tablas de editoriales y usuarios */
+            td:nth-of-type(11):before { content: "ID Editorial"; }
+            td:nth-of-type(12):before { content: "Nombre"; }
+            td:nth-of-type(13):before { content: "Acciones"; }
+
+            /* Etiquetas para usuarios regulares */
+            td:nth-of-type(14):before { content: "Correo Usuario"; }
+            td:nth-of-type(15):before { content: "Nombre"; }
+            td:nth-of-type(16):before { content: "Fecha Creación"; }
+            td:nth-of-type(17):before { content: "Acciones"; }
+
+            /* Etiquetas para usuarios editoriales */
+            td:nth-of-type(18):before { content: "Correo Editorial"; }
+            td:nth-of-type(19):before { content: "Nombre"; }
+            td:nth-of-type(20):before { content: "Editorial"; }
+            td:nth-of-type(21):before { content: "Acciones"; }
+
         }
     </style>
 </head>
@@ -254,7 +368,7 @@
                         <div class="frame1920wlight-link10">
                             <img
                                 src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                                alt="GeminiGeneratedImage"
+                                alt=""
                                 class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
                             />
                         </div>
@@ -263,7 +377,7 @@
                                 <div class="frame1920wlight-container12">
                                     <img
                                         src="{{ url_for('static', filename='external/dclogo.jpg') }}"
-                                        alt="DC Logo"
+                                        alt=""
                                         class="frame1920wlight-svg10"
                                     />
                                 </div>
@@ -282,14 +396,14 @@
                             <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
                             <img
                                 src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
-                                alt="unnamed"
+                                alt=""
                                 class="frame1920wlight-unnamed1"
                             />
                         </div>
                         <div class="frame1920wlight-linksearch">
                             <img
                                 src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
-                                alt="Buscar"
+                                alt=""
                                 class="frame1920wlight-svg11"
                             />
                         </div>
@@ -374,7 +488,7 @@
                         <td class="table-actions">
                             <a href="{{ url_for('admin_edit_comic', comic_id=comic.codigo_de_barras) }}" class="edit">Editar</a>
                             <form action="{{ url_for('admin_delete_comic', comic_id=comic.codigo_de_barras) }}" method="POST" style="display:inline;">
-                                <button type="submit" class="delete" onclick="return confirm('¿Estás seguro de que quieres eliminar este cómic? Esta acción es irreversible.');">Eliminar</button>
+                                <button type="submit" class="delete" onclick="return mostrarModalPersonalizado('¿Estás seguro de que quieres eliminar este cómic? Esta acción es irreversible.', function(){ document.querySelector('form[action=\'{{ url_for('admin_delete_comic', comic_id=comic.codigo_de_barras) }}\']').submit(); }); return false;">Eliminar</button>
                             </form>
                         </td>
                     </tr>
@@ -413,15 +527,154 @@
                         <td class="table-actions">
                             <a href="{{ url_for('admin_edit_character', character_id=character.id_personaje) }}" class="edit">Editar</a>
                             <form action="{{ url_for('admin_delete_character', character_id=character.id_personaje) }}" method="POST" style="display:inline;">
-                                <button type="submit" class="delete" onclick="return confirm('¿Estás seguro de que quieres eliminar este personaje? Esta acción es irreversible.');">Eliminar</button>
+                                <button type="submit" class="delete" onclick="return mostrarModalPersonalizado('¿Estás seguro de que quieres eliminar este personaje? Esta acción es irreversible.', function(){ document.querySelector('form[action=\'{{ url_for('admin_delete_character', character_id=character.id_personaje) }}\']').submit(); }); return false;">Eliminar</button>
                             </form>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+
+            {# NUEVAS SECCIONES #}
+            <h2>Gestión de Editoriales</h2>
+            <div class="action-buttons">
+                <button onclick="showModal('addEditorialModal')">Añadir Nueva Editorial</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Editorial</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for editorial in all_editorials %} {# Asume que 'all_editorials' se pasa desde app.py #}
+                    <tr>
+                        <td>{{ editorial.id_editorial }}</td>
+                        <td>{{ editorial.nombre }}</td>
+                        <td class="table-actions">
+                            <button class="edit" onclick="editEditorial({{ editorial.id_editorial }}, '{{ editorial.nombre }}')">Editar</button>
+                            <form action="{{ url_for('admin_delete_editorial', editorial_id=editorial.id_editorial) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="delete" onclick="return mostrarModalPersonalizado('¿Estás seguro de que quieres eliminar esta editorial y todos sus cómics y personajes asociados? Esta acción es irreversible.', function(){ document.querySelector('form[action=\'{{ url_for('admin_delete_editorial', editorial_id=editorial.id_editorial) }}\']').submit(); }); return false;">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Gestión de Usuarios Regulares</h2> {# Renombrado #}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Correo Usuario</th>
+                        <th>Nombre</th>
+                        <th>Fecha Creación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in all_users %} {# Muestra usuarios regulares #}
+                    <tr>
+                        <td>{{ user.correo_usuario }}</td>
+                        <td>{{ user.nombre }}</td>
+                        <td>{{ user.fecha_creacion }}</td>
+                        <td class="table-actions">
+                            <form action="{{ url_for('admin_delete_user', user_email=user.correo_usuario) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="delete" onclick="return mostrarModalPersonalizado('¿Estás seguro de que quieres eliminar este usuario? Esta acción es irreversible.', function(){ document.querySelector('form[action=\'{{ url_for('admin_delete_user', user_email=user.correo_usuario) }}\']').submit(); }); return false;">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Gestión de Usuarios Editoriales</h2> {# Nueva sección #}
+            <div class="action-buttons">
+                <button onclick="showModal('addEditorialUserModal')">Añadir Nuevo Usuario Editorial</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Correo Editorial</th>
+                        <th>Nombre</th>
+                        <th>Editorial</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for editorial_user in all_editorial_users %} {# Muestra usuarios editoriales #}
+                    <tr>
+                        <td>{{ editorial_user.correo_editorial }}</td>
+                        <td>{{ editorial_user.nombre }}</td>
+                        <td>{{ editorial_user.editorial_nombre }}</td>
+                        <td class="table-actions">
+                            <form action="{{ url_for('admin_delete_editorial_user', editorial_user_email=editorial_user.correo_editorial) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="delete" onclick="return mostrarModalPersonalizado('¿Estás seguro de que quieres eliminar este usuario editorial? Esta acción es irreversible.', function(){ document.querySelector('form[action=\'{{ url_for('admin_delete_editorial_user', editorial_user_email=editorial_user.correo_editorial) }}\']').submit(); }); return false;">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
         </div>
     </main>
+
+    {# Modales para la gestión #}
+
+    <!-- Modal para Añadir Nueva Editorial -->
+    <div id="addEditorialModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" onclick="hideModal('addEditorialModal')">&times;</button>
+            <h2>Añadir Nueva Editorial</h2>
+            <form action="{{ url_for('admin_add_editorial') }}" method="POST">
+                <label for="editorial_name">Nombre de la Editorial:</label>
+                <input type="text" id="editorial_name" name="editorial_name" required>
+                <button type="submit">Añadir Editorial</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Editorial -->
+    <div id="editEditorialModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" onclick="hideModal('editEditorialModal')">&times;</button>
+            <h2>Editar Editorial</h2>
+            {# La acción del formulario ahora apunta a la ruta sin el ID en la URL #}
+            <form action="{{ url_for('admin_update_editorial') }}" method="POST" id="editEditorialForm">
+                <input type="hidden" id="edit_editorial_id" name="editorial_id">
+                <label for="new_editorial_name">Nuevo Nombre de la Editorial:</label>
+                <input type="text" id="new_editorial_name" name="new_editorial_name" required>
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Añadir Usuario Editorial -->
+    <div id="addEditorialUserModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" onclick="hideModal('addEditorialUserModal')">&times;</button>
+            <h2>Añadir Usuario Editorial</h2>
+            <form action="{{ url_for('admin_add_editorial_user') }}" method="POST"> {# Correcto: apunta a la ruta de usuario editorial #}
+                <label for="user_email">Correo Electrónico:</label>
+                <input type="email" id="user_email" name="email" required>
+                <label for="user_name">Nombre del Usuario:</label>
+                <input type="text" id="user_name" name="name" required>
+                <label for="user_password">Contraseña:</label>
+                <input type="password" id="user_password" name="password" required>
+                <label for="user_editorial_id">Editorial Asociada:</label>
+                <select id="user_editorial_id" name="editorial_id" required>
+                    {% for editorial in all_editorials %}
+                        <option value="{{ editorial.id_editorial }}">{{ editorial.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Añadir Usuario Editorial</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Función para mostrar un modal personalizado en lugar de alert()
         function mostrarModalPersonalizado(mensaje, callback = null) {
@@ -489,6 +742,26 @@
                     }
                 });
             }
+        }
+
+        // Función para mostrar un modal genérico
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        // Función para ocultar un modal genérico
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // Función para editar una editorial (rellena el modal de edición)
+        function editEditorial(editorialId, editorialName) {
+            const form = document.getElementById('editEditorialForm');
+            // La acción del formulario ahora apunta a la ruta sin el ID en la URL
+            form.action = "{{ url_for('admin_update_editorial') }}"; // Asegúrate de que esta es la ruta correcta
+            document.getElementById('edit_editorial_id').value = editorialId;
+            document.getElementById('new_editorial_name').value = editorialName;
+            showModal('editEditorialModal');
         }
 
         // Mostrar mensajes flash al cargar la página
