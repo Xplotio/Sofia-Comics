@@ -1,27 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marvel Comics Tickets</title>
-    <!-- Enlace al archivo CSS usando url_for para Flask -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% extends "base.html" %}
+
+{% block title %}Marvel Comics - Panel de Carga{% endblock %}
+
+{% block head_extra %}
     <style>
-        body {
-            background: url('https://i.pinimg.com/736x/de/f4/73/def473f3b4380d977d23ac2502cb1d77.jpg') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            font-family: 'Inter', Arial, sans-serif;
-        }
-        header {
-            position: fixed; /* Mantiene el encabezado fijo en la parte superior */
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100; /* Asegura que esté por encima de otros contenidos */
-            background-color: #222; /* Fondo oscuro para el encabezado */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
-        }
         .frame1920wlight-nav {
             background-color: #222; /* Fondo oscuro para la barra de navegación */
             color: white; /* Color de texto predeterminado para la barra de navegación */
@@ -130,6 +112,10 @@
             border-radius: 18px;
             box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
             padding: 36px 28px 32px 28px;
+            background: url('https://i.pinimg.com/736x/de/f4/73/def473f3b4380d977d23ac2502cb1d77.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
         }
         .marvel-logo {
             display: block;
@@ -323,73 +309,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <header>
-        <nav class="frame1920wlight-nav">
-            <div class="frame1920wlight-section">
-                <div class="frame1920wlight-horizontal-border">
-                    <div class="frame1920wlight-container11">
-                        <div class="frame1920wlight-link10">
-                            <!-- Imagen del logo de Sofia Comics -->
-                            <img
-                                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                                alt="Sofia Comics Logo"
-                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
-                            />
-                        </div>
-                        <div class="frame1920wlight-vertical-border1">
-                            <div class="frame1920wlight-vertical-border2">
-                                <div class="frame1920wlight-container12">
-                                    <!-- Marvel Logo, se mantiene si es relevante para la página de Marvel -->
-                                    <img
-                                        src="{{ url_for('static', filename='external/svg487-p0cx.svg') }}"
-                                        alt="Marvel Logo"
-                                        class="frame1920wlight-svg10"
-                                    />
-                                </div>
-                                <div class="frame1920wlight-link11">
-                                    <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
-                                </div>
-                                <span class="frame1920wlight-text101">|</span>
-                                <div class="frame1920wlight-link12">
-                                    <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="frame1920wlight-link13">
-                            <span class="frame1920wlight-text103">Sofia comics</span>
-                            <!-- Se asume que 'subscriptions' es una ruta definida en app.py -->
-                            <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
-                            <img
-                                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
-                                alt="unnamed"
-                                class="frame1920wlight-unnamed1"
-                            />
-                        </div>
-                        <!-- Imagen de la barra de búsqueda eliminada -->
-                    </div>
-                </div>
-                <div class="frame1920wlight-list10">
-                    <div class="frame1920wlight-item-link10">
-                        <a href="{{ url_for('home') }}" class="frame1920wlight-text105">Inicio</a>
-                    </div>
-                    <div class="frame1920wlight-item-link11">
-                        <a href="{{ url_for('marvel_comics') }}" class="frame1920wlight-text106">Marvel</a>
-                    </div>
-                    <div class="frame1920wlight-item-link12">
-                        <a href="{{ url_for('dc_comics') }}" class="frame1920wlight-text107">DC Comics</a>
-                    </div>
-                    <div class="frame1920wlight-item-link13">
-                        <a href="{{ url_for('indie_comics') }}" class="frame1920wlight-text108">Indies</a>
-                    </div>
-                    <div class="frame1920wlight-item-link14">
-                        <a href="{{ url_for('videojuegos') }}" class="frame1920wlight-text109">Videojuegos</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+{% endblock %}
+
+{% block content %}
     <main>
         <img class="marvel-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/2560px-Marvel_Logo.svg.png" alt="Marvel Logo">
 
@@ -520,6 +442,9 @@
         </form>
 
     </main>
+{% endblock %}
+
+{% block scripts_extra %}
     <script>
         // Función para mostrar un modal personalizado en lugar de alert()
         function mostrarModalPersonalizado(mensaje, callback = null) {
@@ -601,5 +526,4 @@
             }
         };
     </script>
-</body>
-</html>
+{% endblock %}

@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Realizar Pago - SofiaComics</title>
-  <!-- Enlace al archivo CSS usando url_for para Flask -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% extends "base.html" %}
+
+{% block title %}Todos los Cómics de DC{% endblock %}
+
+{% block head_extra %}
   <style>
       main {
         display: flex;
@@ -15,7 +12,7 @@
         background: none;
         padding-top: 40px;
       }
-      form {
+      form.vista {
         background: transparent; /* Quita el fondo blanco */
         border-radius: 16px;
         box-shadow: none;        /* Quita la sombra */
@@ -45,7 +42,7 @@
         font-size: 1.05rem;
         font-family: 'Inter', Arial, sans-serif;
       }
-      input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+      input[type="text"].vista, input[type="password"], input[type="email"], input[type="tel"] {
         padding: 9px 12px;
         border-radius: 6px;
         border: 1px solid #bbb;
@@ -53,11 +50,11 @@
         transition: border 0.2s;
         font-family: 'Inter', Arial, sans-serif;
       }
-      input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
+      input[type="text"]:focus.vista, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
         border: 1.5px solid #c00;
         outline: none;
       }
-      button[type="submit"] {
+      button.vista[type="submit"] {
         background: #c00;
         color: #fff;
         border: none;
@@ -72,7 +69,7 @@
         font-family: 'Inter', Arial, sans-serif;
         letter-spacing: 1px;
       }
-      button[type="submit"]:hover {
+      button.vista[type="submit"]:hover {
         background: #a00;
       }
       fieldset {
@@ -180,77 +177,10 @@
         }
       }
     </style>
-</head>
-<body style="background: url('https://images2.alphacoders.com/446/446666.jpg') no-repeat center center fixed; background-size: cover;">
-  <header>
-    <nav class="frame1920wlight-nav">
-      <div class="frame1920wlight-section">
-        <div class="frame1920wlight-horizontal-border">
-          <div class="frame1920wlight-container11">
-            <div class="frame1920wlight-link10">
-              <img
-                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                alt="Logo SofiaComics"
-                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
-              />
-            </div>
-            <div class="frame1920wlight-vertical-border1">
-              <div class="frame1920wlight-vertical-border2">
-                <div class="frame1920wlight-container12">
-                  <img
-                    src="{{ url_for('static', filename='external/svg487-p0cx.svg') }}"
-                    alt="Marvel Logo"
-                    class="frame1920wlight-svg10"
-                  />
-                </div>
-                <div class="frame1920wlight-link11">
-                  <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
-                </div>
-                <span class="frame1920wlight-text101">|</span>
-                <div class="frame1920wlight-link12">
-                  <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
-                </div>
-              </div>
-            </div>
-            <div class="frame1920wlight-link13">
-              <span class="frame1920wlight-text103">Sofia comics</span>
-              <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
-              <img
-                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
-                alt="unnamed"
-                class="frame1920wlight-unnamed1"
-              />
-            </div>
-            <div class="frame1920wlight-linksearch">
-              <img
-                src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
-                alt="Buscar"
-                class="frame1920wlight-svg11"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="frame1920wlight-list10">
-          <div class="frame1920wlight-item-link10">
-            <span class="frame1920wlight-text105">News</span>
-          </div>
-          <div class="frame1920wlight-item-link11">
-            <a href="{{ url_for('home') }}" class="frame1920wlight-text106" style="text-decoration:none; color:inherit;">Comics</a>
-          </div>
-          <div class="frame1920wlight-item-link12">
-            <span class="frame1920wlight-text107">Characters</span>
-          </div>
-          <div class="frame1920wlight-item-link13"></div>
-          <div class="frame1920wlight-item-link14"></div>
-          <div class="frame1920wlight-item-link15"></div>
-          <div class="frame1920wlight-item-link16">
-            <span class="frame1920wlight-text108">More</span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main>
+{% endblock %}
+
+{% block content %}
+  <main style="background: url('https://images2.alphacoders.com/446/446666.jpg') no-repeat center center fixed; background-size: cover;">
     <section>
       {# Bloque para mostrar mensajes flash de Flask #}
       {% with messages = get_flashed_messages(with_categories=true) %}
@@ -263,7 +193,7 @@
           {% endif %}
       {% endwith %}
 
-      <form id="formTarjeta" method="POST" action="{{ url_for('checkout', plan_id=plan.id_plan) }}" autocomplete="off">
+      <form id="formTarjeta" method="POST" action="{{ url_for('checkout', plan_id=plan.id_plan) }}" autocomplete="off" class="vista">
         <h2>Realizar Pago</h2>
 
         {% if plan %}
@@ -278,22 +208,22 @@
 
         <div class="form-group">
           <label for="nombreTitular">Nombre del Titular</label>
-          <input type="text" id="nombreTitular" name="nombreTitular" required>
+          <input type="text" id="nombreTitular" name="nombreTitular" class="vista" required>
         </div>
 
         <div class="form-group">
           <label for="numeroTarjeta">Número de Tarjeta</label>
-          <input type="text" id="numeroTarjeta" name="numeroTarjeta" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required>
+          <input type="text" id="numeroTarjeta" name="numeroTarjeta" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" class="vista" required>
         </div>
 
         <div class="form-group">
           <label for="fechaExpiracion">Fecha de Expiración</label>
-          <input type="text" id="fechaExpiracion" name="fechaExpiracion" placeholder="MM/AA" required>
+          <input type="text" id="fechaExpiracion" name="fechaExpiracion" placeholder="MM/AA" class="vista" required>
         </div>
 
         <div class="form-group">
           <label for="cvv">CVV</label>
-          <input type="text" id="cvv" name="cvv" maxlength="4" required>
+          <input type="password" id="cvv" name="cvv" maxlength="4" required>
         </div>
 
         <div class="form-group">
@@ -312,7 +242,7 @@
           <input type="hidden" id="tipoTarjeta" name="tipoTarjeta" required>
         </div>
 
-        <button type="submit">Proceder Pago</button>
+        <button type="submit" class="vista">Proceder Pago</button>
       </form>
     </section>
   </main>
@@ -323,7 +253,9 @@
           <button id="modalCloseButton">Aceptar</button>
       </div>
   </div>
+{% endblock %}
 
+{% block scripts_extra %}
   <script>
     // Función para mostrar un modal personalizado en lugar de alert()
     function mostrarModalPersonalizado(mensaje, callback = null) {
@@ -446,6 +378,18 @@
             mostrarModalPersonalizado(allMessages.trim());
         }
     };
+
+    document.getElementById('fechaExpiracion').addEventListener('input', function(e) {
+    let input = e.target.value;
+    // Remover los caracteres no digitos
+    input = input.replace(/\D/g, '');
+
+    if (input.length > 2) {
+      // Agregar un slash despues de los primeros dos digitos (MM)
+      input = input.substring(0, 2) + '/' + input.substring(2, 4);
+    }
+    // Limite de MM/YY (5 caracteres)
+    e.target.value = input.substring(0, 5);
+    });
   </script>
-</body>
-</html>
+{% endblock %}

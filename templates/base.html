@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sofia Cómics{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding-top: 100px;
+        }
+
+        header {
+            background-color: #202020;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-sizing: border-box;
+            transition: top 0.3s ease-in-out;
+        }
+
+        .header-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-basis: 30%;
+            justify-content: flex-start;
+        }
+
+        .header-menu li {
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .header-menu li:hover a {
+            color: red;
+        }
+
+        .header-menu a {
+            color: inherit;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .header-logo {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .header-logo-link {
+            display: inline-block;
+            line-height: 0;
+            text-decoration: none;
+        }
+
+        .header-logo img {
+            height: 100px;
+            vertical-align: middle;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .header-logo img:hover {
+            transform: scale(1.05);
+        }    
+
+        .header-right-section {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-basis: 30%;
+            justify-content: flex-end;
+        }
+
+        .header-search-form {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            max-width: 200px;
+            background-color: #333;
+            border-radius: 4px;
+            margin-right: 20px;
+        }
+
+        .header-search-form input[type="search"] {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            background: none;
+            color: white;
+            flex-grow: 1;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .header-search-form input[type="search"]::placeholder {
+            color: #bbb;
+        }
+
+        .search-icon-btn-header {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            cursor: pointer;
+            transition: fill 0.3s;
+        }
+
+        .icon:hover {
+            fill: red;
+        }
+
+        .header-subscribe-link {
+            color: white;
+            text-decoration: none;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .header-subscribe-link:hover {
+            color: red;
+        }
+
+        .user-info-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: bold;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .account-change-btn {
+            background-color: #c00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .account-change-btn:hover {
+            background-color: #a00;
+        }
+
+        .auth-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-links a {
+            color: white;
+            text-decoration: none;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .auth-links a:hover {
+            color: red;
+        }
+
+        .auth-links span {
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo img {
+            max-height: 80px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .header-menu,
+            .header-right-section {
+                flex-basis: 100%;
+                justify-content: center;
+            }
+
+            .header-search-form {
+                max-width: 100%;
+                flex-grow: 1;
+                margin-right: 0;
+            }
+
+            .auth-links {
+                margin-top: 5px;
+            }
+            .user-info-section {
+                flex-basis: 100%;
+                justify-content: center;
+                margin-top: 5px;
+            }
+            .user-details {
+                align-items: center;
+            }
+        }
+    </style>
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    <header id="mainHeader">
+        <ul class="header-menu">
+            <li><a href="{{ url_for('marvel_comics') }}">Marvel</a></li>
+            <li><a href="{{ url_for('dc_comics') }}">DC</a></li>
+            <li><a href="{{ url_for('indie_comics') }}">Indie</a></li>
+            <li><a href="{{ url_for('videojuegos') }}">Videojuegos</a></li>
+        </ul>
+
+        <div class="header-logo">
+          <a href="{{ url_for('home') }}" class="header-logo-link">
+            <img
+              src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
+              alt="Logo SofiaComics"
+            />
+          </a>
+        </div>
+
+        <div class="header-right-section">
+            <form action="#" method="GET" class="header-search-form">
+                <input type="search" id="searchInput" name="query" placeholder="Buscar..." oninput="fetchSuggestions()">
+                <button type="submit" class="search-icon-btn-header">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M10 2a8 8 0 105.293 14.293l5.707 5.707 1.414-1.414-5.707-5.707A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
+                    </svg>
+                </button>
+            </form>
+
+            <a href="{{ url_for('subscriptions') }}" class="header-subscribe-link">Subscribe</a>
+
+            {# Lógica condicional para mostrar elementos de autenticación #}
+            {% if session.get('logged_in') %} {# Si el usuario está logueado #}
+                <div class="user-info-section">
+                    <div class="user-details">
+                        {# CAMBIO AQUÍ: Usar session.get('user_name') #}
+                        <span class="user-name">Hola, {{ session.get('user_name') or session.get('user_email', 'Usuario') }}</span>
+                        <button class="account-change-btn" onclick="location.href='{{ url_for('logout') }}'">Cambiar cuenta</button>
+                    </div>
+                    {# El icono de usuario que se muestra cuando está logueado #}
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 12c2.7 0 4.5-1.8 4.5-4.5S14.7 3 12 3 7.5 4.8 7.5 7.5 9.3 12 12 12zm0 2c-3 0-9 1.5-9 4.5V21h18v-2.5c0-3-6-4.5-9-4.5z"/>
+                    </svg>
+                </div>
+            {% else %} {# Si no está logueado #}
+                <div class="auth-links">
+                    <a href="{{ url_for('login') }}">Log In</a>
+                    <span>|</span>
+                    <a href="{{ url_for('register') }}">Sign Up</a>
+                </div>
+                {# El icono de usuario NO se muestra cuando no está logueado #}
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      <div class="footer-logo">
+        <img src="{{ url_for('static', filename='public/external/unnamed14821-q9e-200h.png') }}" alt="Sofia Cómics Logo" />
+      </div>
+      <div class="footer-links">
+        <a href="{{ url_for('subscriptions') }}">Subscriptions</a>
+        <a href="#">Our comics</a>
+        <a href="{{ url_for('dc_comics') }}">DC</a>
+        <a href="{{ url_for('marvel_comics') }}">MARVEL</a>
+        <a href="{{ url_for('indie_comics') }}">indie comics</a>
+      </div>
+    </footer>
+
+    {% block scripts_extra %}
+    <script>
+        let prevScroll = window.pageYOffset;
+        const header = document.getElementById("mainHeader");
+
+        window.addEventListener("scroll", function () {
+            const currentScroll = window.pageYOffset;
+
+            if (prevScroll > currentScroll) {
+                header.style.top = "0";
+            } else {
+                header.style.top = "-60px";
+            }
+
+            prevScroll = currentScroll;
+        });
+
+        function fetchSuggestions() {
+            console.log('Fetching suggestions for:', document.getElementById('searchInput').value);
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>

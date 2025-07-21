@@ -1,88 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sofia Cómics</title>
+{% extends "base.html" %}
+
+{% block title %}Inicio - Sofia Cómics{% endblock %}
+
+{% block head_extra %}
     <style>
-      /* Estilos generales del body */
-      body {
-        margin: 0;
-        font-family: 'Inter', Arial, sans-serif; /* Usando Inter como se especifica */
-        background-color: whitesmoke;
-        color: black;
-        padding-top: 60px; /* Compensación para el encabezado fijo, ajustado para ser más pequeño */
-      }
-
-      /* Estilos del encabezado */
-      header {
-        background-color: black;
-        color: white;
-        display: flex;
-        align-items: center;
-        padding: 5px 20px; /* Padding reducido para hacerlo más chico verticalmente */
-        gap: 15px;
-        flex-wrap: wrap;
-        position: fixed; /* Encabezado fijo */
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 100; /* Asegura que esté por encima de otros contenidos */
-        box-sizing: border-box; /* Incluye padding en el ancho */
-      }
-
-      header .header-content-flex {
-        flex-grow: 1;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      header h1 {
-        margin: 0;
-        font-size: 1.2rem; /* Tamaño de fuente reducido */
-      }
-
-      header a {
-        color: white;
-        text-decoration: none;
-        white-space: nowrap;
-        font-size: 0.9rem; /* Tamaño de fuente reducido */
-      }
-
-      header input[type="search"] {
-        padding: 4px 8px; /* Padding reducido */
-        border-radius: 4px;
-        border: none;
-        flex-grow: 1;
-        max-width: 200px; /* Ancho máximo reducido */
-        font-size: 0.9rem; /* Tamaño de fuente reducido */
-      }
-
-      header .auth-links {
-        text-align: right;
-        padding: 5px; /* Padding reducido */
-        white-space: nowrap;
-      }
-
-      header .sub-header {
-        background-color: black;
-        text-align: center;
-        width: 100%;
-        padding-top: 5px; /* Padding reducido */
-        padding-bottom: 5px; /* Padding reducido */
-      }
-
-      header .sub-header img {
-        height: 30px; /* Ajustado para ser más pequeño */
-        opacity: 0.7;
-      }
-
-      header nav a {
-        margin: 0 10px; /* Margen reducido */
-        font-size: 0.9rem; /* Tamaño de fuente reducido */
-      }
-
       /* Estilos del carrusel superior */
       .carousel-container {
         position: relative;
@@ -401,40 +322,6 @@
         z-index: 2;
       }
 
-      /* Estilos para el pie de página */
-      .footer {
-        background-color: #000;
-        color: #fff;
-        padding: 40px 20px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-      }
-
-      .footer-logo img {
-        max-height: 80px; /* Aumenta el tamaño del logo */
-      }
-
-      .footer-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px; /* Aumenta el espacio entre enlaces */
-      }
-
-      .footer-links a {
-        color: #ccc;
-        text-decoration: none;
-        font-size: 16px; /* Aumenta el tamaño de la fuente */
-        transition: color 0.2s;
-      }
-
-      .footer-links a:hover {
-        color: #fff;
-      }
-
       /* Media Queries para Responsividad */
       @media (max-width: 1600px) {
         .comics-grid-section {
@@ -594,51 +481,10 @@
           background-color: #f0f0f0;
       }
     </style>
-  </head>
-  <body>
+{% endblock %}
 
-    <header>
-      <!-- Nombre y enlace "Suscribe" -->
-      <div class="header-content-flex">
-        <h1>Sofia Cómics</h1>
-        <a href="{{ url_for('subscriptions') }}">Suscribe</a>
-      </div>
-
-      <!-- Barra de búsqueda -->
-      <form action="#" method="GET" style="flex-grow: 1; max-width: 250px; display: flex; position: relative;">
-        <input type="search" id="searchInput" name="query" placeholder="Buscar cómics..." style="flex-grow: 1;" oninput="fetchSuggestions()">
-        <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0 5px;">
-            <img src="https://img.icons8.com/ios-filled/20/ffffff/search--v1.png" alt="Buscar">
-        </button>
-        <div id="searchResults"></div>
-      </form>
-
-      <!-- Botones de Log in y Sign up -->
-      <div class="auth-links">
-        <a href="{{ url_for('login') }}">Log In</a>
-        <span>|</span>
-        <a href="{{ url_for('register') }}">Sign Up</a>
-      </div>
-
-      <!-- Subencabezado/Navegación inferior del header -->
-      <div class="sub-header">
-        <!-- Imagen decorativa -->
-        <div style="display: flex; justify-content: center; margin-bottom: 5px;">
-          <img
-            src="{{ url_for('static', filename='public/external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-            alt="Decoración">
-        </div>
-
-        <!-- Botones/enlaces de navegación -->
-        <nav>
-          <a href="#news">News</a>
-          <a href="{{ url_for('marvel_comics') }}">Marvel Comics</a>
-          <a href="{{ url_for('dc_comics') }}">DC Comics</a>
-          <a href="{{ url_for('indie_comics') }}">Indie Comics</a>
-          <a href="{{ url_for('videojuegos') }}">Videojuegos</a>
-        </nav>
-      </div>
-    </header>
+{% block content %}
+  <main>
 
     <!-- Carrusel Superior (Cómics más leídos del mes) -->
     <div class="carousel-container">
@@ -709,23 +555,10 @@
       <button class="btn-derecha" id="botonDerechaPersonajes">→</button>
       {% endif %}
     </section>
+</main>
+{% endblock %}
 
-    <!-- PIE DE PAGINA -->
-    <footer class="footer">
-      <div class="footer-logo">
-        <img src="{{ url_for('static', filename='public/external/unnamed14821-q9e-200h.png') }}" alt="Sofia Cómics Logo" />
-      </div>
-      <div class="footer-links">
-        <a href="#">About Sofía Cómics</a>
-        <a href="{{ url_for('subscriptions') }}">Subscriptions</a>
-        <a href="#news">News</a>
-        <a href="#">Our comics</a>
-        <a href="{{ url_for('dc_comics') }}">DC</a>
-        <a href="{{ url_for('marvel_comics') }}">MARVEL</a>
-        <a href="{{ url_for('indie_comics') }}">indie comics</a>
-      </div>
-    </footer>
-
+{% block scripts_extra %}
     <script>
       // Script para el carrusel de personajes favoritos (se mantiene)
       const carruselPersonajes = document.getElementById('carruselPersonajesContenedor');
@@ -945,5 +778,4 @@
       });
 
     </script>
-  </body>
-</html>
+{% endblock %}

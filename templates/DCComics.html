@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todos los Cómics de DC</title>
-    <!-- Enlace al archivo CSS usando url_for para Flask -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% extends "base.html" %}
+
+{% block title %}Todos los Cómics de DC{% endblock %}
+
+{% block head_extra %}
     <style>
         body {
             background: url('https://1.bp.blogspot.com/-unJxxU7Jyck/UY69IXFD8hI/AAAAAAAAAnA/oHEbWrw0GVQ/s1600/Mundo+Superman.jpg') no-repeat center center fixed;
@@ -267,96 +264,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <header>
-        <nav class="frame1920wlight-nav">
-            <div class="frame1920wlight-section">
-                <div class="frame1920wlight-horizontal-border">
-                    <div class="frame1920wlight-container11">
-                        <div class="frame1920wlight-link10">
-                            <!-- Imagen del logo de Sofia Comics -->
-                            <img
-                                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                                alt="Sofia Comics Logo"
-                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
-                            />
-                        </div>
-                        <div class="frame1920wlight-vertical-border1">
-                            <div class="frame1920wlight-vertical-border2">
-                                <div class="frame1920wlight-container12">
-                                    <!-- DC Logo -->
-                                    <img
-                                        src="{{ url_for('static', filename='external/dclogo.jpg') }}"
-                                        alt="DC Logo"
-                                        class="frame1920wlight-svg10"
-                                    />
-                                </div>
-                                {% if session.get('logged_in') %}
-                                    <span class="frame1920wlight-text100">Hola, {{ session.get('user_name', 'Usuario') }}!</span>
-                                    {% if session.get('user_type') == 'editorial' %}
-                                        <div class="frame1920wlight-link11">
-                                            <a href="{{ url_for('editorial_dashboard') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Dashboard Editorial</a>
-                                        </div>
-                                    {% elif session.get('user_type') == 'admin' %}
-                                        <div class="frame1920wlight-link11">
-                                            <a href="{{ url_for('admin_dashboard') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Dashboard Admin</a>
-                                        </div>
-                                    {% endif %}
-                                    <span class="frame1920wlight-text101">|</span>
-                                    <div class="frame1920wlight-link12">
-                                        <a href="{{ url_for('logout') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Cerrar Sesión</a>
-                                    </div>
-                                {% else %}
-                                    <div class="frame1920wlight-link11">
-                                        <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
-                                    </div>
-                                    <span class="frame1920wlight-text101">|</span>
-                                    <div class="frame1920wlight-link12">
-                                        <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="frame1920wlight-link13">
-                            <span class="frame1920wlight-text103">Sofia comics</span>
-                            <!-- Enlace a la ruta de suscripción -->
-                            <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
-                            <img
-                                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
-                                alt="unnamed"
-                                class="frame1920wlight-unnamed1"
-                            />
-                        </div>
-                        <div class="frame1920wlight-linksearch">
-                            <img
-                                src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
-                                alt="Buscar"
-                                class="frame1920wlight-svg11"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="frame1920wlight-list10">
-                    <div class="frame1920wlight-item-link10">
-                        <span class="frame1920wlight-text105">News</span>
-                    </div>
-                    <div class="frame1920wlight-item-link11">
-                        <a href="{{ url_for('home') }}" class="frame1920wlight-text106" style="text-decoration:none; color:inherit;">Comics</a>
-                    </div>
-                    <div class="frame1920wlight-item-link12">
-                        <span class="frame1920wlight-text107">Characters</span>
-                    </div>
-                    <div class="frame1920wlight-item-link13"></div>
-                    <div class="frame1920wlight-item-link14"></div>
-                    <div class="frame1920wlight-item-link15"></div>
-                    <div class="frame1920wlight-item-link16">
-                        <span class="frame1920wlight-text108">More</span>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+{% endblock %}
+
+{% block content %}
     <main>
         <img class="dc-logo" src="https://upload.wikimedia.org/wikipedia/commons/3/3d/DC_Comics_logo.svg" alt="DC Comics Logo">
         <h1>Todos los Cómics de DC</h1>
@@ -393,6 +303,9 @@
         {% endif %}
 
     </main>
+{% endblock %}
+
+{% block scripts_extra %}
     <script>
         // Función para mostrar un modal personalizado en lugar de alert()
         function mostrarModalPersonalizado(mensaje, callback = null) {
@@ -474,5 +387,4 @@
             }
         };
     </script>
-</body>
-</html>
+{% endblock %}

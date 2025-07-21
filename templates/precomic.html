@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ comic.titulo }} | SofiaComics</title>
-    <!-- Enlace al archivo CSS usando url_for para Flask -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <!-- Font Awesome para los iconos de estrellas -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% extends "base.html" %}
+
+{% block title %}{{ comic.titulo }} | SofiaComics{% endblock %}
+
+{% block head_extra %}
     <style>
         body {
             margin: 0;
@@ -434,78 +429,10 @@
             }
         }
     </style>
-</head>
-<body>
-    <div class="bg-blur"></div>
-    <header>
-        <nav class="frame1920wlight-nav">
-            <div class="frame1920wlight-section">
-                <div class="frame1920wlight-horizontal-border">
-                    <div class="frame1920wlight-container11">
-                        <div class="frame1920wlight-link10">
-                            <img
-                                src="{{ url_for('static', filename='external/geminigeneratedimagephk2vsphk2vsphk2114820-vkfb-200w.png') }}"
-                                alt="SofiaComics Logo"
-                                class="frame1920wlight-gemini-generated-imagephk2vsphk2vsphk211"
-                            />
-                        </div>
-                        <div class="frame1920wlight-vertical-border1">
-                            <div class="frame1920wlight-vertical-border2">
-                                <div class="frame1920wlight-container12">
-                                    <img
-                                        src="{{ url_for('static', filename='external/svg487-p0cx.svg') }}"
-                                        alt="Marvel Logo"
-                                        class="frame1920wlight-svg10"
-                                    />
-                                </div>
-                                <div class="frame1920wlight-link11">
-                                    <a href="{{ url_for('login') }}" class="frame1920wlight-text100" style="text-decoration:none; color:inherit;">Log In</a>
-                                </div>
-                                <span class="frame1920wlight-text101">|</span>
-                                <div class="frame1920wlight-link12">
-                                    <a href="{{ url_for('register') }}" class="frame1920wlight-text102" style="text-decoration:none; color:inherit;">Sign Up</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="frame1920wlight-link13">
-                            <span class="frame1920wlight-text103">Sofia comics</span>
-                            <a href="{{ url_for('subscriptions') }}" class="frame1920wlight-text104" style="cursor:pointer;text-decoration:none;">Subscribe</a>
-                            <img
-                                src="{{ url_for('static', filename='external/unnamed14821-q9e-200h.png') }}"
-                                alt="unnamed"
-                                class="frame1920wlight-unnamed1"
-                            />
-                        </div>
-                        <div class="frame1920wlight-linksearch">
-                            <img
-                                src="{{ url_for('static', filename='external/svg499-gkzh.svg') }}"
-                                alt="Buscar"
-                                class="frame1920wlight-svg11"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="frame1920wlight-list10">
-                    <div class="frame1920wlight-item-link10">
-                        <span class="frame1920wlight-text105">News</span>
-                    </div>
-                    <div class="frame1920wlight-item-link11">
-                        <span class="frame1920wlight-text106">Comics</span>
-                    </div>
-                    <div class="frame1920wlight-item-link12">
-                        <span class="frame1920wlight-text107">Characters</span>
-                    </div>
-                    <div class="frame1920wlight-item-link13"></div>
-                    <div class="frame1920wlight-item-link14"></div>
-                    <div class="frame1920wlight-item-link15"></div>
-                    <div class="frame1920wlight-item-link16">
-                        <span class="frame1920wlight-text108">More</span>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
 
+{% block content %}
     <main class="comic-detail-container">
         {# Mostrar mensajes flash de Flask #}
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -600,7 +527,9 @@
             <button id="modalCloseButton">Aceptar</button>
         </div>
     </div>
+{% endblock %}
 
+{% block scripts_extra %}
     <script>
         // Función para mostrar un modal personalizado
         function mostrarModalPersonalizado(mensaje, callback = null) {
@@ -692,5 +621,4 @@
             }
         });
     </script>
-</body>
-</html>
+{% endblock %}
