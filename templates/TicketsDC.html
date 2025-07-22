@@ -97,21 +97,35 @@
             vertical-align: middle; /* Alinea con el texto */
         }
 
+body {
+    /* Fondo de pantalla que cubre todo y se queda fijo */
+    background-image: url('https://1.bp.blogspot.com/-unJxxU7Jyck/UY69IXFD8hI/AAAAAAAAAnA/oHEbWrw0GVQ/s1600/Mundo+Superman.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover; /* Esto asegura que la imagen cubra todo el espacio sin un "zoom" excesivo ni quedando espacios en blanco */
+    background-attachment: fixed; /* ¡Esta es la clave para que no se mueva al hacer scroll! */
+    margin: 0; /* Elimina el margen predeterminado del body */
+    padding: 0; /* Elimina el padding predeterminado del body */
+    height: 100%; /* Asegura que el body tenga la altura completa */
+}
 
-        main {
-            margin-top: 120px; /* Ajusta el margen superior del contenido principal para el encabezado fijo */
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            background: rgba(255,255,255,0.97);
-            border-radius: 18px;
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
-            padding: 36px 28px 32px 28px;
-            background: url('https://1.bp.blogspot.com/-unJxxU7Jyck/UY69IXFD8hI/AAAAAAAAAnA/oHEbWrw0GVQ/s1600/Mundo+Superman.jpg') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            font-family: 'Inter', Arial, sans-serif;
-        }
+html {
+    height: 100%; /* El html también debe tener la altura completa para que el body la herede correctamente */
+}
+
+main {
+    /* Tu contenedor principal, ahora sobre el fondo fijo */
+    margin: 0 auto; /* Centra el main horizontalmente */
+    width: 100%; /* Opcional: max-width para que el contenido no sea demasiado ancho */
+    max-width: 900px; /* Vuelve a poner un ancho máximo si quieres que tu contenido no se estire demasiado */
+    min-height: 100vh; /* Asegura que tu main sea al menos tan alto como la pantalla */
+    
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18);
+    padding: 36px 28px 32px 28px;
+    font-family: 'Inter', Arial, sans-serif;
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el width/height */
+}
         .dc-logo {
             display: block;
             margin: 0 auto 24px auto;

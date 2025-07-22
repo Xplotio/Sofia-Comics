@@ -103,19 +103,38 @@
         }
 
 
-        main {
-            margin-top: 120px; /* Ajusta el margen superior del contenido principal para el encabezado fijo */
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            background: rgba(255,255,255,0.97);
-            border-radius: 18px;
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
-            padding: 36px 28px 32px 28px;
-            background: url('https://i.pinimg.com/736x/de/f4/73/def473f3b4380d977d23ac2502cb1d77.jpg') no-repeat center center fixed;
+        body {
+            background-image: url('https://i.pinimg.com/736x/de/f4/73/def473f3b4380d977d23ac2502cb1d77.jpg');
+            background-repeat: no-repeat;
+            background-position: center center;
             background-size: cover;
+            background-attachment: fixed; 
+    
             margin: 0;
+            padding: 0;
+    
+            height: 100%; 
+        }
+
+        html {
+            height: 100%; 
+        }
+
+        main {
+
+            margin: 0 auto; 
+    
+
+            width: 100%; 
+            max-width: 900px;
+            min-height: 100vh; 
+    
+
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18);
+            padding: 36px 28px 32px 28px;
             font-family: 'Inter', Arial, sans-serif;
+            box-sizing: border-box; 
         }
         .marvel-logo {
             display: block;
